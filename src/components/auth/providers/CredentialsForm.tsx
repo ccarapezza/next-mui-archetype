@@ -15,7 +15,7 @@ interface IRegisterForm {
 }
 
 const schema = yup.object({
-    username: yup.string().min(3).max(20).required(),
+    username: yup.string().min(3).max(150).required(),
     password: yup.string().min(3).max(20).required()
 }).required();
 

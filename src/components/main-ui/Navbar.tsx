@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from 'react'
 import ThemeSwitch from '../Theme/ThemeRegistry/ThemeSwitch'
 import Image from 'next/image'

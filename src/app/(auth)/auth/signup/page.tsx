@@ -1,7 +1,63 @@
-import Link from 'next/link'
+"use client"
 import React from 'react'
+import * as yup from "yup";
+import { useRouter } from 'next/navigation';
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SetStateAction, useState } from 'react';
+import { useSession } from "next-auth/react"
+import Link from 'next/link'
 
-export default function page() {
+interface IRegisterForm {
+    username: string,
+    email: string,
+    password: string,
+    cpassword: string
+}
+
+const schema = yup.object({
+    username: yup.string().min(3).max(20).required(),
+    email: yup.string().email().min(3).max(50).required(),
+    password: yup.string().min(3).max(20).required(),
+    cpassword: yup.string().min(3).max(20).required()
+}).required();
+
+export default function Register() {
+    const router = useRouter();
+    const { status } = useSession();
+    if (status === "authenticated") {
+        console.log("Already authenticated. Redirecting...")
+        router.push('/')
+    }
+    const [error, setError] = useState("");
+    const [isFetching, setIsFetching] = useState(false);
+
+    const { register, handleSubmit, formState: { errors } } = useForm<IRegisterForm>({
+        resolver: yupResolver(schema)
+    });
+
+    const onSubmit = async (data: IRegisterForm) => {
+        if (data.password !== data.cpassword) {
+            setError("Password and Confirm Password must be same");
+            return;
+        }
+        setIsFetching(true);
+        /*
+        userService.register({
+            username: data.username,
+            email: data.email,
+            password: data.password
+        }).then(() => {
+            router.push('http://localhost:3000')
+        }).catch((err: { message: SetStateAction<string>; }) => {
+            console.error(err);
+            setError(err.message);
+        }).finally(() => {
+            setIsFetching(false);
+        });
+        */
+    };
+
     return (
         <main className="w-full max-w-md mx-auto p-6">
             <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
@@ -29,45 +85,58 @@ export default function page() {
 
                         <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">Or</div>
 
-                        <form>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <div className="grid gap-y-4">
                                 <div>
-                                    <label htmlFor="email" className="block text-sm mb-2 dark:text-white">Email address</label>
+                                    <label htmlFor="username" className="block text-sm mb-2 dark:text-white">Username</label>
                                     <div className="relative">
-                                        <input type="email" id="email" name="email" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
+                                        <input {...register("username")} type="username" id="username" name="username" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
                                         <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                                             <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                             </svg>
                                         </div>
                                     </div>
-                                    <p className="hidden text-xs text-red-600 mt-2" id="email-error">Please include a valid email address so we can get back to you</p>
+                                    <p className="text-xs text-red-600 mt-2">{errors.username?.message}</p>
+                                </div>
+
+                                <div>
+                                    <label htmlFor="email" className="block text-sm mb-2 dark:text-white">Email address</label>
+                                    <div className="relative">
+                                        <input {...register("email")} type="email" id="email" name="email" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
+                                        <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
+                                            <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
                                 </div>
 
                                 <div>
                                     <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Password</label>
                                     <div className="relative">
-                                        <input type="password" id="password" name="password" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="password-error" />
+                                        <input {...register("password")} type="password" id="password" name="password" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="password-error" />
                                         <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                                             <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                             </svg>
                                         </div>
                                     </div>
-                                    <p className="hidden text-xs text-red-600 mt-2" id="password-error">8+ characters required</p>
+                                    <p className="text-xs text-red-600 mt-2">{errors.password?.message}</p>
                                 </div>
 
                                 <div>
-                                    <label htmlFor="confirm-password" className="block text-sm mb-2 dark:text-white">Confirm Password</label>
+                                    <label htmlFor="cpassword" className="block text-sm mb-2 dark:text-white">Confirm Password</label>
                                     <div className="relative">
-                                        <input type="password" id="confirm-password" name="confirm-password" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="confirm-password-error" />
+                                        <input {...register("cpassword")} type="password" id="cpassword" name="cpassword" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="confirm-password-error" />
                                         <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                                             <svg className="h-5 w-5 text-red-500" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
                                                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
                                             </svg>
                                         </div>
                                     </div>
-                                    <p className="hidden text-xs text-red-600 mt-2" id="confirm-password-error">Password does not match the password</p>
+                                    <p className="text-xs text-red-600 mt-2">{errors.cpassword?.message}</p>
                                 </div>
 
                                 <div className="flex items-center">
