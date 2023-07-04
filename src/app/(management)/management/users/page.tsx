@@ -40,7 +40,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
     return (<>
         <PageHeader title="Users" />
         <MuiBox className="p-10">
-            <DataGridDemo columns={columns} rows={data.rows} rowCount={data.totalItems} />
+            <DataGridDemo columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit"/>
         </MuiBox>
     </>)
 }

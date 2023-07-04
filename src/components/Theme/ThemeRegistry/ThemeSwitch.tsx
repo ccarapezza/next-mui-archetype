@@ -19,13 +19,13 @@ const ThemeSwitch = () => {
 
   return (<>
     <Tooltip title="Toggle light/dark theme">
-      <IconButton className='hidden dark:block' size='small'>
-        <FontAwesomeIcon fixedWidth icon={faSun} onClick={() => setTheme("light")} />
+      <IconButton className='hidden dark:block' size='small' onClick={() => setTheme("light")}>
+        <FontAwesomeIcon fixedWidth icon={faSun} />
       </IconButton>
     </Tooltip>
     <Tooltip title="Toggle light/dark theme">
-      <IconButton className='block dark:hidden' size='small'>
-        <FontAwesomeIcon fixedWidth icon={faMoon} onClick={() => setTheme("dark")} />
+      <IconButton className='block dark:hidden' size='small' onClick={() => setTheme("dark")}>
+        <FontAwesomeIcon fixedWidth icon={faMoon} />
       </IconButton>
     </Tooltip>
   </>)

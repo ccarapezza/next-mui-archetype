@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUserGroup, faUserPen, faKey, faCompass, faUserTag } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserGroup, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faReceipt, faAddressBook, faCartShopping } from '@fortawesome/free-solid-svg-icons'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
@@ -27,6 +27,23 @@ const categories = [
       { id: 'Roles', icon: faUserTag, href: '/management/roles', active: false },
     ],
   },
+  {
+    id: 'Email Marketing',
+    children: [
+      { id: 'Subscribers', icon: faUserFriends, href: '/management/subscribers', active: false },
+      { id: 'Send Email', icon: faPaperPlane, href: '/management/send-emails', active: false },
+      { id: 'Templates', icon: faPalette, href: '/management/templates', active: false },
+      //{ id: 'Campaigns', icon: faUserGroup, href: '/management/campaigns', active: false },
+    ],
+  },
+  {
+    id: 'eCommerce',
+    children: [
+      { id: 'Products', icon: faBoxesStacked, href: '/management/products', active: false },
+      { id: 'Orders', icon: faCartShopping, href: '/management/orders', active: false },
+      { id: 'Customers', icon: faAddressBook, href: '/management/customers', active: false },
+    ],
+  },
 ];
 
 export default function Navigator(props: DrawerProps) {
@@ -40,8 +57,8 @@ export default function Navigator(props: DrawerProps) {
         <ListItem sx={{ fontSize: 22 }} className='h-12 pl-6'>
           <FontAwesomeIcon fixedWidth icon={faCompass} className='mr-4' /> ANT-mui
         </ListItem>
-        <Link href={"/"} className='no-underline'>
-          <ListItem className='p-0' onClick={()=>{router.push("/")}}>
+        <Link href={"/management"} className='no-underline'>
+          <ListItem className='p-0'>
             <ListItemButton className='pl-6' selected={"/management"==pathname}>
               <ListItemIcon className='min-w-fit mr-4'>
                 <FontAwesomeIcon fixedWidth icon={faHome} />
