@@ -5,7 +5,7 @@ import MuiBox from "@/components/client/MuiBox";
 import PageHeader from "@/components/management/paperbase/PageHeader";
 import { GridColDef } from "@mui/x-data-grid";
 
-const fetchUserData = async (page: number, size: number) => {
+const fetchUserListData = async (page: number, size: number) => {
     const res = await fetch(`http://localhost:3000/api/user/list/${page}/${size}`);
     return res.json();
 };
@@ -18,7 +18,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
         }
     }
     const paginationParams = getPaginationParams();
-    const data = await fetchUserData(paginationParams.page, paginationParams.size);
+    const data = await fetchUserListData(paginationParams.page, paginationParams.size);
     const columns: GridColDef[] = [
         {
             field: 'id',
@@ -40,7 +40,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
     return (<>
         <PageHeader title="Users" />
         <MuiBox className="p-10">
-            <DataGridDemo columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit"/>
+            <DataGridDemo columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit" deletePath="/api/users/delete/"/>
         </MuiBox>
     </>)
 }

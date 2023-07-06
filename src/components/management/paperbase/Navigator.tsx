@@ -49,7 +49,6 @@ const categories = [
 export default function Navigator(props: DrawerProps) {
   const { ...other } = props;
   const pathname = usePathname();
-  const router = useRouter()
 
   return (
     <Drawer variant="permanent" {...other}>
