@@ -7,8 +7,9 @@ const nextConfig = {
                 hostname: "*.googleusercontent.com",
                 port: "",
                 pathname: "**",
-            },
+            },    
         ],
+        domains: ['dummyimage.com']
     },
     experimental: {
         /** Needed to fix --"Module not found: Can't resolve 'pg-hstore'"--" */
