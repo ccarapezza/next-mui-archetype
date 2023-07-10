@@ -1,11 +1,9 @@
-'use client'
-import { useEffect, useState } from 'react';
-import ProductCard from '../main-ui/ProductCard';
-import Carousel from 'react-material-ui-carousel';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import ProductFilters from '@/components/productlistingpage/ProductFilters';
+import ProductGridList from '@/components/productlistingpage/ProductGridList';
+import ProductPageHeader from '@/components/productlistingpage/ProductPageHeader';
+import React from 'react'
 
-const CarouselProducts = () => {
+export default function () {
 
   const products = [
     {
@@ -77,75 +75,30 @@ const CarouselProducts = () => {
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-10'
+    },
+    {
+      name: "Random Name #11",
+      price: '$100',
+      urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
+      urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
+      productNameUrl: 'product-name-11'
+    },
+    {
+      name: "Random Name #12",
+      price: '$100',
+      urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
+      urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
+      productNameUrl: 'product-name-12'
     }
   ];
 
-  // Pagination Slider
-  const firstPageSlider = products.slice(0, 4);
-  const secondPageSlider = products.slice(4, 8);
-  const paginationSlider = [firstPageSlider, secondPageSlider];
-
-  // Screen Width
-  const [windowWidth, setWindowWidth] = useState(0);
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-    setWindowWidth(window.innerWidth);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
-    <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-      <h3 className='text-xl font-bold text-gray-900 sm:text-3xl mb-4 text-center'>Special Offers</h3>
-      <Carousel
-        navButtonsAlwaysVisible={true} // Show next and previous buttons
-        animation='slide'               // Defines the animation style of the Carousel
-        duration={1400}                  // Define the duration of the transition in ms. Default is 500 ms
-        fullHeightHover={false}        // We want the nav buttons wrapper to only be as big as the button element is
-        navButtonsProps={{             // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
-          style: {
-            color: '#4F46E5',
-            backgroundColor: 'transparent',
-            borderRadius: 50
-          }
-        }}
-        indicatorContainerProps={{
-          style: {
-              marginTop: '30px'
-          }
-  
-      }}
-        NextIcon={<FontAwesomeIcon icon={faChevronRight} />}
-        PrevIcon={<FontAwesomeIcon icon={faChevronLeft} />}
-      >
-        {
-          windowWidth > 768 ?
-            paginationSlider.map((arg, i) => {
-              return (
-                <div key={i} className='grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-4 mx-1'>
-                  {
-                    arg.map((product, i) => <ProductCard key={i} product={product} />)
-                  }
-                </div>
-              )
-            })
-            :
-            products.map((product, i) => {
-              return (
-                <ProductCard key={i} product={product} />
-              )
-            })
-        }
-      </Carousel>
-    </div>
+    <section>
+      <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+        <ProductPageHeader />
+        <ProductFilters />
+        <ProductGridList products={products} />
+      </div>
+    </section>
   )
 }
-
-
-export default CarouselProducts
