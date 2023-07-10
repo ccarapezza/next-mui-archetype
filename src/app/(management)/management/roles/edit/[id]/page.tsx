@@ -1,18 +1,18 @@
 import MuiBox from "@/components/client/MuiBox";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import UserForm from "@/components/management/users/UserForm";
+import RoleForm from "@/components/management/roles/RoleForm";
 
 const fetchUserData = async (id: string) => {
-    const res = await fetch(`http://localhost:3000/api/user/${id}`, { cache: 'no-store'});
+    const res = await fetch(`http://localhost:3000/api/role/${id}`, {cache: 'no-store'} );
     return res.json();
 };
 
 export default async function EditUserPage({ params }: { params: { id: string } }) {
     const data = await fetchUserData(params.id);
     return (<>
-        <PageHeader title="Edit User" />
+        <PageHeader title="Edit Role" />
         <MuiBox className="px-4 pt-8 flex justify-center">
-            <UserForm userData={data} />
+            <RoleForm roleData={data} />
         </MuiBox>
     </>)
 }

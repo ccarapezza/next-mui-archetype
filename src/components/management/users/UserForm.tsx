@@ -7,13 +7,17 @@ import React from 'react'
 
 export default function UserForm({ userData }: { userData: any }) {
     return (<Card variant='outlined' className='max-w-full lg:max-w-2xl'>
-        <Grid container padding={2} paddingTop={0} gap={2}>
-            <Grid item xs={12} className='flex flex-row justify-center items-center'>
-                <AvatarUploadModal src={userData.image}/>
-            </Grid>
-            <Grid item xs={12} className='flex flex-row items-center gap-2'>
-                <Typography className='font-bold'>ID</Typography><Chip label={userData.id} />
-            </Grid>
+        <Grid container padding={2} gap={2}>
+            {userData.id&&
+                <>
+                    <Grid item xs={12} className='flex flex-row justify-center items-center'>
+                        <AvatarUploadModal src={userData.image}/>
+                    </Grid>
+                    <Grid item xs={12} className='flex flex-row items-center gap-2'>
+                        <Typography className='font-bold'>ID</Typography><Chip label={userData.id} />
+                    </Grid>
+                </>
+            }
             <Grid item xs={12}>
                 <TextField
                     id="username"

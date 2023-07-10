@@ -1,16 +1,18 @@
 
 
-import DataGridDemo from "@/components/client/DataGrid";
+import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
+import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
 import { GridColDef } from "@mui/x-data-grid";
 
-const fetchUserListData = async (page: number, size: number) => {
-    const res = await fetch(`http://localhost:3000/api/user/list/${page}/${size}`);
+const fetchUserListData = async (page: number, size: number, search: string) => {
+    const querySearch = search?`?search=${search}`:"";
+    const res = await fetch(`http://localhost:3000/api/user/list/${page}/${size}${querySearch}`, { cache: 'no-store'});
     return res.json();
 };
 
-export default async function UsersPage({ searchParams }: { searchParams: { page: number, size: number } }) {
+export default async function UsersPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {
     const getPaginationParams= () => {
         return {
             page: searchParams.page? searchParams.page : 1,
@@ -18,7 +20,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
         }
     }
     const paginationParams = getPaginationParams();
-    const data = await fetchUserListData(paginationParams.page, paginationParams.size);
+    const data = await fetchUserListData(paginationParams.page, paginationParams.size, searchParams.search);
     const columns: GridColDef[] = [
         {
             field: 'id',
@@ -40,7 +42,8 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
     return (<>
         <PageHeader title="Users" />
         <MuiBox className="p-10">
-            <DataGridDemo columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit" deletePath="/api/users/delete/"/>
+            <EntityTableToolbar newButtonLabel="Create new User" newEntityPath="/management/users/new"/>
+            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit" deletePath="/api/users/"/>
         </MuiBox>
     </>)
 }

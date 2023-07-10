@@ -1,16 +1,18 @@
 
 
-import DataGridDemo from "@/components/client/DataGrid";
+import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
+import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
 import { GridColDef } from "@mui/x-data-grid";
 
-const fetchRolesData = async (page: number, size: number) => {
-    const res = await fetch(`http://localhost:3000/api/role/list/${page}/${size}`);
+const fetchRolesData = async (page: number, size: number, search: string) => {
+    const querySearch = search?`?search=${search}`:"";
+    const res = await fetch(`http://localhost:3000/api/role/list/${page}/${size}${querySearch}`, {cache: 'no-store'});
     return res.json();
 };
 
-export default async function RolesPage({ searchParams }: { searchParams: { page: number, size: number } }) {
+export default async function RolesPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {
     const getPaginationParams= () => {
         return {
             page: searchParams.page? searchParams.page : 1,
@@ -18,7 +20,7 @@ export default async function RolesPage({ searchParams }: { searchParams: { page
         }
     }
     const paginationParams = getPaginationParams();
-    const data = await fetchRolesData(paginationParams.page, paginationParams.size);
+    const data = await fetchRolesData(paginationParams.page, paginationParams.size, searchParams.search);
     const columns: GridColDef[] = [
         {
             field: 'id',
@@ -35,7 +37,8 @@ export default async function RolesPage({ searchParams }: { searchParams: { page
     return (<>
         <PageHeader title="Roles" />
         <MuiBox className="p-10">
-            <DataGridDemo columns={columns} rows={data.rows} rowCount={data.totalItems} />
+            <EntityTableToolbar newButtonLabel="Create new Role" newEntityPath="/management/roles/new"/>
+            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/roles/edit" deletePath="/api/role/"/>
         </MuiBox>
     </>)
 }
