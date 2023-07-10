@@ -117,7 +117,7 @@ export default function AvatarUploadModal({src}: {src: string} ) {
 
     return (
         <>
-            <div className={"text-center align-self-center m-4"}>
+            <div className={"text-center align-self-center m-1"}>
                 <Box className="w-fit relative ">
                     <Avatar alt="User Avatar" className='h-32 w-32' src={src}>
                         CC

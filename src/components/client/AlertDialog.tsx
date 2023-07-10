@@ -1,43 +1,59 @@
-import * as React from 'react';
+"use client"
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { on } from 'events';
 
-export default function AlertDialog({message, title, open, setOpen, onConfirm, onCancel}: {message: string, title: string, open: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>>, onConfirm: () => void, onCancel: () => void}) {
+export default function AlertDialog({id, type, message, title, open = true, setOpen = ()=>{}, onConfirm, onCancel, onClose}: {id: string, type:"message"|"confirm", message: string, title?: string, open?: boolean, setOpen?: React.Dispatch<React.SetStateAction<boolean>>, onConfirm?: () => void, onCancel?: () => void, onClose?: (id: string) => void}) {
+
+  const [openState, setOpenState] = useState<boolean>(open);
 
   const handleClose = () => {
-    onCancel();
-    setOpen(false);
+    if(onCancel){
+      onCancel();
+    }
+    closeDialog();
   };
 
   const handleConfirm = () => {
-    onConfirm();
-    setOpen(false);
+    if(onConfirm){
+      onConfirm();
+    }
+    closeDialog();
   };
+
+  const closeDialog = () =>{
+    setOpenState(false);
+    setOpen(false);
+    onClose&&onClose(id);
+  }
 
   return (
       <Dialog
-        open={open}
+        open={openState}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {title}
-        </DialogTitle>
+        {title&&
+          <DialogTitle id="alert-dialog-title">
+            {title}
+          </DialogTitle>
+        }
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             {message}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleConfirm} autoFocus>
-            OK
-          </Button>
+          {type==="confirm"&&
+            <Button onClick={handleClose}>Cancelar</Button>
+          }
+          <Button onClick={handleConfirm} autoFocus>OK</Button>
         </DialogActions>
       </Dialog>
   );
