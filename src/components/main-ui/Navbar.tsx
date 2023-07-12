@@ -1,17 +1,19 @@
 "use client"
 import { useEffect, useState } from 'react'
+import { Link } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import AuthSection from './AuthSection';
+import dynamic from 'next/dynamic';
 import ThemeSwitch from '../Theme/ThemeRegistry/ThemeSwitch'
 import Image from 'next/image'
 import logo from "../../assets/logos/logo.svg";
 import logoDark from "../../assets/logos/logo-dark.svg";
-import AuthSection from './AuthSection';
-import { Link } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+
+const MiniCart = dynamic(() => import('../store/minicart/MiniCart'), {
+  ssr: false,
+}) // TO DO - REVIEW 
 
 export default () => {
-
   const router = useRouter();
   const [state, setState] = useState(false)
 
@@ -78,7 +80,7 @@ export default () => {
           <div className="flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
             <ThemeSwitch />
             <AuthSection />
-            <FontAwesomeIcon icon={faCartShopping} />
+            <MiniCart />
           </div>
         </div>
       </div>

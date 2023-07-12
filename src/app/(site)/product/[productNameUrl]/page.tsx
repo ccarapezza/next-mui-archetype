@@ -1,7 +1,23 @@
 'use client';
-import React from 'react'
+import { useContext } from "react";
+import { CartContext } from "@/components/store/context/MiniCartContext";
+
+const esteProducto = {
+  name: "Random Name #10",
+  price: 100,
+  urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
+  urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
+  productNameUrl: 'product-name-10'
+}
 
 export default function () {
+
+  const [cart, setCart] = useContext(CartContext)
+
+  const addToCart = () => {
+    setCart([...cart, esteProducto])
+  }
+
 
   return (
     <section>
@@ -79,8 +95,8 @@ export default function () {
           </div>
 
           <div className="lg:sticky lg:top-0">
-            <form className="space-y-4 lg:pt-8">
-              <fieldset>
+            <div className="space-y-4 lg:pt-8">
+              {/* <fieldset>
                 <legend className="text-lg font-bold">Color</legend>
 
                 <div className="mt-2 flex flex-wrap gap-1">
@@ -188,7 +204,7 @@ export default function () {
                     </span>
                   </label>
                 </div>
-              </fieldset>
+              </fieldset> */}
 
               <div className="rounded border bg-gray-100 p-4">
                 <p className="text-sm">
@@ -203,8 +219,8 @@ export default function () {
               </div>
 
               <button
-                type="submit"
                 className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
+                onClick={() => addToCart()}
               >
                 Add to cart
               </button>
@@ -215,7 +231,7 @@ export default function () {
               >
                 Notify when on sale
               </button>
-            </form>
+            </div>
           </div>
 
           <div className="lg:col-span-3">
