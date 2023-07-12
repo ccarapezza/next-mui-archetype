@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 type Product = {
   name: string;
-  price: string;
+  price: number;
   urlImageMain: string;
   urlImageHover: string;
   productNameUrl: string;

@@ -1,5 +1,6 @@
 import Footer from "@/components/main-ui/Footer";
 import Navbar from "@/components/main-ui/Navbar";
+import MiniCartProvider from "@/components/store/context/MiniCartContext";
 
 export default function ({
   children, // will be a page or nested layout
@@ -7,10 +8,12 @@ export default function ({
   children: React.ReactNode
 }) {
   return (<>
-    <Navbar />
-    <main>
-      {children}
-    </main>
-    <Footer />
+    <MiniCartProvider>
+      <Navbar />
+      <main>
+        {children}
+      </main>
+      <Footer />
+    </MiniCartProvider>
   </>)
 }
