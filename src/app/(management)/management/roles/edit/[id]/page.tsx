@@ -3,7 +3,7 @@ import PageHeader from "@/components/management/paperbase/PageHeader";
 import RoleForm from "@/components/management/roles/RoleForm";
 
 const fetchUserData = async (id: string) => {
-    const res = await fetch(`http://localhost:3000/api/role/${id}`, {cache: 'no-store'} );
+    const res = await fetch(`http://localhost:3000/api/management/role/${id}`, {cache: 'no-store'} );
     return res.json();
 };
 

@@ -1,12 +1,13 @@
 import MuiBox from '@/components/client/MuiBox'
 import PageHeader from '@/components/management/paperbase/PageHeader'
-import React from 'react'
+import ReactEmailEditor from '@/components/client/ReactEmailEditor'
 
-export default function() {
+export default function () {
+
     return (<>
-        <PageHeader title="Change Password" />
+        <PageHeader title="Templates" />
         <MuiBox className="p-10">
-            
+            <ReactEmailEditor />
         </MuiBox>
     </>)
 }

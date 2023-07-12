@@ -3,7 +3,7 @@ import PageHeader from "@/components/management/paperbase/PageHeader";
 import UserForm from "@/components/management/users/UserForm";
 
 const fetchUserData = async (id: string) => {
-    const res = await fetch(`http://localhost:3000/api/user/${id}`, { cache: 'no-store'});
+    const res = await fetch(`http://localhost:3000/api/management/user/${id}`, { cache: 'no-store'});
     return res.json();
 };
 

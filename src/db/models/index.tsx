@@ -4,5 +4,6 @@ import Session from '@/db/models/Session';
 import User from '@/db/models/User';
 import VerificationToken from '@/db/models/VerificationToken';
 import Role from '@/db/models/Role';
+import Subscriber from '@/db/models/Subscriber';
 
-export { Account, Post, Session, User, VerificationToken, Role }
+export { Account, Post, Session, User, VerificationToken, Role, Subscriber }

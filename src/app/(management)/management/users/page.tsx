@@ -5,10 +5,14 @@ import MuiBox from "@/components/client/MuiBox";
 import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
 import { GridColDef } from "@mui/x-data-grid";
+import { headers } from "next/headers";
 
 const fetchUserListData = async (page: number, size: number, search: string) => {
     const querySearch = search?`?search=${search}`:"";
-    const res = await fetch(`http://localhost:3000/api/user/list/${page}/${size}${querySearch}`, { cache: 'no-store'});
+    const res = await fetch(`http://localhost:3000/api/management/user/list/${page}/${size}${querySearch}`, {
+        cache: 'no-store',
+        headers: headers()
+    });
     return res.json();
 };
 
@@ -43,7 +47,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
         <PageHeader title="Users" />
         <MuiBox className="p-10">
             <EntityTableToolbar newButtonLabel="Create new User" newEntityPath="/management/users/new"/>
-            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit" deletePath="/api/users/"/>
+            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit" deletePath="/api/management/users/"/>
         </MuiBox>
     </>)
 }

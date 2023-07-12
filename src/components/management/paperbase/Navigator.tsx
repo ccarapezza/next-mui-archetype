@@ -30,7 +30,7 @@ const categories = [
   {
     id: 'Email Marketing',
     children: [
-      { id: 'Subscribers', icon: faUserFriends, href: '/management/subscribers', active: false },
+      { id: 'Subscribers', icon: faUserFriends, href: '/management/subscriber', active: false },
       { id: 'Send Email', icon: faPaperPlane, href: '/management/send-emails', active: false },
       { id: 'Templates', icon: faPalette, href: '/management/templates', active: false },
       //{ id: 'Campaigns', icon: faUserGroup, href: '/management/campaigns', active: false },
