@@ -3,15 +3,11 @@ import { useEffect, useState } from 'react'
 import { Link } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import AuthSection from './AuthSection';
-import dynamic from 'next/dynamic';
 import ThemeSwitch from '../Theme/ThemeRegistry/ThemeSwitch'
 import Image from 'next/image'
 import logo from "../../assets/logos/logo.svg";
 import logoDark from "../../assets/logos/logo-dark.svg";
-
-const MiniCart = dynamic(() => import('../store/minicart/MiniCart'), {
-  ssr: false,
-}) // TO DO - REVIEW 
+import MiniCart from '../store/minicart/MiniCart';
 
 export default () => {
   const router = useRouter();

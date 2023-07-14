@@ -9,8 +9,8 @@ export default function () {
 
   const [state, setState] = useState(false)
   const [cart, setCart] = useContext(CartContext)
-  
-  const quantity = cart.length;
+  const [quantity, setQuantity] = useState(0)
+
   const getTotal = () => {
     let total = 0;
     cart.forEach((product: any) => {
@@ -18,6 +18,11 @@ export default function () {
     })
     return total;
   }
+
+  useEffect(() => {
+    console.log(cart.length);
+    setQuantity(cart.length);
+  }, [cart])
 
   return (
     <>
@@ -42,7 +47,9 @@ export default function () {
               }}>
               {quantity}
             </span>
-            : null
+            :
+            <span>
+            </span>
         }
         <FontAwesomeIcon icon={faCartShopping} />
       </div>

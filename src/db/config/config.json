@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "gonella",
+    "password": "represion",
     "database": "nextjs-archetype-db",
     "host": "127.0.0.1",
     "dialect": "mysql"

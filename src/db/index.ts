@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import config from "./config/config.json";
-import { Account, Session, User, VerificationToken, Post, Role, Subscriber } from "@/db/models";
+import { Account, Session, User, VerificationToken, Post, Role, Subscriber, EmailTemplate } from "@/db/models";
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
 
 const env = process.env.NODE_ENV || 'development';
@@ -13,7 +13,8 @@ sequelizeInstace.addModels([
   VerificationToken,
   Post,
   Role,
-  Subscriber
+  Subscriber,
+  EmailTemplate
 ]);
 
 const adapter = SequelizeAdapter(sequelizeInstace!, {
@@ -33,7 +34,8 @@ export {
   VerificationToken,
   Post,
   Role,
-  Subscriber
+  Subscriber,
+  EmailTemplate
 }
 
 export { sequelizeInstace, adapter }

@@ -5,8 +5,8 @@ import ReactEmailEditor from '@/components/client/ReactEmailEditor'
 export default function () {
 
     return (<>
-        <PageHeader title="Templates" />
-        <MuiBox className="p-10">
+        <PageHeader title="New Template" />
+        <MuiBox className="py-2 px-4">
             <ReactEmailEditor />
         </MuiBox>
     </>)

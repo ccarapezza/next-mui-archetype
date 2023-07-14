@@ -27,7 +27,6 @@ const subscribe = async (roleData: { email: string }) => {
     if(!res.ok){
         const errorData = await res?.json();
         console.log("errorData", errorData);
-        debugger;
         throw new Error((errorData.error)?(errorData.error):"Error subscribing");
     }
     return res.json();

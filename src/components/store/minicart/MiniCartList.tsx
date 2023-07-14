@@ -1,6 +1,8 @@
 'use client'
 import MiniCartProductCard from "./MiniCartProductCard";
-
+interface ISubscriptionForm {
+  email: string
+}
 export default function (props: { cart: any[] }) {
   const { cart } = props;
   console.log('Cart desde Mini Cart List: ', cart);
