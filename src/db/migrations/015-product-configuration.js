@@ -3,17 +3,12 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('user_roles', {
-      id: {
+    await queryInterface.createTable('product_configuration', {
+      productItemId: {
         type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      userId: {
-        type: Sequelize.UUID,
         allowNull: false
       },
-      roleId: {
+      variationOpionId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
@@ -28,23 +23,23 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
     });
-    queryInterface.addConstraint('user_roles', {
-      fields: ['userId'],
+    queryInterface.addConstraint('product_configuration', {
+      fields: ['productItemId'],
       type: 'foreign key',
-      name: 'user_roles_fk_users',
+      name: 'product_configuration_fk_product',
       references: {
-        table: 'users',
+        table: 'product_item',
         field: 'id',
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
     });
-    queryInterface.addConstraint('user_roles', {
-      fields: ['roleId'],
+    queryInterface.addConstraint('product_configuration', {
+      fields: ['variationOpionId'],
       type: 'foreign key',
-      name: 'user_roles_fk_roles',
+      name: 'product_configuration_fk_variation_option',
       references: {
-        table: 'role',
+        table: 'variation_option',
         field: 'id',
       },
       onDelete: 'cascade',
@@ -53,6 +48,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('user_roles');
+    await queryInterface.dropTable('product_configuration');
   }
 };

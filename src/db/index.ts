@@ -1,6 +1,20 @@
 import { Sequelize } from "sequelize-typescript";
 import config from "./config/config.json";
-import { Account, Session, User, VerificationToken, Post, Role, Subscriber, EmailTemplate } from "@/db/models";
+import {
+  Account,
+  Session,
+  User,
+  VerificationToken,
+  Post,
+  Role,
+  Subscriber,
+  EmailTemplate,
+  ProductCategory,
+  Product,
+  ProductItem,
+  Variation,
+  VariationOption
+} from "@/db/models";
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
 
 const env = process.env.NODE_ENV || 'development';
@@ -14,16 +28,21 @@ sequelizeInstace.addModels([
   Post,
   Role,
   Subscriber,
-  EmailTemplate
+  EmailTemplate,
+  ProductCategory,
+  Product,
+  ProductItem,
+  Variation,
+  VariationOption
 ]);
 
 const adapter = SequelizeAdapter(sequelizeInstace!, {
   synchronize: false,
   models: {
-    User: sequelizeInstace.define("users", User.getAttributes<User>()),
-    Account: sequelizeInstace.define("accounts", Account.getAttributes<Account>()),
-    Session: sequelizeInstace.define("sessions", Session.getAttributes<Session>()),
-    VerificationToken: sequelizeInstace.define("verification_tokens", VerificationToken.getAttributes<VerificationToken>()),
+    User: sequelizeInstace.define("user", User.getAttributes<User>()),
+    Account: sequelizeInstace.define("account", Account.getAttributes<Account>()),
+    Session: sequelizeInstace.define("session", Session.getAttributes<Session>()),
+    VerificationToken: sequelizeInstace.define("verification_token", VerificationToken.getAttributes<VerificationToken>()),
   },
 });
 
@@ -35,7 +54,12 @@ export {
   Post,
   Role,
   Subscriber,
-  EmailTemplate
+  EmailTemplate,
+  ProductCategory,
+  Product,
+  ProductItem,
+  Variation,
+  VariationOption
 }
 
 export { sequelizeInstace, adapter }

@@ -9,8 +9,8 @@ import {
 import User from "./User";
 
 @Table({
-  timestamps: true,
   tableName: "posts",
+  timestamps: true,
 })
 export default class Post extends Model {
   @Column({ type: DataType.STRING, allowNull: false })

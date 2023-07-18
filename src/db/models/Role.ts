@@ -8,8 +8,8 @@ import {
 import User from "./User";
 
 @Table({
-  timestamps: true,
   tableName: "role",
+  timestamps: true,
 })
 export default class Role extends Model {
   @Column({ type: DataType.STRING, allowNull: false })

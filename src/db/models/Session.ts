@@ -5,8 +5,8 @@ import { Session as SessionDefinition } from "@next-auth/sequelize-adapter/dist/
 import User from "./User";
 
 @Table({
+  tableName: "sessions",
     timestamps: true,
-    tableName: "sessions",
 })
 export default class Session extends Model<AdapterSession, Partial<AdapterSession>>{
 
@@ -25,7 +25,7 @@ export default class Session extends Model<AdapterSession, Partial<AdapterSessio
     public user!: User;
 
     @ForeignKey(() => User)
-    @Column({...SessionDefinition.userId})
+    @Column({...SessionDefinition.userId })
     public userId?: string;
     // End User
 }
