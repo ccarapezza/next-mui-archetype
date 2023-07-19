@@ -8,7 +8,7 @@ export default function (props: { cart: any[] }) {
   console.log('Cart desde Mini Cart List: ', cart);
 
   return (
-    <div className="mt-4 space-y-6">
+    <div className="space-y-6">
       <ul className="space-y-4">
         {
           cart.map((product, i) => {
