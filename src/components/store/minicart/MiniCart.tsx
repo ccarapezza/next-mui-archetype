@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { CartContext } from '../context/MiniCartContext';
 import MiniCartList from './MiniCartList';
+import Link from "next/link";
 
 export default function () {
 
@@ -63,8 +64,8 @@ export default function () {
                 <div className="flex flex-col justify-between w-full max-w-lg mx-auto bg-white shadow-lg h-screen absolute right-0">
                   <div>
                     <div className="flex items-center justify-between p-4 border-b">
-                      <h4 className="text-lg font-medium text-gray-800">
-                        Tu Carrito:
+                      <h4 className="text-lg text-stone-500 font-bold">
+                        Tú Carrito:
                       </h4>
                       <button className="p-2 text-gray-400 rounded-md hover:bg-gray-100"
                         onClick={() => setState(false)}
@@ -74,22 +75,43 @@ export default function () {
                         </svg>
                       </button>
                     </div>
-                    <div className="space-y-2 p-4 mt-3 text-[15.5px] leading-relaxed text-gray-500">
-                      <MiniCartList cart={cart}/>
-                    </div>
+                    {
+                      quantity > 0 ?
+                        <div className="space-y-2 p-4 mt-3 text-[15.5px] leading-relaxed text-gray-500">
+                          <MiniCartList cart={cart} />
+                        </div>
+                        :
+                        <div className="flex items-center justify-center h-full">
+                          <p className='text-stone-500 font-bold text-lg'>¡Tú carrito está vacío!</p>
+                        </div>
+                    }
+
                   </div>
-                  <div className="space-y-2 p-4 mt-3 text-center border-t">
-                    <div>
-                      <span className="text-gray-800 font-medium">Total:</span>
-                      <span className="text-gray-600 font-medium">{`$ ${getTotal()}`}</span>
-                    </div>
-                    <a
-                      href="#"
-                      className="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
-                    >
-                      Finalizar Compra
-                    </a>
-                  </div>
+                  {
+                    quantity > 0 ?
+                      <div className="space-y-2 p-4 mt-3 mb-4 text-center border-t text-lg">
+                        <div className="flex justify-between px-2 py-1">
+                          <span className="text-stone-500 font-bold">Subtotal:</span>
+                          <span className="text-stone-500 font-bold">{`$ ${getTotal()}`}</span>
+                        </div>
+                        <div className="flex justify-between px-2 py-1">
+                          <span className="text-stone-500 font-bold">Descuentos:</span>
+                          <span className="text-stone-500 font-bold">{`$0`}</span>
+                        </div>
+                        <div className="flex justify-between px-2 py-1">
+                          <span className="text-gray-800 font-bold">Total:</span>
+                          <span className="text-gray-600 font-bold">{`$ ${getTotal()}`}</span>
+                        </div>
+                        <Link
+                          href="/checkout"
+                          className="block rounded bg-gray-700 px-5 py-3 text-gray-100 transition hover:bg-gray-600 font-bold text-lg"
+                        >
+                          Finalizar Compra
+                        </Link>
+                      </div>
+                      :
+                      <></>
+                  }
                 </div>
               </div>
             </div>

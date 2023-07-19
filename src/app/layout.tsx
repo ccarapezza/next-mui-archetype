@@ -17,12 +17,10 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className='dark:bg-gray-900'>
-        <ThemeRegistry>
-          <SessionProviderWrapper>
-              {children}
-          </SessionProviderWrapper>
-        </ThemeRegistry>
+      <body className='relative min-h-screen pt-[97px] md:pb-[400px] pb-[1100px]'>
+        <SessionProviderWrapper>
+          {children}
+        </SessionProviderWrapper>
       </body>
     </html>
   );
