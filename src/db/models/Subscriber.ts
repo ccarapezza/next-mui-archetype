@@ -2,8 +2,8 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 @Table({
-  timestamps: true,
   tableName: "subscriber",
+  timestamps: true,
 })
 export default class Subscriber extends Model{
 

@@ -10,8 +10,8 @@ interface CustomAdapterUser extends AdapterUser {
 }
 
 @Table({
-  timestamps: true,
   tableName: "users",
+  timestamps: true
 })
 export default class User extends Model<CustomAdapterUser, Partial<CustomAdapterUser>>{
 
