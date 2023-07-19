@@ -9,10 +9,23 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      name: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false
+      },
       parentId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false
+      }
     });
 
     queryInterface.addConstraint('product_category', {

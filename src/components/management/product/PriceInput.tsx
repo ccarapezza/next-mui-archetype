@@ -8,8 +8,10 @@ interface ExtOutlinedInputProps extends OutlinedInputProps {
 }
 
 const CustomInput = (props: ExtOutlinedInputProps) => {
+  const { sizeMaterial, ...outlinedProp } = props;
+  
   return <OutlinedInput
-      {...props}
+      {...outlinedProp}
       size={props.sizeMaterial}
   />;
 }

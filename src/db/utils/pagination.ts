@@ -1,11 +1,12 @@
-import { Order, WhereOptions } from "sequelize";
+import { Includeable, Order, WhereOptions } from "sequelize";
 import { Model, ModelCtor } from "sequelize-typescript";
 
-export default async function findAllSequelizePagination({ model, page = 1, size = 10, attributes, where, order }: {
+export default async function findAllSequelizePagination({ model, page = 1, size = 10, attributes, include, where, order }: {
     model: ModelCtor<Model>;
     page: number;
     size: number;
     attributes?: string[];
+    include?: Includeable | Includeable[] | undefined;
     where?: WhereOptions;
     order?: Order;
   }): Promise<{ totalItems: number; rows: Model[]; totalPages: number; currentPage: number }> {
@@ -27,7 +28,7 @@ export default async function findAllSequelizePagination({ model, page = 1, size
     };
 
     const { limit, offset } = getPagination(page, size);
-    const data = await model.findAndCountAll({ attributes, where, order, limit, offset, raw: true });
+    const data = await model.findAndCountAll({ attributes, include, where, order, limit, offset, raw: true });
     console.log("data", data);
     return getPagingData(data, page, limit);
 }

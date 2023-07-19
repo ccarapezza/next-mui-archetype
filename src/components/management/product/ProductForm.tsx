@@ -4,6 +4,7 @@ import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectCha
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import PriceInput from './PriceInput';
+import { useForm, useFieldArray } from "react-hook-form";
 
 interface ProductVariant {
     type: string;
@@ -33,6 +34,15 @@ const ProductForm: React.FC = () => {
             Color: ['Rojo', 'Azul', 'Verde'],
         },
         hasVariants: false,
+    });
+
+    const { register, control, handleSubmit, reset, watch } = useForm({
+        defaultValues: {
+            test: [{
+                firstName: "Bill",
+                lastName: "Luo"
+            }]
+        }
     });
 
     const handleChange = (name: string, value: unknown) => {

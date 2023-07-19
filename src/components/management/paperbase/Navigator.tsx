@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUserGroup, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faReceipt, faAddressBook, faCartShopping } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserGroup, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faReceipt, faAddressBook, faCartShopping, faTags } from '@fortawesome/free-solid-svg-icons'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
@@ -40,6 +40,7 @@ const categories = [
     id: 'eCommerce',
     children: [
       { id: 'Products', icon: faBoxesStacked, href: '/management/products', active: false },
+      { id: 'Categories', icon: faTags, href: '/management/categories', active: false },
       { id: 'Orders', icon: faCartShopping, href: '/management/orders', active: false },
       { id: 'Customers', icon: faAddressBook, href: '/management/customers', active: false },
     ],
