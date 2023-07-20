@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.MuiTreeItem-group{
+    margin-left: 15px !important;
+}

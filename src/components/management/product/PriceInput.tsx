@@ -1,7 +1,6 @@
-import { InputAdornment, OutlinedInput, OutlinedInputProps, TextField } from '@mui/material';
-import React, { useRef } from 'react';
+import React from 'react';
+import { OutlinedInput, OutlinedInputProps } from '@mui/material';
 import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field';
-import { CurrencyInputOnChangeValues } from 'react-currency-input-field/dist/components/CurrencyInputProps';
 
 interface ExtOutlinedInputProps extends OutlinedInputProps {
   sizeMaterial: "small" | "medium";
@@ -24,12 +23,13 @@ interface PriceInputProps extends CurrencyInputProps {
     startAdornment?: React.ReactNode;
     sizeMaterial: "small" | "medium";
   }
-  
+  ref?: any;
 }
 
 const PriceInput: React.FC<PriceInputProps> = ({
   value,
   onChangeEvent,
+  ref,
   ...props
 }) => {
   const handleChange = (
@@ -38,12 +38,8 @@ const PriceInput: React.FC<PriceInputProps> = ({
     onChangeEvent(value?value:"0");
   };
 
-  const propInput = {
-    ...props.inputProps,
-    size: props.inputProps?.sizeMaterial,
-  }
-
   return (<CurrencyInput
+      ref={ref}
       customInput={CustomInput}
       value={value}
       onValueChange={handleChange}

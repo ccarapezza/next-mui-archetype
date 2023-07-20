@@ -45,7 +45,7 @@ export default function Paperbase({children}: {children: ReactNode}) {
           </Box>
           <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Header onDrawerToggle={handleDrawerToggle}/>
-            <Box component="main" className='flex-1 dark:bg-gray-900'>
+            <Box component="main" className='flex-1'>
               {children}
             </Box>
             <Box component="footer" sx={{ p: 2 }}>

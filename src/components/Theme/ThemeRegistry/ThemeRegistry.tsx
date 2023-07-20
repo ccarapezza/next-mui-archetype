@@ -9,7 +9,7 @@ import MuiThemeProvider from './MuiThemeProvider';
 export default function ThemeRegistry({ children }: { children: React.ReactNode }) {
   return (
     <NextAppDirEmotionCacheProvider options={{ key: 'mui' }}>
-      <ThemeProvider attribute="class">
+      <ThemeProvider>
         <MuiThemeProvider>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
