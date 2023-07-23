@@ -1,10 +1,10 @@
 'use client'
 import React, { useContext, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { CartContext } from '../context/MiniCartContext';
 import MiniCartList from './MiniCartList';
 import Link from "next/link";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 export default function () {
 
@@ -15,7 +15,7 @@ export default function () {
   const getTotal = () => {
     let total = 0;
     cart.forEach((product: any) => {
-      total += product.price;
+      total += product.price * product.quantity;
     })
     return total;
   }

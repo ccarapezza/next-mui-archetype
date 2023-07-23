@@ -5,6 +5,8 @@ import { CartContext } from "@/components/store/context/MiniCartContext";
 const esteProducto = {
   name: "Random Name #10",
   price: 100,
+  sku: '012346',
+  quantity: 1,
   urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
   urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
   productNameUrl: 'product-name-10'
@@ -12,12 +14,11 @@ const esteProducto = {
 
 export default function () {
 
-  const [cart, setCart] = useContext(CartContext)
+  const [cart, addProduct] = useContext(CartContext)
 
   const addToCart = () => {
-    setCart([...cart, esteProducto])
+    addProduct(esteProducto)
   }
-
 
   return (
     <section>

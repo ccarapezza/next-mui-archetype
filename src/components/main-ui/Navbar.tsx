@@ -55,12 +55,13 @@ export default () => {
         </div>
         <div className={`flex-1 items-center md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
           <div className="bg-white  p-4 rounded-lg flex-1 text-gray-700  gap-6 items-center justify-between md:flex md:mt-0 md:p-0 md:bg-transparent">
-            <ul className="gap-6 space-y-4 [&>li>*]:duration-150 [&>li:hover>*]:text-gray-900  md:flex md:space-y-0">
+            <ul className="flex content-center justify-center flex-col gap-6 space-y-4 pb-4 text-gray-900  md:flex md:space-y-0 md:flex-row md:pb-0">
               {
                 navigation.map((item, idx) => {
                   return (
                     <Link
                       href={`/category/${item.path}`}
+                      key={idx}
                     >
                       {item.title}
                     </Link>
