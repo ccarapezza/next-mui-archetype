@@ -1,23 +1,44 @@
 'use client';
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "@/components/store/context/MiniCartContext";
+import EmptyCart from "@/components/store/checkout/EmptyCart";
 import FirstStep from "@/components/store/checkout/FirstStep";
 import SecondStep from "@/components/store/checkout/SecondStep";
-import { CartContext } from "@/components/store/context/MiniCartContext";
-import { useContext, useEffect, useState } from "react";
+import LoadingUI from "@/components/main-ui/LoadingUI";
 
 export default function Checkout() {
 
-  //Lista de productos!
-  const [cart, setCart] = useContext(CartContext)
-  const [products, setProducts] = useState([])
+  const { products } = useContext(CartContext);
+  const [quantity, setQuantity] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setProducts(cart)
-  }, [cart])
+    console.log(products.length);
+    setQuantity(products.length);
+    setLoaded(true);
+  }, [products])
 
   return (
     <>
-      <FirstStep products={products} />
-      <SecondStep products={products} />
+      {
+        quantity === 0
+          ?
+          <>
+            {
+              !loaded
+                ?
+                <LoadingUI />
+                :
+                <EmptyCart />
+            }
+          </>
+
+          :
+          <>
+            <FirstStep products={products} />
+            <SecondStep />
+          </>
+      }
     </>
-    );
+  );
 }

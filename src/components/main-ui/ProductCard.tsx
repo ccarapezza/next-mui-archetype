@@ -1,10 +1,11 @@
 'use client'
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 type Product = {
   name: string;
-  price: number;
+  listPrice: number,
+  specialPrice: number,
   urlImageMain: string;
   urlImageHover: string;
   productNameUrl: string;
@@ -40,7 +41,7 @@ const ProductCard = (props: { product: Product }) => {
 
       <div className="relative bg-white pt-3">
         <h3 className="text-sm text-gray-700 group-hover:underline group-hover:underline-offset-4">{props.product.name}</h3>
-        <p className="mt-1.5 tracking-wide text-gray-900">{props.product.price}</p>
+        <p className="mt-1.5 tracking-wide text-gray-900">{props.product.listPrice}</p>
       </div>
     </div>
   )

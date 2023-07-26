@@ -6,12 +6,16 @@ import Image from 'next/image'
 export default () => {
 
   return (
-    <nav className="flex justify-center fixed z-50 top-0 bg-white w-full">
+    <nav className="flex justify-center bg-white w-full">
       <div className="flex justify-between items-center w-full p-4 max-w-screen-xl border-b">
         <Link href="/">
           <Image src={logo} alt='Float UI logo' />
         </Link>
-        <p>TIENDA OFICIAL</p>
+        <Link
+          href="/"
+        >
+          Seguir Comprando
+        </Link>
       </div>
     </nav>
   )

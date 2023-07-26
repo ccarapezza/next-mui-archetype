@@ -5,8 +5,7 @@ import OrderFormGuest from './second-step/OrderFormGuest';
 import LoadingUI from '@/components/main-ui/LoadingUI';
 
 
-export default function (props: { products: any[] }) {
-  const { products } = props;
+export default function () {
   const { status, data } = useSession();
 
   return (

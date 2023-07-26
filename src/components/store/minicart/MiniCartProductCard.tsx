@@ -7,7 +7,8 @@ import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 type Product = {
   name: string;
-  price: number;
+  listPrice: number,
+  specialPrice: number,
   sku: string,
   quantity: number,
   urlImageMain: string;
@@ -18,7 +19,7 @@ type Product = {
 
 export default function (props: { product: Product }) {
 
-  const [cart, addProduct, deleteProduct, updateProductQuantity] = useContext(CartContext)
+  const { addProduct, deleteProduct, updateProductQuantity } = useContext(CartContext)
 
   return (
     <li className="flex items-center justify-between gap-4 px-2 py-1">
@@ -34,8 +35,8 @@ export default function (props: { product: Product }) {
         <div className="flex flex-col justify-around ml-4">
           <h3 className="text-sm text-gray-900 font-bold">{props.product.name}</h3>
           <div className="flex">
-            <span className="text-gray-900 font-bold">{`$${props.product.quantity * props.product.price}`}</span>
-            <span className="text-stone-500 line-through font-bold ml-4">{`$${props.product.quantity * props.product.price}`}</span>
+            <span className="text-gray-900 font-bold">{`$${props.product.quantity * props.product.specialPrice}`}</span>
+            <span className="text-stone-500 line-through font-bold ml-4">{`$${props.product.quantity * props.product.listPrice}`}</span>
           </div>
         </div>
       </div>

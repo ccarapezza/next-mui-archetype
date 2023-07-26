@@ -10,70 +10,80 @@ const CarouselProducts = () => {
   const products = [
     {
       name: "Random Name #1",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-1'
     },
     {
       name: "Random Name #2",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-2'
     },
     {
       name: "Random Name #3",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-3'
     },
     {
       name: "Random Name #4",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-4'
     },
     {
       name: "Random Name #5",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-5'
     },
     {
       name: "Random Name #6",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-6'
     },
     {
       name: "Random Name #7",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-7'
     },
     {
       name: "Random Name #8",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-8'
     },
     {
       name: "Random Name #9",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-9'
     },
     {
       name: "Random Name #10",
-      price: 100,
+      listPrice: 100,
+      specialPrice: 50,
       urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
       urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
       productNameUrl: 'product-name-10'

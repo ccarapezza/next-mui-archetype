@@ -9,21 +9,13 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 export default function () {
 
   const [state, setState] = useState(false)
-  const [cart, setCart] = useContext(CartContext)
+  const { products, addProduct, deleteProduct, updateProductQuantity, geTotalMinicart } = useContext(CartContext)
   const [quantity, setQuantity] = useState(0)
-
-  const getTotal = () => {
-    let total = 0;
-    cart.forEach((product: any) => {
-      total += product.price * product.quantity;
-    })
-    return total;
-  }
-
+  geTotalMinicart
   useEffect(() => {
-    console.log(cart.length);
-    setQuantity(cart.length);
-  }, [cart])
+    console.log(products.length);
+    setQuantity(products.length);
+  }, [products])
 
   return (
     <>
@@ -78,7 +70,7 @@ export default function () {
                     {
                       quantity > 0 ?
                         <div className="space-y-2 p-4 mt-3 text-[15.5px] leading-relaxed text-gray-500">
-                          <MiniCartList cart={cart} />
+                          <MiniCartList products={products} />
                         </div>
                         :
                         <div className="flex items-center justify-center h-full">
@@ -92,15 +84,15 @@ export default function () {
                       <div className="space-y-2 p-4 mt-3 mb-4 text-center border-t text-lg">
                         <div className="flex justify-between px-2 py-1">
                           <span className="text-stone-500 font-bold">Subtotal:</span>
-                          <span className="text-stone-500 font-bold">{`$ ${getTotal()}`}</span>
+                          <span className="text-stone-500 font-bold">{`$ ${geTotalMinicart().subtotal}`}</span>
                         </div>
                         <div className="flex justify-between px-2 py-1">
                           <span className="text-stone-500 font-bold">Descuentos:</span>
-                          <span className="text-stone-500 font-bold">{`$0`}</span>
+                          <span className="text-stone-500 font-bold">{`- $ ${geTotalMinicart().descuento}`}</span>
                         </div>
                         <div className="flex justify-between px-2 py-1">
                           <span className="text-gray-800 font-bold">Total:</span>
-                          <span className="text-gray-600 font-bold">{`$ ${getTotal()}`}</span>
+                          <span className="text-gray-600 font-bold">{`$ ${geTotalMinicart().total}`}</span>
                         </div>
                         <Link
                           href="/checkout"

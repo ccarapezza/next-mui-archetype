@@ -1,13 +1,14 @@
 'use client'
 import Image from 'next/image';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { CartContext } from '../context/MiniCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 type Product = {
   name: string;
-  price: number;
+  listPrice: number,
+  specialPrice: number,
   sku: string,
   quantity: number,
   urlImageMain: string;
@@ -18,10 +19,7 @@ type Product = {
 
 export default function (props: { product: Product }) {
 
-  const [productQuantity, setProductQuantity] = useState(1);
-  const [cart, addProduct, deleteProduct, updateProductQuantity] = useContext(CartContext)
-  console.log(productQuantity);
-
+  const {addProduct, deleteProduct, updateProductQuantity} = useContext(CartContext)
 
   return (
     <li className="flex items-center justify-between gap-4 px-2 py-1 border-b pb-4">
@@ -75,8 +73,8 @@ export default function (props: { product: Product }) {
           </button>
 
           <div className="flex gap-2">
-            <span className="text-stone-500 line-through font-bold ml-4">{`$${props.product.price}`}</span>
-            <span className="text-gray-900 font-bold">{`$${props.product.price}`}</span>
+            <span className="text-stone-500 line-through font-bold ml-4">{`$${props.product.listPrice * props.product.quantity}`}</span>
+            <span className="text-gray-900 font-bold">{`$${props.product.specialPrice * props.product.quantity}`}</span>
           </div>
         </div>
       </div>
