@@ -1,9 +1,9 @@
 'use client'
-import React, { useEffect, useMemo, useState } from "react";
+import React from "react";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useTheme } from 'next-themes'
 
 export default function MuiThemeProvider({ children }: { children: React.ReactNode }) {
+    /*
     const [mode, setMode] = useState<'light' | 'dark'>('light');
 
     const theme = useMemo(
@@ -18,7 +18,6 @@ export default function MuiThemeProvider({ children }: { children: React.ReactNo
 
     const { resolvedTheme } = useTheme();
     useEffect(() => {
-        console.log("THEME!!!!!!!", resolvedTheme)
         if (resolvedTheme === 'dark') {
             setMode('dark');
         } else {
@@ -26,9 +25,13 @@ export default function MuiThemeProvider({ children }: { children: React.ReactNo
         }
     }, [resolvedTheme]);
         
-
+*/
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={createTheme({
+            palette: {
+                mode: "light"
+            }
+        })}>
             {children}
         </ThemeProvider>
     );

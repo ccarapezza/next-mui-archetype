@@ -34,9 +34,11 @@ export default function Header(props: HeaderProps) {
               </IconButton>
             </Grid>
             <Grid item xs />
+            {/*
             <Grid item>
               <ThemeSwitch/>
             </Grid>
+            */}
             <Grid item>
               <Tooltip title="Alerts • No alerts">
                 <IconButton size='small'>

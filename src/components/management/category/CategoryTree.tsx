@@ -21,17 +21,6 @@ interface CategoryTreeItem {
   parentId?: string | null;
 }
 
-const initialCategories: Category[] = [
-  { id: '1', name: 'Category 1' },
-  { id: '2', name: 'Category 2' },
-  { id: '3', name: 'Category 3' },
-  { id: '4', name: 'Category 4', parentId: '1' },
-  { id: '5', name: 'Category 5', parentId: '1' },
-  { id: '6', name: 'Category 6', parentId: '4' },
-  { id: '7', name: 'Category 7', parentId: '6' },
-  { id: '8', name: 'Category 8', parentId: '3' },
-];
-
 const SquareXmarkIcon = () => {
   return (
     <span className="fa-layers fa-fw">
@@ -42,7 +31,7 @@ const SquareXmarkIcon = () => {
 }
 
 const CategoryTree = ({categories: initialCategories}: {categories: Category[]}) => {
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const [categories, setCategories] = useState<Category[]>([...initialCategories]);
   const [categoryTree, setCategoryTree] = useState<CategoryTreeItem[]>();
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
   const [createSubCategory, setCreateSubCategory] = useState(false);
@@ -137,22 +126,26 @@ const CategoryTree = ({categories: initialCategories}: {categories: Category[]})
     setNewCategoryName('');
   };
 
-  const listToTree = (): CategoryTreeItem[] => {
-    const map: { [key: string]: CategoryTreeItem } = {};
-    const roots: CategoryTreeItem[] = [];
-    let node: CategoryTreeItem;
+  const listToTree = (categoriesList: Category[]): CategoryTreeItem[] => {
+    const map = new Map();
 
-    for (let i = 0; i < categories.length; i += 1) {
-      node = categories[i];
-      node.childrens = [];
-      map[node.id] = node;
-      if (!node.parentId) {
-        roots.push(node);
-      } else {
-        map[node.parentId].childrens?.push(node);
-      }
-    }
-    return roots;
+    // Primero, mapeamos todos los nodos por su id en un diccionario
+    categoriesList.forEach((node) => {
+        map.set(node.id, { ...node, childrens: [] });
+    });
+
+    // Luego, construimos la estructura del árbol usando el parent_id
+    const tree: any[] = [];
+    categoriesList.forEach((node) => {
+        const parent = map.get(node.parentId);
+        if (parent) {
+            parent.childrens.push(map.get(node.id));
+        } else {
+            tree.push(map.get(node.id));
+        }
+    });
+
+    return tree;
   }
 
   const recursiveTree = (categories: CategoryTreeItem[]) => {
@@ -188,7 +181,7 @@ const CategoryTree = ({categories: initialCategories}: {categories: Category[]})
 
   useEffect(() => {
     setSelectedCategory(null);
-    setCategoryTree(listToTree());
+    setCategoryTree(listToTree(categories));
     console.log("categories", categories)
   }, [categories]);
 

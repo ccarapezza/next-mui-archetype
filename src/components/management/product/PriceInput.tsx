@@ -1,55 +1,53 @@
-import React from 'react';
+import React, { forwardRef, useRef } from 'react';
 import { OutlinedInput, OutlinedInputProps } from '@mui/material';
 import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface ExtOutlinedInputProps extends OutlinedInputProps {
-  sizeMaterial: "small" | "medium";
+    sizeMaterial: "small" | "medium";
 }
 
-const CustomInput = (props: ExtOutlinedInputProps) => {
-  const { sizeMaterial, ...outlinedProp } = props;
-  
-  return <OutlinedInput
-      {...outlinedProp}
-      size={props.sizeMaterial}
-  />;
-}
+const CustomInput = forwardRef((props: ExtOutlinedInputProps, ref) => {
+    const { sizeMaterial, ...outlinedProp } = props;
+    console.log("OutlinedInput", outlinedProp);
+    return <OutlinedInput
+        autoComplete='off'
+        ref={ref}
+        size={sizeMaterial}
+        {...outlinedProp}
+    />;
+});
 
 interface PriceInputProps extends CurrencyInputProps {
-  value: number;
-  onChangeEvent: (value: string) => void;
-  inputProps?: {
-    fullWidth?: boolean;
-    startAdornment?: React.ReactNode;
-    sizeMaterial: "small" | "medium";
-  }
-  ref?: any;
+    value?: number;
+    onChangeEvent?: (value: string) => void;
+    error?: boolean;
+    inputProps?: {
+        fullWidth?: boolean;
+        startAdornment?: React.ReactNode;
+        className?: string;
+        sizeMaterial: "small" | "medium";
+        error?: boolean;
+    }
 }
 
 const PriceInput: React.FC<PriceInputProps> = ({
-  value,
-  onChangeEvent,
-  ref,
-  ...props
+    value,
+    onChangeEvent,
+    error,
+    ...props
 }) => {
-  const handleChange = (
-    value: string | undefined
-  ) => {
-    onChangeEvent(value?value:"0");
-  };
 
-  return (<CurrencyInput
-      ref={ref}
-      customInput={CustomInput}
-      value={value}
-      onValueChange={handleChange}
-      decimalSeparator=","
-      groupSeparator="."
-      prefix=""
-      decimalScale={props.decimalScale || 2}
-      disableGroupSeparators={false}
-      {...props.inputProps}
-  />);
+    return (<CurrencyInput
+        customInput={CustomInput}
+        decimalSeparator=","
+        groupSeparator="."
+        prefix=""
+        allowNegativeValue={false}
+        decimalScale={props.decimalScale || 2}
+        disableGroupSeparators={false}
+        {...props.inputProps}
+    />);
 };
 
 export default PriceInput;

@@ -2,11 +2,11 @@ import { array, number, object, string, InferType } from 'yup';
 
 export const productItemSchema = object({
   image: string().optional(),
-  price: number().required().min(0),
+  price: number().required().positive(),
   variation: array(
     object({
-      name: string().required().min(2).max(100),
-      value: string().required().min(2).max(100),
+      name: string().required().max(100),
+      value: string().required().max(100),
     })
   ).optional().min(1),
 });

@@ -1,210 +1,296 @@
 "use client"
-import React, { useState, ChangeEvent, FormEvent, useRef } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, InputAdornment, Alert, Chip } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Alert, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import PriceInput from './PriceInput';
-import { useForm, useFieldArray } from "react-hook-form";
+import {  faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import ColorPicker from '@/components/client/ColorPicker';
+import { Product, productSchema } from '@/schemas/product';
+import { yupResolver } from '@hookform/resolvers/yup';
+import CurrencyInput from './CurrencyInput';
+import CategoryTreeSelector from '../category/CategoryTreeSelector';
 
-interface ProductVariant {
-    type: string;
-    value: string;
-    price: number;
-}
+const VARIANT_TYPES = [
+    {
+        name: 'Talle',
+        values: ['S', 'M', 'L'],
+    },
+    {
+        name: 'Color',
+        values: ['Rojo', 'Azul', 'Verde'],
+    }
 
-interface ProductFormState {
-    productName: string;
-    productDescription: string;
-    productPrice: number;
-    variants: ProductVariant[];
-    variantTypes: string[];
-    variantValues: Record<string, string[]>;
-    hasVariants: boolean;
-}
+]; // Ejemplo de opciones de tipos de variantes
 
-const ProductForm: React.FC = () => {
-    const [state, setState] = useState<ProductFormState>({
-        productName: '',
-        productDescription: '',
-        productPrice: 0,
-        variants: [],
-        variantTypes: ['Talle', 'Color'], // Ejemplo de opciones de tipos de variantes
-        variantValues: {
-            Talle: ['S', 'M', 'L'], // Ejemplo de opciones de valores para cada tipo de variante
-            Color: ['Rojo', 'Azul', 'Verde'],
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
         },
-        hasVariants: false,
+    },
+};
+
+const saveProductData = async (productData: any) => {
+    console.log("productData", productData);
+    const fData:FormData = objectToFormData(productData);
+    const res = await fetch(`http://localhost:3000/api/management/product/`, {
+        method: 'POST',
+        body: fData
     });
+    return res.json();
+};
 
-    const { register, control, handleSubmit, reset, watch } = useForm({
-        defaultValues: {
-            test: [{
-                firstName: "Bill",
-                lastName: "Luo"
-            }]
-        }
-    });
+const buildFormData = (formData:FormData, obj:any, parentKey: string = '') => {
+    if (Array.isArray(obj)) {
+      obj.forEach((element, index) => {
+        buildFormData(formData, element, parentKey+"."+index);
+      });
+    } else if (typeof obj === 'object' && !(obj instanceof File)) {
+      Object.keys(obj).forEach(key => {
+        buildFormData(
+          formData,
+          obj[key],
+          parentKey ? `${parentKey}.${key}` : key,
+        );
+      });
+    } else {
+      if (obj == null) {
+        return;
+      }
+  
+      const value =
+        typeof obj === 'number' || typeof obj === 'boolean'
+          ? obj.toString()
+          : obj;
+      formData.append(parentKey, value);
+    }
+};
+  
+export const objectToFormData = (obj: any) => {
+    const formData = new FormData();
 
-    const handleChange = (name: string, value: unknown) => {
-        setState((prevState) => ({
-            ...prevState,
-            [name || '']: value,
-        }));
-    };
+    buildFormData(formData, obj);
 
-    const handleAddVariant = () => {
-        setState((prevState) => ({
-            ...prevState,
-            variants: [...prevState.variants, { type: '', value: '', price: 0 }],
-            hasVariants: true,
-        }));
-    };
+    return formData;
+};
 
-    const handleVariantChange = (index: number, name: string | null, value?: string) => {
-        setState((prevState) => {
-            const updatedVariants = [...prevState.variants];
-            updatedVariants[index] = {
-                ...updatedVariants[index],
-                [name || '']: value,
-            };
-            return { ...prevState, variants: updatedVariants };
+const ProductForm = ({categories}:{categories: any}) => {
+    const [hasVariants, setHasVariants] = useState<boolean>(false);
+
+    const onSubmit = async (data: any) => {
+        console.log("onSubmit", data);
+        saveProductData(data).then((response) => {
+            console.log("response", response);
+        }).catch((error) => {
+            console.log("error", error);
         });
     };
 
-    const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const { productName, productDescription, productPrice, variants } = state;
-
-        const newProduct = {
-            name: productName,
-            description: productDescription,
-            price: productPrice,
-            variants,
-        };
-
-        try {
-            console.log('Producto creado:', newProduct);
-        } catch (error) {
-            console.error('Error al crear el producto:', error);
-        }
+    const getVariantValues = (variantType: string) => {
+        return VARIANT_TYPES.find(({ name }) => name === variantType)?.values || [];
     };
+
+    const { register, control, handleSubmit, reset, formState: { errors } } = useForm<Product>({
+        resolver: yupResolver(productSchema),
+        defaultValues: {
+            name: '',
+            description: '',
+            category: '',
+            items: [
+                {
+                    variation: [],
+                    price: 0
+                }
+            ]
+        }
+    });
+
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "items"
+    });
+
+    const handleAddVariant = () => {
+        append({
+            variation: [],
+            price: 0
+
+        });
+    };
+
+    const [variantsSelected, setVariantsSelected] = React.useState<string[]>([]);
+
+    const handleMultipleVariantsChange = (event: SelectChangeEvent<typeof variantsSelected>) => {
+        const { target: { value } } = event;
+        setVariantsSelected(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+        );
+    };
+
+    useEffect(() => {
+        
+        //show errors
+        console.log("errors", errors);
+    }, [errors]);
 
     return (
         <div className="max-w-md mx-auto bg-white p-4 rounded-md shadow-lg">
             <h1 className="text-xl font-semibold mb-4">Crear nuevo producto</h1>
-            <form onSubmit={handleFormSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
+                    inputProps={{...register("name")}}
+                    error={!!errors.name}
                     size='small'
                     label="Nombre del producto"
                     variant="outlined"
                     fullWidth
-                    value={state.productName}
                     name="productName"
-                    onChange={(e) => handleChange(e.target.name, e.target.value)}
                     className="mb-3"
                 />
                 <TextField
+                    inputProps={{...register("description")}}
+                    error={!!errors.description}
                     size='small'
                     label="Descripción del producto"
                     variant="outlined"
                     fullWidth
                     multiline
                     rows={4}
-                    value={state.productDescription}
                     name="productDescription"
-                    onChange={(e) => handleChange(e.target.name, e.target.value)}
                     className="mb-3"
                 />
-                {state.hasVariants ? (
+                <Controller               
+                    name={"category"}
+                    control={control}
+                    render={({ field: { ref, onChange, ...rest } }) => (
+                        <CategoryTreeSelector onChange={onChange} inputProps={{error:!!errors.category, ref:ref}} fullWidth size="small" className="mb-4" categories={categories}
+                        />      
+                    )}
+                />
+                {hasVariants ? (
                     <Alert severity="warning" >
                         El precio principal está inhabilitado debido a que hay variantes.
                     </Alert>
                 ) : (
-                    <PriceInput
-                        inputProps={{
-                            startAdornment: <InputAdornment position="start">AR$</InputAdornment>,
-                            sizeMaterial: 'small',
-                            fullWidth: true
-                        }}
-                        value={state.productPrice}
-                        name="productPrice"
-                        onChangeEvent={(value: string) => {
-                            handleChange('productPrice', value);
-                        }}
-                        className="mb-3"
+                    <CurrencyInput
+                        fullWidth
+                        name="items.0.price"
+                        error={!!errors.items?.[0]?.price}
+                        control={control}
+                        prefix="AR$"
                     />
                 )}
-                <Button className='my-4' startIcon={<FontAwesomeIcon icon={faPlus} />} variant="contained" color="primary" onClick={handleAddVariant}>
-                    {state.hasVariants ? 'Agregar otra variante' : 'Incluir variantes'}
-                </Button>
-                {state.hasVariants && 
-                    <h1 className="text-xl font-semibold mb-4">Variantes</h1>
+                {!hasVariants && 
+                    <Button className='my-4' startIcon={<FontAwesomeIcon icon={faPlus} />} variant="contained" color="primary" onClick={()=>setHasVariants(true)}>
+                        {'Incluir variantes'}
+                    </Button>
                 }
-                {state.variants.map((variant, index) => (
-                    <div key={index} className="mt-4">
-                        <Divider><Chip label={`Variante #${index+1}`} className='mb-2 mt-4'/></Divider>
-                        <FormControl variant="outlined" fullWidth size='small' className="mb-3">
-                            <InputLabel>Tipo de variante</InputLabel>
-                            <Select
-                                size='small'
-                                value={variant.type}
-                                onChange={(e) => {
-                                    handleVariantChange(index, "value", "");
-                                    handleVariantChange(index, e?.target?.name, e?.target?.value);
-                                }}
-                                name="type"
-                                label="Tipo de variante"
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
+                {hasVariants && <>
+                    <h1 className="text-xl font-semibold mt-4 mb-1">Variantes</h1>
+                    <FormControl fullWidth size='small' className="mt-4 mb-3">
+                        <InputLabel id="variant-types">Tipos de variantes</InputLabel>
+                        <Select
+                            fullWidth
+                            labelId="variant-types"
+                            multiple
+                            value={variantsSelected}
+                            onChange={handleMultipleVariantsChange}
+                            input={<OutlinedInput id="select-multiple-chip" label="Tipos de variantes" />}
+                            renderValue={(selected) => (
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {selected.map((value) => (
+                                        <Chip variant='outlined' size='small' key={value} label={value} />
+                                    ))}
+                                </Box>
+                            )}
+                            MenuProps={MenuProps}
+                        >
+                            {VARIANT_TYPES.map(({ name }) => (
+                                <MenuItem
+                                    key={name}
+                                    value={name}
+                                >
+                                    <Checkbox checked={variantsSelected.indexOf(name) > -1} />
+                                    <ListItemText primary={name} />
                                 </MenuItem>
-                                {state.variantTypes.map((type, typeIndex) => (
-                                    <MenuItem key={typeIndex} value={type}>
-                                        {type}
+                            ))}
+                        </Select>
+                    </FormControl>
+                </>}
+                {hasVariants && variantsSelected.length > 0 && fields.map((variant, index) => (
+                    <div key={index} className="mt-2">
+                        <Divider><Chip label={`Item #${index + 1}`} className='mb-2 mt-4' /></Divider>
+                        {variantsSelected.map((variantType, variantTypeIndex) => (
+                            variantType?.toLowerCase() === 'color' ?
+                            <Box key={variantType} className="flex items-center mb-4">
+                                <Typography className='pl-1 pr-4'>{variantType}</Typography>
+                                <input type="hidden" {...register(`items.${index}.variation.${variantTypeIndex}.name`)} value={variantType} />
+                                <ColorPicker
+                                    key={variantTypeIndex}
+                                    inputProps={{
+                                        className:'mb-4',
+                                        ...register(`items.${index}.variation.${variantTypeIndex}.value`)
+                                    }}
+                                    name="variantValue"
+                                />
+                            </Box>
+                            :
+                            <FormControl key={variantType} variant="outlined" fullWidth size='small' className="mb-3">
+                                <InputLabel>{variantType}</InputLabel>
+                                <input type="hidden" {...register(`items.${index}.variation.${variantTypeIndex}.name`)} value={variantType} />
+                                <Select
+                                    defaultValue={""}
+                                    inputProps={{
+                                        ...register(`items.${index}.variation.${variantTypeIndex}.value`)
+                                    }}
+                                    size='small'
+                                    name="type"
+                                    label={variantType}
+                                    error={!!errors.items?.[index]?.variation?.[variantTypeIndex]?.value}
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
                                     </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <FormControl variant="outlined" fullWidth size='small' className="mb-3">
-                            <InputLabel>Valor de la variante</InputLabel>
-                            <Select
-                                size='small'
-                                value={variant.value}
-                                onChange={(e) => handleVariantChange(index, e?.target?.name, e?.target?.value)}
-                                disabled={!variant.type}
-                                name="value"
-                                label="Valor de la variante"
-                                variant='outlined'
-                                classes={{ disabled: 'bg-gray-200' }}
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                {state.variantValues[variant.type]?.map((value, valueIndex) => (
-                                    <MenuItem key={valueIndex} value={value}>
-                                        {value}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                        <PriceInput
-                            inputProps={{
-                                startAdornment: <InputAdornment position="start">AR$</InputAdornment>,
-                                sizeMaterial: 'small',
-                                fullWidth: true
-                            }}
-                            value={variant.price}
-                            name="price"
-                            onChangeEvent={(value: string) => {
-                                handleVariantChange(index, "price", value);
-                            }}
+                                    {getVariantValues(variantType).map((value, valueIndex) => (
+                                        <MenuItem key={valueIndex} value={value}>
+                                            {value}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        ))}
+                        <CurrencyInput
+                            fullWidth
+                            name={`items.${index}.price`}
+                            error={!!errors.items?.[index]?.price}
+                            control={control}
+                            prefix="AR$"
                         />
+                        {fields.length > 1 && (
+                            <div className='flex justify-end align-center mb-1'>
+                                <Button variant="outlined" color="error" size='small' onClick={() => remove(index)} className='my-2'>
+                                    <FontAwesomeIcon icon={faTrash} className='mr-2' />
+                                    <Typography component="span" fontSize={12}>Eliminar variante</Typography>
+                                </Button>
+                            </div>
+                        )}
+                        <Divider />
+                        <div className='flex justify-end mt-4'>
+                            <Button variant="contained" color="primary" size='small' className='my-4' onClick={handleAddVariant}>
+                                Agregar variante
+                            </Button>
+                        </div>
                     </div>
                 ))}
+                {hasVariants&&<>
+                </>}
                 <Divider />
                 <div className='flex justify-center mt-4'>
-                    <Button variant="contained" color="primary" type="submit">
+                    <Button variant="contained" color="primary" type="submit" size='small' disabled={(hasVariants&&variantsSelected.length<=0)}>
                         Crear Producto
                     </Button>
                 </div>
