@@ -38,4 +38,4 @@ yarn-error.log*
 next-env.d.ts
 
 #db config
-/db/config/config.json
+/src/db/config/config.json
