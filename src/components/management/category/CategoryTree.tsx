@@ -152,7 +152,7 @@ const CategoryTree = ({categories: initialCategories}: {categories: Category[]})
     return categories.map((category) => {
       if (category.childrens) {
         return (
-          <CustomTreeItem nodeId={category.id} label={<div className='flex items-center'>
+          <CustomTreeItem nodeId={category.id?.toString()} label={<div className='flex items-center'>
             <Typography className=''>{category.name}</Typography>
             <IconButton size='small' className='mx-6 p-0' onClick={(e)=>{e.stopPropagation(); setSelectedCategory(category); setCreateSubCategory(false)}}>
               <FontAwesomeIcon icon={faEdit}  />
@@ -168,7 +168,7 @@ const CategoryTree = ({categories: initialCategories}: {categories: Category[]})
         );
       }
       return (
-        <CustomTreeItem nodeId={category.id} label={
+        <CustomTreeItem nodeId={category.id?.toString()} label={
           <Typography className=''>{category.name}</Typography>
         } key={category.id} />
       );

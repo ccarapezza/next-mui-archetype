@@ -9,10 +9,11 @@ interface ColorPickerProps {
     onChange?: (color: any) => void,
     ref?: any,
     inputProps?: any,
-    className?: string
+    className?: string,
+    colors?: string[]
 }
 
-export default function ColorPicker({name, initialColor, onChange, ref, inputProps, className }: ColorPickerProps) {
+export default function ColorPicker({name, initialColor, onChange, ref, inputProps, className, colors }: ColorPickerProps) {
     const [advanceMode, setAdvanceMode] = useState<any>(false)
     const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false)
     const [color, setColor] = useState<any>(initialColor?initialColor:"#fff");
@@ -48,9 +49,9 @@ export default function ColorPicker({name, initialColor, onChange, ref, inputPro
                         </Stack>
                     </div>
                     {advanceMode ?
-                        <SketchPicker color={color} onChange={handleChange} />
+                        <SketchPicker presetColors={colors} color={color} onChange={handleChange} />
                         :
-                        <CirclePicker color={color} onChange={handleChange} className='mr-0 pt-4 pl-4 bg-white border border-grey-500 rounded-md box-content shadow-lg' />
+                        <CirclePicker colors={colors} color={color} onChange={handleChange} className='mr-0 pt-4 pl-4 bg-white border border-grey-500 rounded-md box-content shadow-lg' />
                     }
                 </Box>
                 :

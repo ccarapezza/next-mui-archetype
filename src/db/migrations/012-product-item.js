@@ -15,7 +15,8 @@ module.exports = {
       },
       sku: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       stock: {
         type: Sequelize.INTEGER,
@@ -23,6 +24,20 @@ module.exports = {
       image: {
         type: Sequelize.STRING,
       },
+      price: {
+        type: Sequelize.DECIMAL(15, 2),
+        allowNull: false,
+      },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      }
     });
 
     queryInterface.addConstraint('product_item', {

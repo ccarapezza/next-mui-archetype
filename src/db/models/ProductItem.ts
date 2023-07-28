@@ -1,3 +1,4 @@
+import { BelongsToManyAddAssociationsMixin } from 'sequelize';
 import {
   Table,
   Column,
@@ -16,14 +17,14 @@ import VariationOption from "./VariationOption";
   timestamps: true,
 })
 export default class ProductItem extends Model {
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false, unique: true })
   public sku!: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   public stock!: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  public image!: string;
+  @Column({ type: DataType.STRING, allowNull: true })
+  public image?: string;
 
   @Column({ type: DataType.NUMBER, allowNull: false })
   public price!: number;
@@ -41,4 +42,6 @@ export default class ProductItem extends Model {
     otherKey: 'variationOptionId',
   })
   public variationOptions!: VariationOption[];
+
+  declare addVariationOptions: BelongsToManyAddAssociationsMixin<VariationOption, number>;
 }

@@ -18,7 +18,7 @@ export default class ProductCategory extends Model {
 
   @ForeignKey(() => ProductCategory)
   @Column({ type: DataType.STRING, allowNull: true })
-  public parentId!: number;
+  public parentId?: number;
 
   @BelongsTo(() => ProductCategory)
   public parentCategory!: ProductCategory;

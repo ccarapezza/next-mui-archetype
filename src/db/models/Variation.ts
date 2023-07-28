@@ -4,9 +4,11 @@ import {
   DataType,
   Model,
   ForeignKey,
-  BelongsTo
+  BelongsTo,
+  HasMany
 } from "sequelize-typescript";
 import ProductCategory from "./ProductCategory";
+import VariationOption from "./VariationOption";
 
 @Table({
   tableName: "variation",
@@ -22,5 +24,8 @@ export default class Variation extends Model {
 
   @BelongsTo(() => ProductCategory)
   public category!: ProductCategory;
+
+  @HasMany(() => VariationOption)
+  public variationOptions!: VariationOption[];
 
 }

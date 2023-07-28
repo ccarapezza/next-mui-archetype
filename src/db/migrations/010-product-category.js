@@ -16,15 +16,17 @@ module.exports = {
       },
       parentId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true,
       },
       createdAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       }
     });
 

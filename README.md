@@ -63,6 +63,18 @@ Para dropear la base de datos entera
 npx sequelize-cli db:drop
 ```
 
+Para insertar datos iniciales
+
+```bash
+npx sequelize-cli db:seed:all
+```
+
+Para recrear la base de datos y volcar los datos iniciales (Crea o reemplaza la base de datos existente)
+
+```bash
+npm run recreate-database
+```
+
 Tener en cuenta que la conexión utilizada para las operaciones de Sequelize CLI se realizará con los datos especificados en `/db/config/config.js` y según la variable de entorno `NODE_ENV`
 
 ## Chat - Socket.Io

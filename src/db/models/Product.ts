@@ -8,6 +8,7 @@ import {
   HasMany
 } from "sequelize-typescript";
 import ProductCategory from "./ProductCategory";
+import ProductItem from "./ProductItem";
 
 @Table({
   tableName: "product",
@@ -20,9 +21,6 @@ export default class Product extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   public description!: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  public image!: string;
-
   @ForeignKey(() => ProductCategory)
   @Column({ type: DataType.INTEGER, allowNull: false })
   public categoryId!: number;
@@ -30,5 +28,6 @@ export default class Product extends Model {
   @BelongsTo(() => ProductCategory)
   public category!: ProductCategory;
 
-  
+  @HasMany(() => ProductItem)
+  public items!: ProductItem[];
 }

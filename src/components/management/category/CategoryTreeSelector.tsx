@@ -140,7 +140,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
         return categories.map((category) => {
             if (category.childrens) {
                 return (
-                    <CustomTreeItem nodeId={category.id} label={<div className='flex items-center hover:bg-blue-200 rounded px-1'>
+                    <CustomTreeItem nodeId={category.id?.toString()} label={<div className='flex items-center hover:bg-blue-200 rounded px-1'>
                         <Typography className=''>{category.name}</Typography>
                     </div>} key={category.id} >
                         {category.childrens?.length > 0 &&
@@ -153,7 +153,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                 );
             }
             return (
-                <CustomTreeItem nodeId={category.id} label={
+                <CustomTreeItem nodeId={category.id?.toString()} label={
                     <Typography className=''>{category.name}</Typography>
                 } key={category.id} />
             );
@@ -215,19 +215,19 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                 labelId="demo-multiple-chip-label"
                 id="demo-multiple-chip"
                 multiple={false}
-                value={selectedCategory?.name || ''}
+                value={selectedCategory?.id || ""}
                 input={<OutlinedInput id="select-multiple-chip" label="Categoría" />}
-                renderValue={(selected) => (
-                    selected &&
+                renderValue={(value) => (
+                    value &&
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                        <Chip key={selected} label={selected} />
+                        <Chip key={selectedCategory?.id} label={selectedCategory?.name} />
                     </Box>
                 )}
                 error={!!inputProps?.error}
             >
-                <MenuItem value="" className='hidden' />
+                <MenuItem value={0} className='hidden' />
                 {categories?.map((category) => (
-                    <MenuItem key={category.id} value={category.name} className='hidden' />
+                    <MenuItem key={category.id} value={category.id} className='hidden' />
                 ))}
                 <Box>
                     <Box className="px-2 pb-1">
@@ -241,12 +241,11 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                         defaultCollapseIcon={<FontAwesomeIcon icon={faSquareMinus} className='ml-px fa-fw' onClick={(e) => { e.preventDefault(); }} />}
                         defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw' onClick={(e) => { e.preventDefault(); }} />}
                         defaultEndIcon={<SquareXmarkIcon />}
-                        selected={[selectedCategory?.id || '']}
                         onNodeSelect={(event: React.ChangeEvent<{}>, nodeIds: string[]) => {
                             const categoryFinded = categories.find((category) => category.id == nodeIds.toString());
                             if (categoryFinded && categoryFinded.id !== selectedCategory?.id) {
                                 setSelectedCategory(categoryFinded);
-                                onChange(categoryFinded.name);
+                                onChange(categoryFinded.id);
                             } else {
                                 setSelectedCategory(null);
                                 onChange("");

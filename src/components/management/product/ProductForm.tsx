@@ -4,23 +4,14 @@ import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectCha
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { useForm, useFieldArray, Controller } from "react-hook-form";
-import ColorPicker from '@/components/client/ColorPicker';
-import { Product, productSchema } from '@/schemas/product';
+import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
 import CurrencyInput from './CurrencyInput';
 import CategoryTreeSelector from '../category/CategoryTreeSelector';
+import ColorPicker from '../../client/ColorPicker';
+import { ProductInput, productInputSchema } from '../../../schemas/product';
 
-const VARIANT_TYPES = [
-    {
-        name: 'Talle',
-        values: ['S', 'M', 'L'],
-    },
-    {
-        name: 'Color',
-        values: ['Rojo', 'Azul', 'Verde'],
-    }
-
-]; // Ejemplo de opciones de tipos de variantes
+const COLOR_VARIANT_ID = 2;
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,9 +24,10 @@ const MenuProps = {
     },
 };
 
-const saveProductData = async (productData: any) => {
+const saveProductData = async (productData: any, files: File[]) => {
     console.log("productData", productData);
     const fData:FormData = objectToFormData(productData);
+    fData.set('file', files[0]);
     const res = await fetch(`http://localhost:3000/api/management/product/`, {
         method: 'POST',
         body: fData
@@ -77,28 +69,31 @@ export const objectToFormData = (obj: any) => {
     return formData;
 };
 
-const ProductForm = ({categories}:{categories: any}) => {
+const ProductForm = ({categories, variations}:{categories: any[], variations: any[]}) => {
+    const router = useRouter();
     const [hasVariants, setHasVariants] = useState<boolean>(false);
 
+
     const onSubmit = async (data: any) => {
-        console.log("onSubmit", data);
-        saveProductData(data).then((response) => {
+        saveProductData(data, [file!]).then((response) => {
             console.log("response", response);
+            router.push('/management/products');
+            router.refresh();//Need to refresh the page to get the updated data
         }).catch((error) => {
             console.log("error", error);
         });
     };
 
-    const getVariantValues = (variantType: string) => {
-        return VARIANT_TYPES.find(({ name }) => name === variantType)?.values || [];
+    const getValuesByVariantId = (variantId: number) : any[] => {
+        return variations.find(({ id }) => id === variantId)?.variationOptions || [];
     };
 
-    const { register, control, handleSubmit, reset, formState: { errors } } = useForm<Product>({
-        resolver: yupResolver(productSchema),
+    const { register, control, handleSubmit, reset, formState: { errors }, setValue, watch } = useForm<ProductInput>({
+        resolver: yupResolver(productInputSchema),
         defaultValues: {
             name: '',
             description: '',
-            category: '',
+            categoryId: 0,
             items: [
                 {
                     variation: [],
@@ -107,6 +102,14 @@ const ProductForm = ({categories}:{categories: any}) => {
             ]
         }
     });
+
+    const clearItems = () => {
+        setValue("items", [{
+            variation: [],
+            price: 0
+        }]);
+        setHasVariants(false);
+    };
 
     const { fields, append, remove } = useFieldArray({
         control,
@@ -121,25 +124,44 @@ const ProductForm = ({categories}:{categories: any}) => {
         });
     };
 
-    const [variantsSelected, setVariantsSelected] = React.useState<string[]>([]);
+    const [variantsSelected, setVariantsSelected] = React.useState<any[]>([]);
 
     const handleMultipleVariantsChange = (event: SelectChangeEvent<typeof variantsSelected>) => {
         const { target: { value } } = event;
-        setVariantsSelected(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
-        );
+        if(value instanceof Array){
+            //
+            if(variantsSelected.length>value.length){//si se saco un elemento
+                //se busca el indice del elemento que se saco
+                const removedIndex = variantsSelected.findIndex((variantSel)=>!value.find((variant)=>variantSel.id===variant.id));
+                //se borra el elemento de las variaciones de cada item ya que al ser una lista dinamica no se puede hacer un setValue directamente
+                setValue("items", watch("items").map((item: any) => {
+                    item.variation.splice(removedIndex, 1);
+                    return item;
+                }));
+            }
+
+            setVariantsSelected(value);
+        }else{
+            setVariantsSelected([]);
+        }
     };
 
     useEffect(() => {
-        
-        //show errors
+        //TODO: borrar!
         console.log("errors", errors);
-    }, [errors]);
+        console.log("watch", watch());
+    }, [errors, watch]);
+
+    const [file, setFile] = useState<File>();
 
     return (
         <div className="max-w-md mx-auto bg-white p-4 rounded-md shadow-lg">
             <h1 className="text-xl font-semibold mb-4">Crear nuevo producto</h1>
+            <Box>
+                {/*
+                    <pre>{JSON.stringify(variations, null, 2)}</pre>
+                */}
+            </Box>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     inputProps={{...register("name")}}
@@ -164,13 +186,29 @@ const ProductForm = ({categories}:{categories: any}) => {
                     className="mb-3"
                 />
                 <Controller               
-                    name={"category"}
+                    name={"categoryId"}
                     control={control}
                     render={({ field: { ref, onChange, ...rest } }) => (
-                        <CategoryTreeSelector onChange={onChange} inputProps={{error:!!errors.category, ref:ref}} fullWidth size="small" className="mb-4" categories={categories}
+                        <CategoryTreeSelector onChange={(value)=>{
+                            console.log("CategoryTreeSelector", value);
+                            if(typeof value === 'string' || typeof value === 'number'){
+                                const valueInt = parseInt(value);
+                                onChange(valueInt);
+                            }else{
+                                onChange(0);
+                            }
+                        }} inputProps={{error:!!errors.categoryId, ref:ref}} fullWidth size="small" className="mb-4" categories={categories}
                         />      
                     )}
                 />
+                {/*
+                <input
+                    type="file"
+                    name="file"
+                    accept="image/png, image/gif, image/jpeg"
+                    onChange={(e) => setFile(e.target.files?.[0])}
+                />
+                 */}
                 {hasVariants ? (
                     <Alert severity="warning" >
                         El precio principal está inhabilitado debido a que hay variantes.
@@ -184,95 +222,110 @@ const ProductForm = ({categories}:{categories: any}) => {
                         prefix="AR$"
                     />
                 )}
-                {!hasVariants && 
-                    <Button className='my-4' startIcon={<FontAwesomeIcon icon={faPlus} />} variant="contained" color="primary" onClick={()=>setHasVariants(true)}>
+                {!hasVariants &&
+                    <Button size='small' className='my-4' startIcon={<FontAwesomeIcon icon={faPlus} />} variant="contained" color="primary" onClick={()=>setHasVariants(true)}>
                         {'Incluir variantes'}
                     </Button>
                 }
                 {hasVariants && <>
-                    <h1 className="text-xl font-semibold mt-4 mb-1">Variantes</h1>
+                    <Box className="flex">
+                        <h1 className="text-xl font-semibold mt-4 mb-1">Variantes</h1>
+                        {hasVariants && 
+                            <Button className='my-4 ml-auto' size='small' startIcon={<FontAwesomeIcon icon={faTrash} />} variant="outlined" color="primary" onClick={()=>clearItems()}>
+                                {'Eliminar variantes'}
+                            </Button>
+                        }
+                    </Box>
                     <FormControl fullWidth size='small' className="mt-4 mb-3">
                         <InputLabel id="variant-types">Tipos de variantes</InputLabel>
                         <Select
                             fullWidth
                             labelId="variant-types"
                             multiple
-                            value={variantsSelected}
+                            value={variantsSelected || []}
                             onChange={handleMultipleVariantsChange}
                             input={<OutlinedInput id="select-multiple-chip" label="Tipos de variantes" />}
-                            renderValue={(selected) => (
+                            renderValue={(value) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                    {selected.map((value) => (
-                                        <Chip variant='outlined' size='small' key={value} label={value} />
+                                    {value.map((value) => (
+                                        <Chip variant='outlined' size='small' key={`${value.id}-${value.name}-selected-variants`} label={value.name} />
                                     ))}
                                 </Box>
                             )}
                             MenuProps={MenuProps}
                         >
-                            {VARIANT_TYPES.map(({ name }) => (
+                            {variations.map((variationValue) => (
                                 <MenuItem
-                                    key={name}
-                                    value={name}
+                                    key={`${variationValue.id}-${variationValue.name}-variant`}
+                                    value={variationValue}
                                 >
-                                    <Checkbox checked={variantsSelected.indexOf(name) > -1} />
-                                    <ListItemText primary={name} />
+                                    <Checkbox checked={variantsSelected.find((variantSel)=>variantSel.id===variationValue.id)?true:false} className='mr-2' />
+                                    <ListItemText primary={variationValue.name} />
                                 </MenuItem>
                             ))}
                         </Select>
                     </FormControl>
                 </>}
-                {hasVariants && variantsSelected.length > 0 && fields.map((variant, index) => (
-                    <div key={index} className="mt-2">
-                        <Divider><Chip label={`Item #${index + 1}`} className='mb-2 mt-4' /></Divider>
-                        {variantsSelected.map((variantType, variantTypeIndex) => (
-                            variantType?.toLowerCase() === 'color' ?
-                            <Box key={variantType} className="flex items-center mb-4">
-                                <Typography className='pl-1 pr-4'>{variantType}</Typography>
-                                <input type="hidden" {...register(`items.${index}.variation.${variantTypeIndex}.name`)} value={variantType} />
-                                <ColorPicker
-                                    key={variantTypeIndex}
-                                    inputProps={{
-                                        className:'mb-4',
-                                        ...register(`items.${index}.variation.${variantTypeIndex}.value`)
-                                    }}
-                                    name="variantValue"
-                                />
+                {hasVariants && variantsSelected.length > 0 && fields.map((variant, itemIndex) => (
+                    <div key={itemIndex} className="mt-2">
+                        <Divider><Chip label={`Item #${itemIndex + 1}`} className='mb-2 mt-4' /></Divider>
+                        {variantsSelected.map((variant, variantTypeIndex) => (
+                            <Box key={`${itemIndex}-${variant?.id}-${variant?.name}`}>
+                                {
+                                    variant?.id === COLOR_VARIANT_ID ?
+                                    <Box className="flex items-center mb-4">
+                                        <Typography className='pl-1 pr-4'>{variant?.name}</Typography>
+                                        <ColorPicker
+                                            key={variantTypeIndex}
+                                            inputProps={{
+                                                className:'mb-4',
+                                                ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)
+                                            }}
+                                            name="variantValue"
+                                            colors={getValuesByVariantId(variant?.id).map(item => item.value) || []}
+                                        />
+                                    </Box>
+                                    :
+                                    <FormControl variant="outlined" fullWidth size='small' className="mb-3">
+                                        <InputLabel>{variant?.name}</InputLabel>
+                                        <Select
+                                            defaultValue={""}
+                                            inputProps={{
+                                                ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)
+                                            }}
+                                            size='small'
+                                            name="type"
+                                            label={variant?.name}
+                                            error={!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]}
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {getValuesByVariantId(variant?.id).map(item => (
+                                                <MenuItem key={`${item.id}-${item.value}-variant-value`} value={item.id}>
+                                                    {item.value}
+                                                </MenuItem>
+                                            ))}
+                                            {/*getValuesByVariantId(variantType).map((value, valueIndex) => (
+                                                <MenuItem key={valueIndex} value={value}>
+                                                    {value}
+                                                </MenuItem>
+                                            ))*/}
+                                        </Select>
+                                    </FormControl>
+                                }
                             </Box>
-                            :
-                            <FormControl key={variantType} variant="outlined" fullWidth size='small' className="mb-3">
-                                <InputLabel>{variantType}</InputLabel>
-                                <input type="hidden" {...register(`items.${index}.variation.${variantTypeIndex}.name`)} value={variantType} />
-                                <Select
-                                    defaultValue={""}
-                                    inputProps={{
-                                        ...register(`items.${index}.variation.${variantTypeIndex}.value`)
-                                    }}
-                                    size='small'
-                                    name="type"
-                                    label={variantType}
-                                    error={!!errors.items?.[index]?.variation?.[variantTypeIndex]?.value}
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {getVariantValues(variantType).map((value, valueIndex) => (
-                                        <MenuItem key={valueIndex} value={value}>
-                                            {value}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
                         ))}
                         <CurrencyInput
                             fullWidth
-                            name={`items.${index}.price`}
-                            error={!!errors.items?.[index]?.price}
+                            name={`items.${itemIndex}.price`}
+                            error={!!errors.items?.[itemIndex]?.price}
                             control={control}
                             prefix="AR$"
                         />
                         {fields.length > 1 && (
                             <div className='flex justify-end align-center mb-1'>
-                                <Button variant="outlined" color="error" size='small' onClick={() => remove(index)} className='my-2'>
+                                <Button variant="outlined" color="error" size='small' onClick={() => remove(itemIndex)} className='my-2'>
                                     <FontAwesomeIcon icon={faTrash} className='mr-2' />
                                     <Typography component="span" fontSize={12}>Eliminar variante</Typography>
                                 </Button>

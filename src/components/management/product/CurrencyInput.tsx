@@ -2,7 +2,7 @@ import { InputAdornment, OutlinedInput, OutlinedInputProps, TextField } from "@m
 import { ForwardedRef, forwardRef } from "react"
 import { Control, Controller, FieldError, FieldErrorsImpl, Merge } from "react-hook-form"
 import { NumericFormat } from 'react-number-format'
-type DolarInputProps = {
+type CurrencyInputProps = {
     name: string
     error?: boolean | undefined
     control: Control<any, any> | undefined,
@@ -25,7 +25,7 @@ const CustomInput = forwardRef((props: ExtOutlinedInputProps, ref: ForwardedRef<
     />;
 });
 
-const CurrencyInput = ({ name, error, control, prefix, fullWidth }: DolarInputProps) => {
+const CurrencyInput = ({ name, error, control, prefix, fullWidth }: CurrencyInputProps) => {
     return (
         <>
             <Controller               

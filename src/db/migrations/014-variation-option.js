@@ -11,12 +11,23 @@ module.exports = {
       },
       value: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
       },
       variationId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      }
     });
 
     queryInterface.addConstraint('variation_option', {
@@ -29,7 +40,7 @@ module.exports = {
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
-    });
+    });   
   },
 
   async down(queryInterface, Sequelize) { 

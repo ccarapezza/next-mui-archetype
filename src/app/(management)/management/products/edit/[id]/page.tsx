@@ -1,6 +1,6 @@
+import MuiAlert from "@/components/client/MuiAlert";
 import MuiBox from "@/components/client/MuiBox";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import RoleForm from "@/components/management/roles/RoleForm";
 import { headers } from "next/headers";
 
 const fetchRoleData = async (id: string) => {
@@ -16,7 +16,9 @@ export default async function EditUserPage({ params }: { params: { id: string } 
     return (<>
         <PageHeader title="Edit Role" />
         <MuiBox className="px-4 pt-8 flex justify-center">
-            <RoleForm roleData={data} />
+            <MuiAlert severity="info" className="w-full max-w-md">
+                <div className="font-medium">Not implemented yet</div>
+            </MuiAlert>
         </MuiBox>
     </>)
 }

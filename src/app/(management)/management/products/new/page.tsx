@@ -10,13 +10,24 @@ const fetchCategoriesData = async () => {
     });
     return res.json();
 };
+
+const fetchVariationsData = async () => {
+    const res = await fetch(`http://localhost:3000/api/management/variation/list/`, {
+        cache: 'no-store',
+        headers: headers()
+    });
+    return res.json();
+};
+
 export default async function NewProductPage() {
     const categories = await fetchCategoriesData();
+    const variations = await fetchVariationsData();
+    
 
     return (<>
         <PageHeader title="New Product" />
         <MuiBox className="px-4 pt-8 flex justify-center">
-            <ProductForm categories={categories}/>
+            <ProductForm categories={categories} variations={variations}/>
         </MuiBox>
     </>)
 }

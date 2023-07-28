@@ -15,10 +15,19 @@ module.exports = {
       },
       categoryId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true
       },
+      createdAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      }
     });
-
     queryInterface.addConstraint('variation', {
       fields: ['categoryId'],
       type: 'foreign key',
@@ -29,6 +38,11 @@ module.exports = {
       },
       onDelete: 'cascade',
       onUpdate: 'cascade'
+    });
+    queryInterface.addConstraint('variation', {
+        fields: ['name', 'categoryId'],
+        type: 'unique',
+        name: 'variation_name_category_unique'
     });
   },
 

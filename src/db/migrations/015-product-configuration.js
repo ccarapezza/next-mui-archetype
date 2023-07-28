@@ -8,7 +8,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      variationOpionId: {
+      variationOptionId: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
@@ -35,7 +35,7 @@ module.exports = {
       onUpdate: 'cascade'
     });
     queryInterface.addConstraint('product_configuration', {
-      fields: ['variationOpionId'],
+      fields: ['variationOptionId'],
       type: 'foreign key',
       name: 'product_configuration_fk_variation_option',
       references: {

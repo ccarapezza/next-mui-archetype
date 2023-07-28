@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Product, ProductItem, VariationOption } from '../../../../db';
+import { ProductItem as ProductItemSchema } from '@/schemas/productItem';
+import { Op } from 'sequelize';
 
 interface FormDataField {
     name: string;
@@ -11,7 +14,9 @@ function formDataToJSON(formData: FormData): any {
     const formDataArray: FormDataField[] = [];
 
     formData.forEach((value: any, key) => {
-        formDataArray.push({ name: key, value });
+        if(!key.startsWith("file")) {
+            formDataArray.push({ name: key, value });
+        }
     });
   
     formDataArray.forEach((field) => {
@@ -35,7 +40,11 @@ function formDataToJSON(formData: FormData): any {
             currentObject[arrayKey][arrayIndex] = value;
           } else {
             if (!currentObject[arrayKey][arrayIndex]) {
-              currentObject[arrayKey][arrayIndex] = {};
+                if(arrayKey==="variation") {
+                    currentObject[arrayKey][arrayIndex] = value;
+                }else{
+                    currentObject[arrayKey][arrayIndex] = {};
+                }
             }
             currentObject = currentObject[arrayKey][arrayIndex];
             i++; // Skip the array index since it has been processed
@@ -61,7 +70,86 @@ function formDataToJSON(formData: FormData): any {
 export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const jsonObject = formDataToJSON(formData);
+    console.log("formData", formData);
     console.log("JSON Object", jsonObject);
+    console.log("Variants", jsonObject.items[0].variation);
+    console.log("Price", jsonObject.items[0].price);
+
+    const productCreated = await Product.create({
+        name: jsonObject.name,
+        description: jsonObject.description,
+        categoryId: jsonObject.categoryId,
+        //image: jsonObject.image,
+    });
+
+    const productItems = [];
+    jsonObject.items.forEach(async (item: ProductItemSchema) => {
+        try {
+            
+            const productItemCreated = await ProductItem.create({
+                masterProductId: productCreated.id,
+                stock: 0,
+                sku: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),//TODO: Generar un SKU
+                price: item.price,
+                //image: jsonObject.image,
+            });
+            productItems.push(productItemCreated);
+
+            const variationOptionsIds = item.variation;
+            console.log("ITEM:", item);
+            console.log("variationOptionsIds", item.variation);
+            const variationOptions: VariationOption[] = await VariationOption.findAll({
+                where: {
+                    id:{
+                        [Op.in]: variationOptionsIds,
+                    }
+                },
+            });
+            console.log("Variation Options", variationOptions);
+            await productItemCreated.addVariationOptions(variationOptions);
+
+            console.log("Variation Options finished");
+            
+        } catch (error) {
+            console.log("Error!!", error)
+        }
+
+        //Se relacionan las variaciones posibles al producto
+    });
+
+
+    
+
+    /*
+        {
+            name: 'xcfxf',
+            description: 'dxf',
+            category: 'Hombre',
+            items: [
+                {
+                    variation: [
+                        { id: 4, name: 'Talle', value: 'S' },
+                        { id: 5, name: 'Color', value: '#fff' }
+                    ],
+                    price: '25431654'
+                }
+            ]
+        }
+    */
+
+    const file: File | null = formData.get('file') as unknown as File;
+    /*
+    const bytes = await file.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+
+    // With the file data in the buffer, you can do whatever you want with it.
+    // For this, we'll just write it to the filesystem in a new location
+    const path = `/tmp/${file.name}`
+    await writeFile(path, buffer)
+    console.log(`open ${path} to see the uploaded file`)
+
+    console.log("IMAGE Object", formData.get("file"));
+    */
 
     return NextResponse.json(formData);
 }
