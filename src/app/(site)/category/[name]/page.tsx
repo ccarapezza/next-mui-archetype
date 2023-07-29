@@ -1,8 +1,23 @@
 import ProductFilters from '@/components/store/plp/ProductFilters';
 import ProductGridList from '@/components/store/plp/ProductGridList';
 import ProductPageHeader from '@/components/store/plp/ProductPageHeader';
+import { headers } from "next/headers";
 
-export default function () {
+const fetchProductsData = async (page: number, size: number, search: string) => {
+  const querySearch = search?`?search=${search}`:"";
+  const res = await fetch(`http://localhost:3000/api/management/product/list/${page}/${size}${querySearch}`, {
+      cache: 'no-store',
+      headers: headers()
+  });
+  return res.json();
+};
+
+export default  async function () {
+
+  // const data = await fetchProductsData(1, 1, "");
+  // const products = data.rows;
+  // console.log('Esta data', data.rows);
+  
 
   const products = [
     {
