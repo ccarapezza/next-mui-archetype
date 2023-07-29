@@ -1,5 +1,3 @@
-
-
 import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
 import EntityTableToolbar from "@/components/management/EntityTableToolbar";
