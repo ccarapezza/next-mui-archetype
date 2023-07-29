@@ -57,11 +57,11 @@ const esteProducto = {
 
 export default function () {
 
-  const { addProduct } = useContext(CartContext)
+  // const { addProduct } = useContext(CartContext)
 
-  const addToCart = () => {
-    addProduct(esteProducto)
-  }
+  // const addToCart = () => {
+  //   addProduct(esteProducto)
+  // }
 
   return (
     <section>
