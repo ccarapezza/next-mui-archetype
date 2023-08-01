@@ -5,10 +5,11 @@ import SkuSelector from "./SkuSelector"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import { CartContext } from "../context/MiniCartContext";
+import PriceFormatting from "@/components/management/product/PriceFormatting";
 
 const esteProducto = {
   name: "Random Name #10",
-  description: "loremp ipsum dolor sit amet",
+  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam totameos iusto repellat blanditiis voluptate aspernatur, quae nemo exercitationem cum debitis!",
   listPrice: 100,
   specialPrice: 50,
   sku: '012346',
@@ -38,19 +39,17 @@ export default function () {
     <div className="relative mt-4 w-full md:w-1/2 md:ml-4">
       <div>
         <div>
-          <h1 className="text-2xl font-bold lg:text-3xl">Simple Clothes Basic Tee</h1>
+          <h1 className="text-2xl font-bold text-tertiary lg:text-3xl">{esteProducto.name}</h1>
 
-          <p className="mt-1 text-sm text-gray-500">SKU: #012345</p>
+          <p className="mt-1 text-sm text-gray-500">{esteProducto.sku}</p>
         </div>
         <div className="mt-2">
-          <p className="text-xl font-bold">$15.000,99</p>
+          <p className="text-2xl font-bold text-primary"><PriceFormatting value={esteProducto.listPrice} /></p>
         </div>
         <div className="mt-4">
           <div className="max-w-none">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam totam
-              eos iusto repellat blanditiis voluptate aspernatur, quae nemo
-              exercitationem cum debitis!
+            <p className="text-tertiary">
+              {esteProducto.description}
             </p>
           </div>
         </div>
@@ -89,7 +88,7 @@ export default function () {
             </button>
           </div>
           <button
-            className="w-full rounded bg-red-700 px-6 py-3 text-sm font-bold uppercase tracking-wide text-white"
+            className="w-full rounded bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wide text-quaternary hover:bg-tertiary transition"
             onClick={() => {
               addToCart()
             }}

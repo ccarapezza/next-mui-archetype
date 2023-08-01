@@ -12,7 +12,17 @@ module.exports = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      colors: {
+        'primary': '#3D7A37',
+        'secondary': '#EAD465',
+        'tertiary': '#322F30',
+        'quaternary': '#EFE6D9',
+        'quinary': '#EFE6D9',
+      },
+      fontFamily: {
+        tungsten: ['TungstenComp-Black', 'sans-serif'],
       },
     },
   },

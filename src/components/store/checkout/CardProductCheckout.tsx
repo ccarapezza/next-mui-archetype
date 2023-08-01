@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { CartContext } from '../context/MiniCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import PriceFormatting from '@/components/management/product/PriceFormatting';
 
 type Product = {
   name: string;
@@ -73,8 +74,8 @@ export default function (props: { product: Product }) {
           </button>
 
           <div className="flex gap-2">
-            <span className="text-stone-500 line-through font-bold ml-4">{`$${props.product.listPrice * props.product.quantity}`}</span>
-            <span className="text-gray-900 font-bold">{`$${props.product.specialPrice * props.product.quantity}`}</span>
+            <span className="text-stone-500 line-through font-bold ml-4"><PriceFormatting value={props.product.listPrice * props.product.quantity}/></span>
+            <span className="text-gray-900 font-bold"><PriceFormatting value={props.product.specialPrice * props.product.quantity}/></span>
           </div>
         </div>
       </div>

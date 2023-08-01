@@ -17,7 +17,7 @@ export default function (props: { data: any }) {
           <PaymentsAndShipping />
         </div>
         <div className="flex justify-end">
-          <button className="rounded bg-gray-700 px-5 py-3 text-gray-100 transition hover:bg-gray-600 font-bold text-lg">FINALIZAR COMPRA</button>
+          <button className="rounded bg-primary px-5 py-3 text-gray-100 transition hover:bg-tertiary font-bold text-lg">FINALIZAR COMPRA</button>
         </div>
       </div>
     </>

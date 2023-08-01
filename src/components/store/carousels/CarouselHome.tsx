@@ -16,14 +16,14 @@ const CarouselHome = () => {
   const items: Item[] = [
     {
       name: "Random Name #1",
-      urlImageDesktop: 'https://dummyimage.com/1920x450/111827/4F46E5.png',
-      urlImageMobile: 'https://dummyimage.com/750x900/111827/4F46E5.png',
+      urlImageDesktop: 'https://dummyimage.com/1920x450/322F30/EFE6D9.png',
+      urlImageMobile: 'https://dummyimage.com/750x900/322F30/EFE6D9.png',
       bannerCta: '/'
     },
     {
       name: "Random Name #2",
-      urlImageDesktop: 'https://dummyimage.com/1920x450/111827/4F46E5.png',
-      urlImageMobile: 'https://dummyimage.com/750x900/111827/4F46E5.png',
+      urlImageDesktop: 'https://dummyimage.com/1920x450/322F30/EFE6D9.png',
+      urlImageMobile: 'https://dummyimage.com/750x900/322F30/EFE6D9.png',
       bannerCta: '/'
     }
   ];
@@ -35,7 +35,7 @@ const CarouselHome = () => {
         fullHeightHover={false}     // We want the nav buttons wrapper to only be as big as the button element is
         navButtonsProps={{          // Change the colors and radius of the actual buttons. THIS STYLES BOTH BUTTONS
           style: {
-            color: '#4F46E5',
+            color: '#EFE6D9',
             backgroundColor: 'transparent',
             borderRadius: 50
           }

@@ -5,6 +5,8 @@ import MiniCartList from './MiniCartList';
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import CurrencyDisplay from '@/components/management/product/CurrencyDisplay';
+import PriceFormatting from '@/components/management/product/PriceFormatting';
 
 export default function () {
 
@@ -27,12 +29,12 @@ export default function () {
         {
           quantity > 0 ?
             <span
-              className='text-gray-800 bg-white rounded-full'
+              className='text-tertiary bg-white rounded-full'
               style={{
                 padding: "0px 4px",
                 fontSize: "15px",
                 fontWeight: "600",
-                border: "2px solid #1F2937",
+                border: "2px solid #322F30",
                 lineHeight: "1",
                 position: "absolute",
                 bottom: "18px",
@@ -44,7 +46,7 @@ export default function () {
             <span>
             </span>
         }
-        <FontAwesomeIcon icon={faCartShopping} />
+        <FontAwesomeIcon className='text-tertiary hover:text-primary' icon={faCartShopping} />
       </div>
       {/* Trigger Minicart */}
       {
@@ -84,21 +86,21 @@ export default function () {
                       <div className="space-y-2 p-4 mt-3 mb-4 text-center border-t text-lg">
                         <div className="flex justify-between px-2 py-1">
                           <span className="text-stone-500 font-bold">Subtotal:</span>
-                          <span className="text-stone-500 font-bold">{`$ ${geTotalMinicart().subtotal}`}</span>
+                          <span className="text-stone-500 font-bold"><PriceFormatting value={geTotalMinicart().subtotal} /></span>
                         </div>
                         <div className="flex justify-between px-2 py-1">
                           <span className="text-stone-500 font-bold">Descuentos:</span>
-                          <span className="text-stone-500 font-bold">{`- $ ${geTotalMinicart().descuento}`}</span>
+                          <span className="text-stone-500 font-bold">- <PriceFormatting value={geTotalMinicart().descuento} /></span>
                         </div>
                         <div className="flex justify-between px-2 py-1">
-                          <span className="text-gray-800 font-bold">Total:</span>
-                          <span className="text-gray-600 font-bold">{`$ ${geTotalMinicart().total}`}</span>
+                          <span className="text-tertiary font-bold">Total:</span>
+                          <span className="text-tertiary font-bold"><PriceFormatting value={geTotalMinicart().total} /></span>
                         </div>
                         <Link
                           href="/checkout"
-                          className="block rounded bg-gray-700 px-5 py-3 text-gray-100 transition hover:bg-gray-600 font-bold text-lg"
+                          className="block rounded bg-primary px-5 py-3 text-gray-100 transition hover:bg-tertiary font-bold text-lg"
                         >
-                          Finalizar Compra
+                          FINALIZAR COMPRA
                         </Link>
                       </div>
                       :

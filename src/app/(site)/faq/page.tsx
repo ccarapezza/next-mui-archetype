@@ -97,7 +97,7 @@ const Faqs: React.FC = () => {
   return (
     <section className="flex-1 leading-relaxed max-w-screen-xl pt-5 mx-auto px-4 md:px-8">
       <div className="mt-12 mb-10 max-w-screen-xl mx-auto">
-        <h3 className="text-xl mb-8 font-medium text-center">Preguntas Frecuentes:</h3>
+        <h3 className="text-5xl font-tungsten text-primary sm:text-6xl mb-4 text-center">Preguntas Frecuentes:</h3>
         {faqsList.map((item, idx) => (
           <FaqsCard key={idx} idx={idx} faqsList={item} />
         ))}

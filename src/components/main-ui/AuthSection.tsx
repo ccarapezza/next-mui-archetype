@@ -10,7 +10,7 @@ function AuthSection() {
     return (status === "loading"?
         <FontAwesomeIcon icon={faSpinner} pulse className='text-gray dark:text-white'/>
     : status === "authenticated" ?
-        <button onClick={() => signOut()} className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-gray-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex dark:text-white dark:bg-indigo-600 dark:hover:bg-indigo-700">
+        <button onClick={() => signOut()} className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-tertiary hover:bg-primary active:bg-tertiary rounded-full md:inline-flex text-white bg-tertiary-600 hover:bg-tertiary-700">
             Sign out
             <FontAwesomeIcon icon={faSignOut} className='pl-1' />
         </button>
@@ -19,7 +19,7 @@ function AuthSection() {
             <Link href="/auth/signup" className="block text-gray-700 dark:text-gray-300 hover:text-gray-900">
                 Sign up
             </Link>
-            <Link href="/auth/signin" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-gray-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex dark:text-white dark:bg-indigo-600 dark:hover:bg-indigo-700">
+            <Link href="/auth/signin" className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-gray-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex text-white bg-tertiary-600 hover:bg-tertiary-700">
                 Log in
                 <FontAwesomeIcon icon={faSignIn} />
             </Link>

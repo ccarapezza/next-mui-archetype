@@ -23,12 +23,12 @@ export default () => {
                                 <FontAwesomeIcon icon={faClose}/>
                             </button>
                         </div>
-                        <div className="max-w-sm mx-auto py-3 space-y-3 text-center">
+                        <div className="max-w-sm mx-auto pb-3 space-y-3 text-center">
                             <h4 className="text-lg font-medium text-gray-800">
-                                Sign up for our newsletter
+                                ¡Bienvenido a Cultivo mis derechos!
                             </h4>
-                            <p className="text-[15px] text-gray-600">
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            <p className="text-[15px] text-tertiary">
+                                Suscríbete al newsletter y entérate de las últimas novedades y promociones.
                             </p>
                             <SubscriptionForm mode='popup'/>
                         </div>

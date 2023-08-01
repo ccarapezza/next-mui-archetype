@@ -56,18 +56,18 @@ function SubscriptionForm({ mode }: { mode: "footer" | "popup" }) {
         {
             mode === "footer" && !loading ?
             <>
-                <label className="block pt-4 pb-2"> Stay up to date </label>
+                <label className="block pt-4 pb-2">¡Subscribite y entérate de las últimas novedades!</label>
                 <div className="max-w-sm flex items-center border rounded-md p-1">
                     <input
                         {...register("email")}
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="Enter your email"
-                        className="w-full p-2.5 outline-none"
+                        placeholder="Ingresa tu email"
+                        className="w-full p-2.5 outline-none text-primary rounded-s-md"
                     />
-                    <button type='submit' disabled={loading} className="p-2.5 rounded-md text-white bg-indigo-600 outline-none shadow-md focus:shadow-none sm:px-5">
-                        Subscribe
+                    <button type='submit' disabled={loading} className="p-2.5 rounded-e-md text-white hover:text-primary bg-primary outline-none shadow-md focus:shadow-none sm:px-5 hover:bg-secondary">
+                        ENVIAR
                     </button>
                 </div>
                 <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
@@ -81,13 +81,13 @@ function SubscriptionForm({ mode }: { mode: "footer" | "popup" }) {
                         type="email"
                         id="email"
                         name="email"
-                        placeholder="Enter your email"
-                        className="w-full pl-12 pr-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
+                        placeholder="Ingresa tu email"
+                        className="w-full pl-12 pr-3 py-2 text-gray-500 bg-white outline-none border focus:border-primary shadow-sm rounded-lg"
                     />
                 </div>
                 <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
-                <button type='submit' disabled={loading} className="block w-full mt-3 py-3 px-4 font-medium text-sm text-center text-white bg-indigo-600 disabled:bg-gray-300 hover:bg-indigo-500 active:bg-indigo-700 rounded-lg ring-offset-2 ring-indigo-600 focus:ring-2">
-                    Subscribe
+                <button type='submit' disabled={loading} className="block w-full mt-3 py-3 px-4 font-medium text-sm text-quaternary bg-primary disabled:bg-gray-300 hover:text-primary hover:bg-secondary active:bg-primary rounded-lg ring-offset-2 ring-indigo-600 focus:ring-2">
+                    ENVIAR
                 </button>
             </>
             :

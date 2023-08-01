@@ -1,8 +1,7 @@
 'use client';
 
 import Image from 'next/image'
-import logo from "../../assets/logos/logo.svg";
-import logoDark from "../../assets/logos/logo-dark.svg";
+import logo from "../../assets/logos/CMD-Logo-Footer.png";
 import SubscriptionForm from './SubscriptionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -73,18 +72,17 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="absolute bottom-0 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 w-full">
+    <footer className="absolute bottom-0 text-quaternary bg-tertiary  w-full">
       <div className="px-4 py-5 mx-auto md:px-8  max-w-screen-xl">
         <div className="gap-6 justify-between md:flex">
           <div className="flex-1">
-            <div className="max-w-xs">
+            <div className="flex justify-center items-center md:items-start md:justify-start">
               <a href="/">
-                <Image src={logo} className="dark:hidden" alt='Float UI logo' />
-                <Image src={logoDark} className="hidden dark:block" alt='Float UI logo' />
+                <Image src={logo} className="dark:hidden" alt='Float UI logo' width={250}/>
               </a>
-              <p className="leading-relaxed mt-2 text-[15px]">
+              {/* <p className="leading-relaxed mt-2 text-[15px]">
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-              </p>
+              </p> */}
             </div>
             <SubscriptionForm mode='footer' />
           </div>
@@ -95,7 +93,7 @@ export default function Footer() {
                   className="space-y-4"
                   key={idx}
                 >
-                  <h4 className="text-gray-800 font-medium">
+                  <h4 className="text-secondary underline font-medium">
                     {item.label}
                   </h4>
                   {
@@ -105,14 +103,14 @@ export default function Footer() {
                           el.icon != null ?
                             <a
                               href={el.href}
-                              className="hover:underline hover:text-indigo-600"
+                              className="hover:underline hover:text-primary"
                             >
                               <FontAwesomeIcon icon={el.icon} className='text-2xl' />
                             </a>
                             :
                             <a
                               href={el.href}
-                              className="hover:underline hover:text-indigo-600"
+                              className="hover:underline hover:text-primary"
 
                             >
                               {el.name}
@@ -127,12 +125,12 @@ export default function Footer() {
             }
           </div>
         </div>
-        <div className="mt-8 py-6 border-t items-center justify-between sm:flex">
-          <div className="mt-4 sm:mt-0">
-            &copy; 2022 Float UI All rights reserved.
+        <div className="mt-8 py-6 border-t items-center justify-between xl:flex">
+          <div className="text-center mt-4 sm:mt-0 md:text-center">
+             Todos los derechos reservados CULTIVO MIS DERECHOS &copy; - 2023
           </div>
-          <div className="mt-6 sm:mt-0">
-            <h5>Desarrollado por: Tu vieja!</h5>
+          <div className="text-center mt-6 sm:mt-0 md:text-center">
+            <h5>Desarrollado por: Random Brand!</h5>
           </div>
         </div>
       </div>

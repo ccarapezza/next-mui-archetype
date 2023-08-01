@@ -1,4 +1,5 @@
 import '@/app/globals.css'
+import '../../../../styles/custom-fonts.css';
 import SessionProviderWrapper from "@/components/providers/SessionProvider";
 import FooterCheckout from '@/components/store/checkout/FooterCheckout';
 import HeaderCheckout from "@/components/store/checkout/HeaderCheckout"

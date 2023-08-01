@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { CartContext } from '../context/MiniCartContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import PriceFormatting from '@/components/management/product/PriceFormatting';
 
 type Product = {
   name: string;
@@ -33,10 +34,10 @@ export default function (props: { product: Product }) {
         />
 
         <div className="flex flex-col justify-around ml-4">
-          <h3 className="text-sm text-gray-900 font-bold">{props.product.name}</h3>
+          <h3 className="text-sm text-tertiary font-bold">{props.product.name}</h3>
           <div className="flex">
-            <span className="text-gray-900 font-bold">{`$${props.product.quantity * props.product.specialPrice}`}</span>
-            <span className="text-stone-500 line-through font-bold ml-4">{`$${props.product.quantity * props.product.listPrice}`}</span>
+            <span className="text-gray-900 font-bold"><PriceFormatting  value={props.product.quantity * props.product.specialPrice}/></span>
+            <span className="text-stone-500 line-through font-bold ml-4"><PriceFormatting  value={props.product.quantity * props.product.listPrice}/></span>
           </div>
         </div>
       </div>
@@ -49,7 +50,7 @@ export default function (props: { product: Product }) {
               className="w-8 h-8 leading-10 text-gray-600 transition hover:opacity-75"
               onClick={() => props.product.quantity === 1 ? deleteProduct(props.product) : updateProductQuantity(props.product, props.product.quantity - 1)}
             >
-              <FontAwesomeIcon icon={faMinus} />
+              <FontAwesomeIcon icon={faMinus}/>
             </button>
 
             <input
@@ -70,7 +71,7 @@ export default function (props: { product: Product }) {
           </div>
         </div>
         <button className="text-gray-600 transition hover:text-red-600" onClick={() => deleteProduct(props.product)}>
-          <FontAwesomeIcon icon={faTrash} />
+          <FontAwesomeIcon icon={faTrash} className='text-tertiary'/>
         </button>
       </div>
     </li>

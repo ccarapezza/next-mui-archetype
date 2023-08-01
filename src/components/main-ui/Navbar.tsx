@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import AuthSection from './AuthSection';
 import ThemeSwitch from '../Theme/ThemeRegistry/ThemeSwitch'
 import Image from 'next/image'
-import logo from "../../assets/logos/logo.svg";
+// import logo from "../../assets/logos/logo.svg";
+import logo from "../../assets/logos/CMD-Logo-Navbar.png";
 import MiniCart from '../store/minicart/MiniCart';
 
 export default () => {
@@ -29,14 +30,14 @@ export default () => {
   return (
     <nav className={`md:text-sm fixed z-50 w-full top-0 bg-white shadow-lg ${state ? "shadow-lg md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
       <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
-        <div className="flex items-center justify-between py-5 md:block">
+        <div className="flex items-center justify-between py-1 md:block">
           <Link href="/">
-            <Image src={logo} alt='Float UI logo' />
+            <Image src={logo} alt='Float UI logo' width={200}/>
           </Link>
           <div className="flex items-center gap-2.5 md:hidden">
             <AuthSection />
             <MiniCart />
-            <button className="menu-btn text-gray-500 hover:text-gray-800"
+            <button className="menu-btn text-tertiary-600 hover:text-primary-800"
               onClick={() => setState(!state)}
             >
               {
@@ -54,12 +55,13 @@ export default () => {
           </div>
         </div>
         <div className={`flex-1 items-center md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
-          <div className="bg-white  p-4 rounded-lg flex-1 text-gray-700  gap-6 items-center justify-between md:flex md:mt-0 md:p-0 md:bg-transparent">
-            <ul className="flex content-center justify-center flex-col gap-6 space-y-4 pb-4 text-gray-900  md:flex md:space-y-0 md:flex-row md:pb-0">
+          <div className="bg-white  p-4 rounded-lg flex-1 text-tertiary-800 gap-6 items-center justify-between md:flex md:mt-0 md:p-0 md:bg-transparent">
+            <ul className="flex content-center justify-center flex-col gap-6 space-y-4 pb-4 text-lg text-tertiary-800 md:flex md:space-y-0 md:flex-row md:pb-0 font-semibold">
               {
                 navigation.map((item, idx) => {
                   return (
                     <Link
+                      className='hover:text-primary'
                       href={`/category/${item.path}`}
                       key={idx}
                     >

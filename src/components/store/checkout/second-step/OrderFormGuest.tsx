@@ -101,7 +101,7 @@ export default function () {
           </div>
         </div>
         <div className="flex justify-end">
-          <button type='submit' disabled={!isValid} className="rounded bg-gray-700 px-5 py-3 text-gray-100 transition hover:bg-gray-600 font-bold text-lg disabled:bg-gray-300"
+          <button type='submit' disabled={!isValid} className="rounded bg-primary px-5 py-3 text-gray-100 transition hover:bg-tertiary font-bold text-lg disabled:bg-gray-300"
             onClick={handleSubmit(onSubmit)}
           >FINALIZAR COMPRA</button>
         </div>

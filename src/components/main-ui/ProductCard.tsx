@@ -1,6 +1,7 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import PriceFormatting from '../management/product/PriceFormatting';
 
 type Product = {
   name: string;
@@ -40,8 +41,8 @@ const ProductCard = (props: { product: Product }) => {
       </div>
 
       <div className="relative bg-white pt-3">
-        <h3 className="text-sm text-gray-700 group-hover:underline group-hover:underline-offset-4">{props.product.name}</h3>
-        <p className="mt-1.5 tracking-wide text-gray-900">{props.product.listPrice}</p>
+        <h3 className="text-lg text-gray-700 group-hover:underline group-hover:underline-offset-4">{props.product.name}</h3>
+        <p className="text-lg mt-1.5 font-bold tracking-wide text-primary"><PriceFormatting value={props.product.listPrice}/></p>
       </div>
     </div>
   )

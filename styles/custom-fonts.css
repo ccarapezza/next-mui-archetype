@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'TungstenComp-Black';
+  src: url('../fonts/TungstenComp-Black.otf') format('opentype');
+  /* Asegúrate de que la ruta sea correcta desde la ubicación del archivo CSS */
+  font-weight: normal;
+  font-style: normal;
+}
