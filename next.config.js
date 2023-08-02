@@ -20,7 +20,15 @@ const nextConfig = {
         apiUrl: process.env.NODE_ENV === 'development'
             ? 'http://localhost:3000' // development api
             : 'http://localhost:3000' // production api
-    }
+    },
+    webpack: (config, { webpack, isServer, nextRuntime }) => {
+        // Avoid AWS SDK Node.js require issue
+        if (isServer && nextRuntime === "nodejs")
+            config.plugins.push(
+                new webpack.IgnorePlugin({ resourceRegExp: /^aws-crt$/ })
+            );
+        return config;
+    },
 }
 
 module.exports = nextConfig
