@@ -13,8 +13,8 @@ import Footer from '@/components/main-ui/Footer';
 config.autoAddCss = false;
 
 export const metadata = {
-  title: 'Next App with MUI5',
-  description: 'next app with mui5',
+    title: 'Cultivo Mis Derechos',
+    description: 'Sitio Oficial de Cultivo Mis Derechos',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

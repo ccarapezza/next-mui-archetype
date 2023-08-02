@@ -6,8 +6,6 @@ import { faSignIn, faSignOut, faSpinner } from '@fortawesome/free-solid-svg-icon
 
 function AuthSection() {
     const { status, data } = useSession();
-
-    console.log("data", data)
     return (status === "loading"?
         <FontAwesomeIcon icon={faSpinner} pulse className='text-gray dark:text-white'/>
     : status === "authenticated" ?
