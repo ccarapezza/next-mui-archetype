@@ -5,8 +5,9 @@ import { useSession, signOut } from 'next-auth/react';
 import { faSignIn, faSignOut, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 function AuthSection() {
-    const { status } = useSession();
+    const { status, data } = useSession();
 
+    console.log("data", data)
     return (status === "loading"?
         <FontAwesomeIcon icon={faSpinner} pulse className='text-gray dark:text-white'/>
     : status === "authenticated" ?

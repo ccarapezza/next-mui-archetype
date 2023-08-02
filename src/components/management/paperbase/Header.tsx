@@ -1,21 +1,17 @@
-import { useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faBell, faComment } from '@fortawesome/free-solid-svg-icons'
-import { useSession } from 'next-auth/react';
-import ThemeSwitch from '@/components/Theme/ThemeRegistry/ThemeSwitch';
+import AccountMenu from './AccountMenu';
 
 interface HeaderProps {
   onDrawerToggle: () => void;
 }
 
 export default function Header(props: HeaderProps) {
-  const { data } = useSession();
   const { onDrawerToggle } = props;
 
   return (
@@ -54,9 +50,7 @@ export default function Header(props: HeaderProps) {
               </Tooltip>
             </Grid>
             <Grid item>
-              <IconButton size='small' color="inherit" className='p-1'>
-                <Avatar src={data?.user?.image!} alt="My Avatar" className='w-6 h-6' />
-              </IconButton>
+              <AccountMenu />
             </Grid>
           </Grid>
         </Toolbar>
