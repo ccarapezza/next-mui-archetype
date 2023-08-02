@@ -1,23 +1,27 @@
+'use client';
 import ProductFilters from '@/components/store/plp/ProductFilters';
 import ProductGridList from '@/components/store/plp/ProductGridList';
 import ProductPageHeader from '@/components/store/plp/ProductPageHeader';
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
+import { useParams } from 'next/navigation'
 
-const fetchProductsData = async (page: number, size: number, search: string) => {
-  const querySearch = search?`?search=${search}`:"";
-  const res = await fetch(`http://localhost:3000/api/management/product/list/${page}/${size}${querySearch}`, {
-      cache: 'no-store',
-      headers: headers()
-  });
-  return res.json();
-};
+// const fetchProductsData = async (page: number, size: number, search: string) => {
+//   const querySearch = search ? `?search=${search}` : "";
+//   const res = await fetch(`http://localhost:3000/api/management/product/list/${page}/${size}${querySearch}`, {
+//     cache: 'no-store',
+//     headers: headers()
+//   });
+//   return res.json();
+// };
 
-export default  async function () {
+export default async function () {
 
   // const data = await fetchProductsData(1, 1, "");
   // const products = data.rows;
   // console.log('Esta data', data.rows);
-  
+
+  const params = useParams();
+  console.log('Params', params)
 
   const products = [
     {
@@ -120,11 +124,19 @@ export default  async function () {
 
   return (
     <section>
-      <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+      <div className="max-w-screen-2xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
         <ProductPageHeader />
-        <ProductFilters />
-        <ProductGridList products={products} />
+        <div className='flex flex-col mt-8 lg:flex-row'>
+          <div className='w-full lg:w-1/5 px-2'>
+            <ProductFilters />
+          </div>
+          <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
+            <ProductGridList products={products} />
+          </div>
+        </div>
       </div>
     </section>
+
+
   )
 }

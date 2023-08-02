@@ -26,7 +26,7 @@ export default withAuth(
             if (req.nextUrl.pathname.startsWith(url)) {
                 const roles = req.nextauth.token?.roles as string[];
                 //search if one elemnt of the array is in the other array
-                if (!urlAccess[url].some((r) => roles.includes(r))) {
+                if (!urlAccess[url].some((r) => roles?.includes(r))) {
                     return access && false;
                 }
             }
