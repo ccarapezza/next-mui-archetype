@@ -1,4 +1,5 @@
 
+import { BelongsToManyAddAssociationMixin } from 'sequelize';
 import { AdapterUser } from "next-auth/adapters";
 import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescript";
 import { User as UserDefinition } from "@next-auth/sequelize-adapter/dist/models";
@@ -39,4 +40,5 @@ export default class User extends Model<CustomAdapterUser, Partial<CustomAdapter
     otherKey: 'roleId',
   })
   public roles?: Role[];
+  declare addRole: BelongsToManyAddAssociationMixin<Role, number>;
 }

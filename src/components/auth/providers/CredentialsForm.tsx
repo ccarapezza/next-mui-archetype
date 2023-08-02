@@ -3,13 +3,14 @@ import React from 'react'
 import { signIn } from "next-auth/react"
 import { ClientSafeProvider } from "next-auth/react/types"
 import { useState } from 'react';
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { Alert } from '@mui/material';
 
-interface IRegisterForm {
+interface ISignInForm {
     username: string,
     password: string,
 }
@@ -20,15 +21,25 @@ const schema = yup.object({
 }).required();
 
 export default function CredentialsForm({ provider }: { provider: ClientSafeProvider }) {
-    const params = useParams()
+    const params = useParams();
+    const router = useRouter();
     
     const [errorParam, setErrorParam] = useState("");
 
-    const { register, handleSubmit, formState: { errors } } = useForm<IRegisterForm>({
-        resolver: yupResolver(schema)
+    const { register, handleSubmit, formState: { errors } } = useForm<ISignInForm>({
+        resolver: yupResolver(schema),
+        shouldUnregister: false 
     });
-    const onSubmit = async (data: IRegisterForm) => {
-        signIn(provider.id, { username: data.username, password: data.password,  });
+    const onSubmit = async (data: ISignInForm) => {
+        setErrorParam("");
+        const res = await signIn(provider.id, { username: data.username, password: data.password, redirect: false })
+        if(res?.error){
+            setErrorParam(res.error);
+        }else{
+            if(res?.ok){
+                router.push("/");
+            }
+        }
     };
 
     useEffect(() => {
@@ -38,9 +49,22 @@ export default function CredentialsForm({ provider }: { provider: ClientSafeProv
         }
     }, [setErrorParam, params.error])
 
+    const getMessageByErrorKey = (errorKey: string) => {
+        switch (errorKey) {
+            case "CredentialsSignin":
+                return "Usuario y/o contraseña incorrectos";
+            case "EmailNotVerified":
+                return "Debe verificar su correo electrónico para poder iniciar sesión";
+            default:
+                return "Error desconocido";
+        }
+    }
+
     return (<>
         {errorParam &&
-            <small style={{ color: "red", display: "block", margin: "15px" }}>Usuario y/o contraseña incorrectos</small>
+            <Alert severity="error" className="mb-5">
+                {getMessageByErrorKey(errorParam)}
+            </Alert>
         }
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid gap-y-4">

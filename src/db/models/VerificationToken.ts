@@ -1,5 +1,5 @@
 
-import { AdapterSession } from "next-auth/adapters";
+import { VerificationToken as  VerificationTokenAdapter} from "next-auth/adapters";
 import { Column, Model, Table } from "sequelize-typescript";
 import { VerificationToken as VerificationTokenDefinition } from "@next-auth/sequelize-adapter/dist/models";
 
@@ -7,7 +7,7 @@ import { VerificationToken as VerificationTokenDefinition } from "@next-auth/seq
   tableName: "verification_tokens",
   timestamps: true,
 })
-export default class VerificationToken extends Model<AdapterSession, Partial<AdapterSession>>{
+export default class VerificationToken extends Model<VerificationTokenAdapter, Partial<VerificationTokenAdapter>>{
 
   @Column({ ...VerificationTokenDefinition.identifier })
   public identifier!: string;
