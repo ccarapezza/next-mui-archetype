@@ -1,12 +1,12 @@
-import AWS from 'aws-sdk';
+import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"; // ES Modules import
 
-AWS.config.update({
-    region: 'us-east-1',
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+const client = new SESClient({
+    region: "us-east-1",
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+    },
 });
-
-const ses = new AWS.SES({ apiVersion: 'latest' });
 
 async function sendEmail({ to, from, subject, message }: { to: string; from: string; subject: string; message: string; }) {
     const params = {
@@ -19,7 +19,8 @@ async function sendEmail({ to, from, subject, message }: { to: string; from: str
     };
 
     try {
-        const result = await ses.sendEmail(params).promise();
+        const command = new SendEmailCommand(params);
+        const result = await client.send(command);
         console.log('Email sent:', result.MessageId);
         return result.MessageId;
     } catch (error) {
