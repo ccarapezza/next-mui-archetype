@@ -10,10 +10,20 @@ const fetchCategoryData = async () => {
   return res.json();
 };
 
+const fetchProductData = async () => {
+  const res = await fetch(`http://localhost:3000/api/store/product/list/`, {
+    cache: 'no-store',
+  });
+  return res.json();
+};
+
 export default async function () {
 
   const categoryTree = await fetchCategoryData();
   console.log('categoryTree', categoryTree);
+  
+  const listProducts = await fetchProductData();
+  console.log('listProducts', listProducts.rows);
   
 
   const products = [
@@ -124,7 +134,7 @@ export default async function () {
             <ProductFilters />
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
-            <ProductGridList products={products} />
+            <ProductGridList products={listProducts.rows} />
           </div>
         </div>
       </div>

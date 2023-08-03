@@ -5,95 +5,98 @@ import ProductCard from '@/components/main-ui/ProductCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-const CarouselProducts = () => {
+export default function (props: { products: any[] }) {
 
-  const products = [
-    {
-      name: "Random Name #1",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-1'
-    },
-    {
-      name: "Random Name #2",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-2'
-    },
-    {
-      name: "Random Name #3",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-3'
-    },
-    {
-      name: "Random Name #4",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-4'
-    },
-    {
-      name: "Random Name #5",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-5'
-    },
-    {
-      name: "Random Name #6",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-6'
-    },
-    {
-      name: "Random Name #7",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-7'
-    },
-    {
-      name: "Random Name #8",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-8'
-    },
-    {
-      name: "Random Name #9",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-9'
-    },
-    {
-      name: "Random Name #10",
-      listPrice: 100,
-      specialPrice: 50,
-      urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
-      urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
-      productNameUrl: 'product-name-10'
-    }
-  ];
+  // const products = [
+  //   {
+  //     name: "Random Name #1",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-1'
+  //   },
+  //   {
+  //     name: "Random Name #2",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-2'
+  //   },
+  //   {
+  //     name: "Random Name #3",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-3'
+  //   },
+  //   {
+  //     name: "Random Name #4",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-4'
+  //   },
+  //   {
+  //     name: "Random Name #5",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-5'
+  //   },
+  //   {
+  //     name: "Random Name #6",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-6'
+  //   },
+  //   {
+  //     name: "Random Name #7",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-7'
+  //   },
+  //   {
+  //     name: "Random Name #8",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-8'
+  //   },
+  //   {
+  //     name: "Random Name #9",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-9'
+  //   },
+  //   {
+  //     name: "Random Name #10",
+  //     listPrice: 100,
+  //     specialPrice: 50,
+  //     urlImageMain: 'https://dummyimage.com/500x600/322F30/EFE6D9.png&text=First',
+  //     urlImageHover: 'https://dummyimage.com/500x600/322F30/FFF.png&text=Second',
+  //     productNameUrl: 'product-name-10'
+  //   }
+  // ];
 
   // Pagination Slider
-  const firstPageSlider = products.slice(0, 4);
-  const secondPageSlider = products.slice(4, 8);
-  const paginationSlider = [firstPageSlider, secondPageSlider];
+  const firstPageSlider = props.products.slice(0, 4);
+  const secondPageSlider = props.products.slice(4, 8);
+  const paginationSlider = [firstPageSlider];
+  if(props.products.length > 4) {
+    paginationSlider.push(secondPageSlider);
+  }
 
   // Screen Width
   const [windowWidth, setWindowWidth] = useState(0);
@@ -146,7 +149,7 @@ const CarouselProducts = () => {
               )
             })
             :
-            products.map((product, i) => {
+            props.products.map((product, i) => {
               return (
                 <ProductCard key={i} product={product} />
               )
@@ -156,6 +159,3 @@ const CarouselProducts = () => {
     </div>
   )
 }
-
-
-export default CarouselProducts

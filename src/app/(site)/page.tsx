@@ -2,7 +2,7 @@
 import CollectionsGrid from '@/components/main-ui/CollectionsGrid';
 import PopUpNewsletter from '@/components/main-ui/PopUpNewsletter';
 import CarouselHome from '@/components/store/carousels/CarouselHome';
-import CarouselProducts from '@/components/store/carousels/CarouselProducts';
+import CarrouselProductServer from '@/components/store/carousels/CarrouselProductServer';
 import { useEffect, useState } from 'react';
 
 
@@ -26,7 +26,7 @@ export default function Home() {
             <PopUpNewsletter />
             <CarouselHome />
             <CollectionsGrid />
-            <CarouselProducts />
+            <CarrouselProductServer />
             {/* <Hero />
       <Features /> */}
         </>)

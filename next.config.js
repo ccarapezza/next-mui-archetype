@@ -9,7 +9,7 @@ const nextConfig = {
                 pathname: "**",
             },    
         ],
-        domains: ['dummyimage.com']
+        domains: ['dummyimage.com', 'nextjs-image-bucket.s3.us-east-1.amazonaws.com']
     },
     experimental: {
         /** Needed to fix --"Module not found: Can't resolve 'pg-hstore'"--" */
