@@ -201,14 +201,12 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
                         />      
                     )}
                 />
-                {/*
                 <input
                     type="file"
                     name="file"
                     accept="image/png, image/gif, image/jpeg"
                     onChange={(e) => setFile(e.target.files?.[0])}
                 />
-                 */}
                 {hasVariants ? (
                     <Alert severity="warning" >
                         El precio principal está inhabilitado debido a que hay variantes.

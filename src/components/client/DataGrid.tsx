@@ -7,7 +7,7 @@ import { IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DialogContext } from '../management/context/DialogContext';
-import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 
 export default function MuiDataGrid({ columns, rows, rowCount, editPath, deletePath }: { columns: GridColDef[], rows: any[], rowCount: number, editPath?: string, deletePath?: string }) {
   const router = useRouter();
@@ -101,6 +101,7 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
         }}
         pageSizeOptions={[5]}
         disableRowSelectionOnClick
+        paginationMode='server'
         onPaginationModelChange={onPaginationModelChange}
       />
       }

@@ -1,21 +1,34 @@
 'use client';
-import * as React from 'react';
-import Hero from '@/components/main-ui/Hero';
-import Features from '@/components/main-ui/Features';
 import CollectionsGrid from '@/components/main-ui/CollectionsGrid';
 import PopUpNewsletter from '@/components/main-ui/PopUpNewsletter';
 import CarouselHome from '@/components/store/carousels/CarouselHome';
 import CarouselProducts from '@/components/store/carousels/CarouselProducts';
+import { useEffect, useState } from 'react';
+
 
 export default function Home() {
-  return (
-    <>
-      <PopUpNewsletter />
-      <CarouselHome />
-      <CollectionsGrid />
-      <CarouselProducts />
-      {/* <Hero />
+    const [imgSrc, setImgSrc] = useState();
+    
+    const getImage = async (key: string) => {
+        const res = await fetch(`http://localhost:3000/api/image/${key}`);
+        return res.json();
+    }
+
+    useEffect(() => {
+        const url = getImage('test');
+        url.then((url) => {
+            setImgSrc(url);
+        });
+    }, []);
+
+    return (
+        <>
+            <PopUpNewsletter />
+            <CarouselHome />
+            <CollectionsGrid />
+            <CarouselProducts />
+            {/* <Hero />
       <Features /> */}
-    </>)
-    ;
+        </>)
+        ;
 }

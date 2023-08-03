@@ -1,5 +1,6 @@
 import { Product, ProductCategory, ProductItem } from '@/db';
 import findAllSequelizePagination from '@/db/utils/pagination';
+import S3BucketUtil from '@/utils/S3BucketUtil';
 import { NextRequest, NextResponse } from 'next/server'
 import { Op, WhereOptions } from 'sequelize';
 
@@ -54,5 +55,16 @@ export async function GET(request: NextRequest) {
         where
     });
     console.log(products, null, 2);
+
+    for (const product of products.rows) {
+        const productModel = product as Product;
+        for (const item of productModel.items) {
+            const itemModel = item as ProductItem;
+            if(itemModel.image){
+                itemModel.image = await S3BucketUtil.getSignedUrlByKey({ key: itemModel.image! });
+            }
+        }
+    }
+           
     return NextResponse.json(products);
 }
