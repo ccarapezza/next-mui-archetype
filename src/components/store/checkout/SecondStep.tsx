@@ -1,6 +1,5 @@
 "use client"
 import { useSession } from 'next-auth/react';
-import OrderFormUser from './second-step/OrderFormUser';
 import OrderFormGuest from './second-step/OrderFormGuest';
 import LoadingUI from '@/components/main-ui/LoadingUI';
 
@@ -16,14 +15,7 @@ export default function () {
           status === 'loading' ?
             <LoadingUI />
             :
-            <>
-              {
-                status === 'unauthenticated' ?
-                  <OrderFormGuest />
-                  :
-                  <OrderFormUser data={data} />
-              }
-            </>
+            <OrderFormGuest />
         }
       </div>
     </>

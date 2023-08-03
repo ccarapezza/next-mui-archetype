@@ -1,27 +1,20 @@
-'use client';
 import ProductFilters from '@/components/store/plp/ProductFilters';
 import ProductGridList from '@/components/store/plp/ProductGridList';
 import ProductPageHeader from '@/components/store/plp/ProductPageHeader';
 // import { headers } from "next/headers";
-import { useParams } from 'next/navigation'
 
-// const fetchProductsData = async (page: number, size: number, search: string) => {
-//   const querySearch = search ? `?search=${search}` : "";
-//   const res = await fetch(`http://localhost:3000/api/management/product/list/${page}/${size}${querySearch}`, {
-//     cache: 'no-store',
-//     headers: headers()
-//   });
-//   return res.json();
-// };
+const fetchCategoryData = async () => {
+  const res = await fetch(`http://localhost:3000/api/store/category/list/`, {
+    cache: 'no-store',
+  });
+  return res.json();
+};
 
 export default async function () {
 
-  // const data = await fetchProductsData(1, 1, "");
-  // const products = data.rows;
-  // console.log('Esta data', data.rows);
-
-  const params = useParams();
-  console.log('Params', params)
+  const categoryTree = await fetchCategoryData();
+  console.log('categoryTree', categoryTree);
+  
 
   const products = [
     {

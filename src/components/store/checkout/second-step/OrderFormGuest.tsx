@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import PaymentsAndShipping from "./PaymentsAndShipping";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { useSession } from "next-auth/react";
 
 interface OrderFormGuest {
   name: string
@@ -20,6 +21,31 @@ const schema = yup.object({
 
 
 export default function () {
+
+  const { status, data } = useSession();
+  
+
+  function separateName(nombreCompleto:any) {
+    const words = nombreCompleto.split(' ');
+    const lastName = words.pop();
+    const name = words.join(' '); 
+
+    return { name, lastName };
+  }
+
+  let userInformation = {
+    name: '',
+    lastName: '',
+    email: ''
+  }
+
+  if (status !== 'unauthenticated') {
+    userInformation = {
+      name: separateName(data?.user?.name).name,
+      lastName: separateName(data?.user?.name).lastName,
+      email: data?.user?.email || ''
+    }
+  }
 
   const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm<OrderFormGuest>({
     resolver: yupResolver(schema)
@@ -47,6 +73,7 @@ export default function () {
                     placeholder="Nombre"
                     id="firstName"
                     className="w-full p-1 text-gray-500 outline-none bg-transparent"
+                    defaultValue={userInformation.name}
                   />
                 </div>
               </div>
@@ -61,6 +88,7 @@ export default function () {
                     placeholder="Apellido"
                     id="lastName"
                     className="w-full p-1 text-gray-500 outline-none bg-transparent"
+                    defaultValue={userInformation.lastName}
                   />
                 </div>
               </div>
@@ -93,6 +121,7 @@ export default function () {
                     placeholder="tuemail@gmail.com"
                     id="email"
                     className="w-full p-1 ml-3 text-gray-500 outline-none bg-transparent"
+                    defaultValue={userInformation.email}
                   />
                 </div>
               </div>
