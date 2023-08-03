@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Product, ProductItem, VariationOption } from '../../../../db';
 import { ProductItem as ProductItemSchema } from '@/schemas/productItem';
 import { Op } from 'sequelize';
+import S3BucketUtil from '@/utils/S3BucketUtil';
+import crypto from 'crypto';
 
 interface FormDataField {
     name: string;
@@ -75,11 +77,22 @@ export async function POST(request: NextRequest) {
     console.log("Variants", jsonObject.items[0].variation);
     console.log("Price", jsonObject.items[0].price);
 
+    let imageName: string | null = null;
+
+    const file: File | null = formData.get('file') as unknown as File;
+    if(file!=null){
+        imageName = crypto.randomBytes(32).toString('hex');
+        const uploadFileResponse = S3BucketUtil.uploadFile({
+            file: file!,
+            key: imageName
+        });
+        console.log("uploadFileResponse", uploadFileResponse);
+    }
+
     const productCreated = await Product.create({
         name: jsonObject.name,
         description: jsonObject.description,
         categoryId: jsonObject.categoryId,
-        //image: jsonObject.image,
     });
 
     const productItems = [];
@@ -91,22 +104,24 @@ export async function POST(request: NextRequest) {
                 stock: 0,
                 sku: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),//TODO: Generar un SKU
                 price: item.price,
-                //image: jsonObject.image,
+                image: imageName
             });
             productItems.push(productItemCreated);
 
             const variationOptionsIds = item.variation;
             console.log("ITEM:", item);
             console.log("variationOptionsIds", item.variation);
-            const variationOptions: VariationOption[] = await VariationOption.findAll({
-                where: {
-                    id:{
-                        [Op.in]: variationOptionsIds,
-                    }
-                },
-            });
-            console.log("Variation Options", variationOptions);
-            await productItemCreated.addVariationOptions(variationOptions);
+            if(variationOptionsIds){
+                const variationOptions: VariationOption[] = await VariationOption.findAll({
+                    where: {
+                        id:{
+                            [Op.in]: variationOptionsIds,
+                        }
+                    },
+                });
+                console.log("Variation Options", variationOptions);
+                await productItemCreated.addVariationOptions(variationOptions);
+            }
 
             console.log("Variation Options finished");
             
@@ -136,8 +151,9 @@ export async function POST(request: NextRequest) {
             ]
         }
     */
+    
 
-    const file: File | null = formData.get('file') as unknown as File;
+    
     /*
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)

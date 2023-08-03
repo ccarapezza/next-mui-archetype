@@ -36,7 +36,6 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
             headerName: 'Items',
             flex: 1,
             renderCell: (params: GridRenderCellParams) => {
-                console.log("GridRenderCellParams", params.value);
                 return (<Stack direction={'column'}>
                     {params.value.map((item: any, index: number) =><Stack key={item.sku} direction={"row"} className='flex items-center'>
                         <span>#{index+1}</span><FontAwesomeIcon icon={faChevronRight} className='px-2'/><CurrencyDisplay value={item.price} />
