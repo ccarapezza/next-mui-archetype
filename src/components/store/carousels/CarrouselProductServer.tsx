@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import CarouselProducts from "./CarouselProducts";
 
 const fetchProductData = async () => {
