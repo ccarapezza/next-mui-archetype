@@ -18,7 +18,7 @@ import {
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
 
 const env = process.env.NODE_ENV || 'development';
-const sequelizeInstace = new Sequelize(config[env].database, config[env].username, config[env].password!, {dialect: "mysql"});
+const sequelizeInstace = new Sequelize(config[env].database, config[env].username, config[env].password!, {dialect: "mysql", dialectOptions: {decimalNumbers: true}});
 
 sequelizeInstace.addModels([
   User,
