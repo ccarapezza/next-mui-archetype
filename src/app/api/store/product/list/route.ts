@@ -54,7 +54,6 @@ export async function GET(request: NextRequest) {
         ],
         where
     });
-    console.log(products, null, 2);
 
     for (const product of products.rows) {
         const productModel = product as Product;

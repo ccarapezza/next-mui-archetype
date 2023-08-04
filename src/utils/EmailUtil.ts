@@ -1,4 +1,4 @@
-import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses"; // ES Modules import
+import { CreateTemplateCommand, DeleteTemplateCommand, SESClient, SendEmailCommand, SendBulkTemplatedEmailCommand, SendBulkTemplatedEmailCommandInput } from "@aws-sdk/client-ses"; // ES Modules import
 
 const client = new SESClient({
     region: process.env.AWS_REGION,
@@ -8,13 +8,73 @@ const client = new SESClient({
     },
 });
 
-async function sendEmail({ to, from, subject, message }: { to: string; from: string; subject: string; message: string; }) {
+async function removeTemplate({ templateName }: { templateName: string; }) {
+    const input = { // DeleteTemplateRequest
+        TemplateName: templateName, // required
+    };
+    try {
+        const command = new DeleteTemplateCommand(input);
+        await client.send(command);
+        console.log("Success. Template deleted");
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+
+async function saveTemplate({ templateName, subject, htmlPart, textPart }: { templateName: string; subject: string; htmlPart: string; textPart: string; }) {
+    const input = { // CreateTemplateRequest
+        Template: { // Template
+            TemplateName: templateName, // required
+            SubjectPart: subject,
+            TextPart: htmlPart,
+            HtmlPart: textPart,
+        },
+    };
+    try {
+
+        const command = new CreateTemplateCommand(input);
+        await client.send(command);
+        console.log("Success. Template created");
+    } catch (err) {
+        console.log("Error", err);
+    }
+}
+
+async function sendBulkEmail({ templateName, to, from, subject, htmlPart }: { templateName: string, to: string; from: string; subject: string; htmlPart: string; }) {
+    const params: SendBulkTemplatedEmailCommandInput = {
+        Source: from,
+        Template: templateName,
+        Destinations: [
+            {
+                Destination: {
+                    ToAddresses: [to],
+                },
+            },
+        ],
+    };
+    
+    try {
+        await saveTemplate({ templateName: templateName, subject, htmlPart, textPart: "htmlPart" });
+        const command = new SendBulkTemplatedEmailCommand(params);
+        await client.send(command);
+        await removeTemplate({ templateName: templateName });
+
+        return true;
+    } catch (error) {
+        console.error('Error sending email:', error);
+        throw error;
+    }
+}
+
+
+async function sendEmail({ to, from, subject, html }: { to: string; from: string; subject: string; html: string; }) {
     const params = {
         Source: from,
         Destination: { ToAddresses: [to] },
         Message: {
             Subject: { Data: subject },
-            Body: { Text: { Data: message } },
+            Body: { Html: { Data: html } },
         },
     };
 
@@ -35,7 +95,7 @@ async function sendVerificationEmail({ email, token }: { email: string; token: s
         to: email,
         from: `carapezza.christian@gmail.com`,
         subject: `Sign in to localhost`,
-        message: `Use the link below to activate your account on localhost.\n\n${url}`,
+        html: `Use the link below to activate your account on localhost.\n\n${url}`,
     });
 }
 
@@ -44,7 +104,7 @@ async function sendWelcomeEmail({ email, url }: { email: string; url: string; })
         to: email,
         from: `carapezza.christian@gmail.com`,
         subject: `Welcome to localhost`,
-        message: `Use the link below to sign in to localhost.\n\n${url}`,
+        html: `Use the link below to sign in to localhost.\n\n${url}`,
     });
 }
 
@@ -52,4 +112,5 @@ export default {
     sendEmail,
     sendVerificationEmail,
     sendWelcomeEmail,
+    sendBulkEmail
 }

@@ -27,10 +27,13 @@ const MenuProps = {
 const saveProductData = async (productData: any, files: File[]) => {
     console.log("productData", productData);
     const fData:FormData = objectToFormData(productData);
-    fData.set('file', files[0]);
+    console.log("files array:", files);
+    if(files.length>0){
+        fData.set('file', files[0]);
+    }
     const res = await fetch(`http://localhost:3000/api/management/product/`, {
         method: 'POST',
-        body: fData
+        body: fData,
     });
     return res.json();
 };
@@ -146,11 +149,13 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
         }
     };
 
+    /*
     useEffect(() => {
         //TODO: borrar!
         console.log("errors", errors);
         console.log("watch", watch());
     }, [errors, watch]);
+    */
 
     const [file, setFile] = useState<File>();
 
@@ -235,10 +240,10 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
                         }
                     </Box>
                     <FormControl fullWidth size='small' className="mt-4 mb-3">
-                        <InputLabel id="variant-types">Tipos de variantes</InputLabel>
+                        <InputLabel htmlFor='variant-types'>Tipos de variantes</InputLabel>
                         <Select
                             fullWidth
-                            labelId="variant-types"
+                            id='variant-types'
                             multiple
                             value={variantsSelected || []}
                             onChange={handleMultipleVariantsChange}
@@ -285,8 +290,9 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
                                     </Box>
                                     :
                                     <FormControl variant="outlined" fullWidth size='small' className="mb-3">
-                                        <InputLabel>{variant?.name}</InputLabel>
+                                        <InputLabel htmlFor={"variant-"+variantTypeIndex}>{variant?.name}</InputLabel>
                                         <Select
+                                            id={"variant-"+variantTypeIndex}
                                             defaultValue={""}
                                             inputProps={{
                                                 ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)

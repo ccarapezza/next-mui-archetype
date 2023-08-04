@@ -6,11 +6,12 @@ import { Card, CardContent, CardHeader, IconButton, Stack, Typography } from '@m
 import React, { useEffect, useRef, useState } from 'react'
 import { EditorRef, EmailEditor } from 'react-email-editor'
 
-function TemplatePreview({onClose, template}: {onClose: any, template: TemplateDto}) {
+function TemplatePreview({onClose, template, show, onTemplateHtmlExport}: {onClose: any, template: TemplateDto, show: boolean, onTemplateHtmlExport: any}) {
     const emailEditorRef = useRef<EditorRef>(null);
     const [loading, setLoading] = useState(true);
     const [ready, setReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
+    const [htmlTemplateSelected, setHtmlTemplateSelected] = useState("");
 
     const loadTemplatePromise = () => {
         return new Promise((resolve, reject) => {
@@ -20,12 +21,12 @@ function TemplatePreview({onClose, template}: {onClose: any, template: TemplateD
                 emailEditorRef.current?.editor?.exportHtml((data) => {
                     const { design, html } = data;
                     console.log('exportHtml', html);
-                    console.log('design', design);
-                    const previewEl = document.getElementById("preview");
-                    if (previewEl !== null) {
-                        previewEl.innerHTML = html;
-                        setLoaded(true);
+                    setHtmlTemplateSelected(html);
+                    if(onTemplateHtmlExport){
+                        onTemplateHtmlExport(html);
                     }
+                    console.log('design', design);
+                    setLoaded(true);
                 });
                 resolve(true);
             } else {
@@ -33,6 +34,15 @@ function TemplatePreview({onClose, template}: {onClose: any, template: TemplateD
             }
         });
     }
+
+    useEffect(() => {
+        if(htmlTemplateSelected && show){
+            const previewEl = document.getElementById("preview");
+            if (previewEl !== null) {
+                previewEl.innerHTML = htmlTemplateSelected;
+            }
+        }
+    }, [htmlTemplateSelected, show]);
 
     useEffect(() => {
         console.log("template", template);
@@ -59,28 +69,26 @@ function TemplatePreview({onClose, template}: {onClose: any, template: TemplateD
     };
 
     return (<>
-        {loading &&
+        {loading && show &&
             <Card className='shadow rounded border p-4 mt-4 flex justify-center'>
                 <LoadingUI />
             </Card>
         }
-        {!loading && template &&
-            <Card className='shadow rounded border p-4 mt-4'>
-                <CardHeader title={<Stack direction={'row'}>
-                    <FontAwesomeIcon icon={faEye} className='mr-2' />
-                    <Typography className='font-bold'>Preview: </Typography>
-                    <Typography>{template.name}</Typography>
-                </Stack>}
-                action={
-                    <IconButton onClick={onClose}>
-                        <FontAwesomeIcon icon={faClose} />
-                    </IconButton>
-                } />
-                <CardContent id="preview">
+        <Card className={`shadow rounded border p-4 mt-4 ${(!loading && template && show)?"":"hidden"}`}>
+            <CardHeader title={<Stack direction={'row'}>
+                <FontAwesomeIcon icon={faEye} className='mr-2' />
+                <Typography className='font-bold'>Preview: </Typography>
+                <Typography>{template?.name}</Typography>
+            </Stack>}
+            action={
+                <IconButton onClick={onClose}>
+                    <FontAwesomeIcon icon={faClose} />
+                </IconButton>
+            } />
+            <CardContent id="preview">
 
-                </CardContent>
-            </Card>
-        }
+            </CardContent>
+        </Card>
         {!loaded &&
             <div className='hidden'>
                 <EmailEditor ref={emailEditorRef} onReady={onReady} locale='es' />

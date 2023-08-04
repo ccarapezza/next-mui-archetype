@@ -80,9 +80,10 @@ export async function POST(request: NextRequest) {
     let imageName: string | null = null;
 
     const file: File | null = formData.get('file') as unknown as File;
+
     if(file!=null){
         imageName = crypto.randomBytes(32).toString('hex');
-        const uploadFileResponse = S3BucketUtil.uploadFile({
+        const uploadFileResponse = await S3BucketUtil.uploadFile({
             file: file!,
             key: imageName
         });
@@ -167,5 +168,5 @@ export async function POST(request: NextRequest) {
     console.log("IMAGE Object", formData.get("file"));
     */
 
-    return NextResponse.json(formData);
+    return NextResponse.json("Ok!");
 }
