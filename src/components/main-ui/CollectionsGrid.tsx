@@ -38,7 +38,7 @@ const CollectionsGrid = () => {
                 <span
                   className="mt-1.5 inline-block bg-primary px-5 py-3 text-xs font-medium uppercase tracking-wide text-quaternary"
                 >
-                  Shop Now
+                  Ver Más
                 </span>
               </div>
             </a>
@@ -62,7 +62,7 @@ const CollectionsGrid = () => {
                 <span
                   className="mt-1.5 inline-block bg-primary px-5 py-3 text-xs font-medium uppercase tracking-wide text-quaternary"
                 >
-                  Shop Now
+                  Ver Más
                 </span>
               </div>
             </a>
@@ -86,7 +86,7 @@ const CollectionsGrid = () => {
                 <span
                   className="mt-1.5 inline-block bg-primary px-5 py-3 text-xs font-medium uppercase tracking-wide text-quaternary"
                 >
-                  Shop Now
+                  Ver Más
                 </span>
               </div>
             </a>

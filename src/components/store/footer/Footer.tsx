@@ -1,38 +1,37 @@
 'use client';
 
 import Image from 'next/image'
-import logo from "../../assets/logos/CMD-Logo-Footer.png";
-import SubscriptionForm from './SubscriptionForm';
+import logo from "./../../../assets/logos/CMD-Logo-Footer.png";
+import SubscriptionForm from '../../main-ui/SubscriptionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import Link from 'next/link';
 
-export default function Footer() {
+export default function Footer(props: { categoryTree: any }) {
+
+  const { categoryTree } = props;
+
+  function clearNameForUrl(urlCategory: string) {
+    // Convertir a minúsculas y eliminar acentos
+    urlCategory = urlCategory.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+    // Reemplazar caracteres especiales y espacios por guiones
+    urlCategory = urlCategory.replace(/[^\w]/g, '');
+
+    return urlCategory;
+  }
+
+  const categoryNav = categoryTree.map((category: any) => {
+    return {
+      name: category.name,
+      href: `/category/${clearNameForUrl(category.name)}`,
+      icon: null
+    }
+  })
 
   const footerNavs = [
     {
       label: "Categorias",
-      items: [
-        {
-          href: '/hombre',
-          name: 'Hombre',
-          icon: null
-        },
-        {
-          href: '/mujer',
-          name: 'Mujer',
-          icon: null
-        },
-        {
-          href: '/nino',
-          name: 'Niño',
-          icon: null
-        },
-        {
-          href: '/sale',
-          name: 'Sale',
-          icon: null
-        },
-      ],
+      items: categoryNav
     },
     {
       label: "Nosotros",
@@ -77,9 +76,9 @@ export default function Footer() {
         <div className="gap-6 justify-between md:flex">
           <div className="flex-1">
             <div className="flex justify-center items-center md:items-start md:justify-start">
-              <a href="/">
-                <Image src={logo} className="dark:hidden" alt='Float UI logo' width={250}/>
-              </a>
+              <Link href="/">
+                <Image src={logo} className="dark:hidden" alt='Float UI logo' width={250} />
+              </Link>
               {/* <p className="leading-relaxed mt-2 text-[15px]">
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
               </p> */}
@@ -97,7 +96,7 @@ export default function Footer() {
                     {item.label}
                   </h4>
                   {
-                    item.items.map(((el, idx) => (
+                    item.items.map(((el: any, idx: number) => (
                       <li key={idx}>
                         {
                           el.icon != null ?
@@ -108,13 +107,13 @@ export default function Footer() {
                               <FontAwesomeIcon icon={el.icon} className='text-2xl' />
                             </a>
                             :
-                            <a
+                            <Link
                               href={el.href}
                               className="hover:underline hover:text-primary"
 
                             >
                               {el.name}
-                            </a>
+                            </Link>
                         }
 
                       </li>
@@ -127,7 +126,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 py-6 border-t items-center justify-between xl:flex">
           <div className="text-center mt-4 sm:mt-0 md:text-center">
-             Todos los derechos reservados CULTIVO MIS DERECHOS &copy; - 2023
+            Todos los derechos reservados CULTIVO MIS DERECHOS &copy; - 2023
           </div>
           <div className="text-center mt-6 sm:mt-0 md:text-center">
             <h5>Desarrollado por: Random Brand!</h5>

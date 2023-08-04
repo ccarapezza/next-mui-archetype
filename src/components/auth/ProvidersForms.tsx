@@ -20,7 +20,7 @@ export default function ProvidersForms({ providers }: { providers: Record<Litera
                         case 'credentials':
                             return <CredentialsForm provider={provider} />
                         default:
-                            return <button onClick={() => {signIn(provider.id, {callbackUrl: '/management'})}}>Sign in with {provider.name}</button>
+                            return <button onClick={() => {signIn(provider.id, {callbackUrl: '/management'})}}>Iniciar sesión con {provider.name}</button>
                         }
                 })()}
             </Fragment>

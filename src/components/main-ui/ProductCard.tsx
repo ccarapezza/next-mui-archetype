@@ -28,9 +28,9 @@ const ProductCard = (props: { product: Product }) => {
         />
 
         <Image
-          src={image?image:"/no-product-image.png"}
+          src={"/no-product-image.png"}
           alt={`Image of ${name?name:""}`}
-          className="absolute inset-0 h-full w-full object-cover opacity-100 group-hover:opacity-0"
+          className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100"
           width={500}
           height={600}
         />

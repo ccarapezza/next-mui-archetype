@@ -70,7 +70,7 @@ export default function CredentialsForm({ provider }: { provider: ClientSafeProv
             <div className="grid gap-y-4">
 
                 <div>
-                    <label htmlFor="username" className="block text-sm mb-2 dark:text-white">Email address</label>
+                    <label htmlFor="username" className="block text-sm mb-2 dark:text-white">Email</label>
                     <div className="relative">
                         <input {...register("username")} type="text" id="username" name="username" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
                         <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
@@ -84,8 +84,8 @@ export default function CredentialsForm({ provider }: { provider: ClientSafeProv
 
                 <div>
                     <div className="flex justify-between items-center">
-                        <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Password</label>
-                        <a className="text-sm text-blue-600 decoration-2 hover:underline font-medium" href="../examples/html/recover-account.html">Forgot password?</a>
+                        <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Contraseña</label>
+                        <a className="text-sm text-blue-600 decoration-2 hover:underline font-medium" href="../examples/html/recover-account.html">¿Olvidaste tu contraseña?</a>
                     </div>
                     <div className="relative">
                         <input {...register("password")} type="password" id="password" name="password" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="password-error" />
@@ -103,11 +103,11 @@ export default function CredentialsForm({ provider }: { provider: ClientSafeProv
                         <input id="remember-me" name="remember-me" type="checkbox" className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" />
                     </div>
                     <div className="ml-3">
-                        <label htmlFor="remember-me" className="text-sm dark:text-white">Remember me</label>
+                        <label htmlFor="remember-me" className="text-sm dark:text-white">¿Recordar cuenta?</label>
                     </div>
                 </div>
 
-                <button type="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Sign in</button>
+                <button type="submit" className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Iniciar sesión</button>
             </div>
         </form>
     </>)
