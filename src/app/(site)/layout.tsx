@@ -8,8 +8,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from '@fortawesome/fontawesome-svg-core';
 import MiniCartProvider from '@/components/store/context/MiniCartContext';
-import Navbar from '@/components/main-ui/Navbar';
-import Footer from '@/components/main-ui/Footer';
+import NavBarServer from '@/components/store/navbar/NavBarServer';
+import FooterServer from '@/components/store/footer/FooterServer';
 config.autoAddCss = false;
 
 export const metadata = {
@@ -23,11 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="relative min-h-screen pt-[97px] md:pb-[400px] pb-[1100px]">
         <SessionProviderWrapper>
           <MiniCartProvider>
-            <Navbar />
+            <NavBarServer />
             <main>
               {children}
             </main>
-            <Footer />
+            <FooterServer />
           </MiniCartProvider>
         </SessionProviderWrapper>
       </body>

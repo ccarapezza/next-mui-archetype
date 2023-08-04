@@ -2,23 +2,34 @@
 import { useEffect, useState } from 'react'
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import AuthSection from './AuthSection';
-import ThemeSwitch from '../Theme/ThemeRegistry/ThemeSwitch'
+import AuthSection from '../../main-ui/AuthSection';
 import Image from 'next/image'
-// import logo from "../../assets/logos/logo.svg";
-import logo from "../../assets/logos/CMD-Logo-Navbar.png";
-import MiniCart from '../store/minicart/MiniCart';
+import logo from "./../../../assets/logos/CMD-Logo-Navbar.png";
+import MiniCart from '../minicart/MiniCart';
+import NavBarAuth from './NavBarAuth';
 
-export default () => {
+export default (props: { categoryTree: any, providers:any }) => {
+
+  const { categoryTree, providers } = props;
+
   const router = useRouter();
-  const [state, setState] = useState(false)
+  const [state, setState] = useState(false);
 
-  const navigation = [
-    { title: "Hombre", path: "hombre" },
-    { title: "Mujer", path: "mujer" },
-    { title: "Niño", path: "nino" },
-    { title: "Sale", path: "sale" }
-  ]
+  function clearNameForUrl(urlCategory: string) {
+    // Convertir a minúsculas y eliminar acentos
+    urlCategory = urlCategory.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
+    // Reemplazar caracteres especiales y espacios por guiones
+    urlCategory = urlCategory.replace(/[^\w]/g, '');
+  
+    return urlCategory;
+  }
+
+  const navigation = categoryTree.map((category: any) => {
+    return {
+      title: category.name,
+      path: clearNameForUrl(category.name)
+    }
+  })
 
   useEffect(() => {
     document.onclick = (e) => {
@@ -35,7 +46,8 @@ export default () => {
             <Image src={logo} alt='Float UI logo' width={200}/>
           </Link>
           <div className="flex items-center gap-2.5 md:hidden">
-            <AuthSection />
+            {/* <AuthSection /> */}
+            <NavBarAuth providers={providers!}/>
             <MiniCart />
             <button className="menu-btn text-tertiary-600 hover:text-primary-800"
               onClick={() => setState(!state)}
@@ -58,7 +70,7 @@ export default () => {
           <div className="bg-white  p-4 rounded-lg flex-1 text-tertiary-800 gap-6 items-center justify-between md:flex md:mt-0 md:p-0 md:bg-transparent">
             <ul className="flex content-center justify-center flex-col gap-6 space-y-4 pb-4 text-lg text-tertiary-800 md:flex md:space-y-0 md:flex-row md:pb-0 font-semibold">
               {
-                navigation.map((item, idx) => {
+                navigation.map((item:any, idx:number) => {
                   return (
                     <Link
                       className='hover:text-primary'
@@ -73,7 +85,8 @@ export default () => {
             </ul>
           </div>
           <div className="flex-1 gap-x-6 items-center justify-end hidden space-y-6 md:space-y-0 md:flex">
-            <AuthSection />
+            {/* <AuthSection /> */}
+            <NavBarAuth providers={providers!}/>
             <MiniCart />
           </div>
         </div>

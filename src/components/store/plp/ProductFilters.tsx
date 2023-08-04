@@ -88,7 +88,7 @@ export default function () {
         <summary
           className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"
         >
-          <span className="text-sm font-medium"> Price </span>
+          <span className="text-sm font-medium"> Precio </span>
 
           <span className="transition group-open:-rotate-180">
             <svg
@@ -110,7 +110,7 @@ export default function () {
 
         <div className="border-t border-gray-200 bg-white">
           <header className="flex items-center justify-between p-4">
-            <span className="text-sm text-gray-700"> The highest price is $600 </span>
+            <span className="text-sm text-gray-700"> Seleccione el rango </span>
 
             <button
               type="button"
@@ -128,7 +128,7 @@ export default function () {
                 <input
                   type="number"
                   id="FilterPriceFrom"
-                  placeholder="From"
+                  placeholder="Desde"
                   className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                 />
               </label>
@@ -139,7 +139,7 @@ export default function () {
                 <input
                   type="number"
                   id="FilterPriceTo"
-                  placeholder="To"
+                  placeholder="Hasta"
                   className="w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
                 />
               </label>

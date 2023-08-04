@@ -56,22 +56,22 @@ export default function SignIn({ providers }: { providers: Record<LiteralUnion<B
             <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-4 sm:p-7">
                     <div className="text-center">
-                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Sign in</h1>
+                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Iniciar sesión</h1>
                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            Don't have an account yet?&nbsp;
+                            ¿Aún no tienes una cuenta?&nbsp;
                             <Link className="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/signup">
-                                Sign up here
+                                Registrate aquí
                             </Link>
                         </p>
                     </div>
 
                     <div className="mt-5">
-                        {providers ? <ProvidersForms providers={providers} /> : <p>Loading...</p>}
+                        {providers ? <ProvidersForms providers={providers} /> : <p>Cargando...</p>}
                     </div>
                 </div>
             </div>
             <Link className="block text-center mt-5 text-blue-600 decoration-2 hover:underline font-medium" href="/">
-                Back to home
+                Volver al Inicio
             </Link>
         </main>
     )

@@ -96,11 +96,11 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
             <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
                 <div className="p-4 sm:p-7">
                     <div className="text-center">
-                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Sign up</h1>
+                        <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Registrarse</h1>
                         <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            Already have an account?&nbsp;
+                            ¿Ya tienes una cuenta?&nbsp;
                             <Link className="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/signin">
-                                Sign in here
+                                Iniciar sesión
                             </Link>
                         </p>
                     </div>
@@ -121,13 +121,13 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                             {(() => {
                                 switch (provider?.id) {
                                     case 'google':
-                                        return <GoogleForm label='Sign up with Google' provider={provider} />;
+                                        return <GoogleForm label='Regístrese con Google' provider={provider} />;
                                     case 'credentials':
                                         return (
                                             <form onSubmit={handleSubmit(onSubmit)}>
                                                 <div className="grid gap-y-4">
                                                     <div>
-                                                        <label htmlFor="username" className="block text-sm mb-2 dark:text-white">Username</label>
+                                                        <label htmlFor="username" className="block text-sm mb-2 dark:text-white">Nombre de Usuario</label>
                                                         <div className="relative">
                                                             <input {...register("username")} type="username" id="username" name="username" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
                                                             <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
@@ -138,7 +138,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                     </div>
                     
                                                     <div>
-                                                        <label htmlFor="email" className="block text-sm mb-2 dark:text-white">Email address</label>
+                                                        <label htmlFor="email" className="block text-sm mb-2 dark:text-white">Email</label>
                                                         <div className="relative">
                                                             <input {...register("email")} type="email" id="email" name="email" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
                                                             <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
@@ -149,7 +149,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                     </div>
                     
                                                     <div>
-                                                        <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Password</label>
+                                                        <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Contraseña</label>
                                                         <div className="relative">
                                                             <input {...register("password")} type="password" id="password" name="password" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="password-error" />
                                                             <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
@@ -160,7 +160,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                     </div>
                     
                                                     <div>
-                                                        <label htmlFor="cpassword" className="block text-sm mb-2 dark:text-white">Confirm Password</label>
+                                                        <label htmlFor="cpassword" className="block text-sm mb-2 dark:text-white">Confirmar Contraseña</label>
                                                         <div className="relative">
                                                             <input {...register("cpassword")} type="password" id="cpassword" name="cpassword" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="confirm-password-error" />
                                                             <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
@@ -176,7 +176,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                                 <input id="terms-and-conditions" name="terms-and-conditions" type="checkbox" checked={acceptTermAndCondition} onChange={(e)=>{}} className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" />
                                                             </div>
                                                             <div className="ml-3">
-                                                                <label htmlFor="terms-and-conditions" className="text-sm dark:text-white">I accept the <a className="text-blue-600 decoration-2 hover:underline font-medium" href="#">Terms and Conditions</a></label>
+                                                                <label htmlFor="terms-and-conditions" className="text-sm dark:text-white">Acepto los <a className="text-blue-600 decoration-2 hover:underline font-medium" href="#">términos y condiciones</a></label>
                                                             </div>
                                                         </div>
                                                         {acceptTermAndCondition&&
@@ -185,18 +185,18 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                                     <input id="subscribe" name="subscribe" type="checkbox" checked={subscribe} onChange={(e)=>{}} className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" />
                                                                 </div>
                                                                 <div className="ml-3">
-                                                                    <label htmlFor="subscribe" className="text-sm dark:text-white">Subscribe to newsletter</label>
+                                                                    <label htmlFor="subscribe" className="text-sm dark:text-white">Suscribirse al newsletter</label>
                                                                 </div>
                                                             </div>
                                                         }
                                                     </div>
                     
-                                                    <button type="submit" disabled={!acceptTermAndCondition} className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 disabled:bg-slate-300">Sign up</button>
+                                                    <button type="submit" disabled={!acceptTermAndCondition} className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 disabled:bg-slate-300">Crear cuenta</button>
                                                 </div>
                                             </form>
                                         );
                                     default:
-                                        return <button onClick={() => {signIn(provider.id, {callbackUrl: '/'})}}>Sign in with {provider.name}</button>
+                                        return <button onClick={() => {signIn(provider.id, {callbackUrl: '/'})}}>Regístrese con {provider.name}</button>
                                     }
                             })()}
                         </Fragment>
@@ -205,7 +205,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                 </div>
             </div>
             <Link className="block text-center mt-5 text-blue-600 decoration-2 hover:underline font-medium" href="/">
-                Back to home
+                Volver al Inicio
             </Link>
         </main>
     )
