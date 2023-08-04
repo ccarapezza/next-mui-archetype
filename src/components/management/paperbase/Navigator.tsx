@@ -7,9 +7,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUserGroup, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faReceipt, faAddressBook, faCartShopping, faTags } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faAddressBook, faCartShopping, faTags, faUserTie, faUsers } from '@fortawesome/free-solid-svg-icons'
 import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 
 const categories = [
@@ -23,7 +22,8 @@ const categories = [
   {
     id: 'User Management',
     children: [
-      { id: 'Users', icon: faUserGroup, href: '/management/users', active: false },
+      { id: 'Users', icon: faUserTie, href: '/management/users', active: false },
+      { id: 'Clients', icon: faUsers, href: '/management/clients', active: false },
       { id: 'Roles', icon: faUserTag, href: '/management/roles', active: false },
     ],
   },

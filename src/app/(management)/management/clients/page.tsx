@@ -40,7 +40,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
         }
     }
     const paginationParams = getPaginationParams();
-    const data = await fetchUsersByUserType(paginationParams.page, paginationParams.size, searchParams.search, "admin");
+    const data = await fetchUsersByUserType(paginationParams.page, paginationParams.size, searchParams.search, "client");
     const columns: GridColDef[] = [
         {
             field: 'id',
@@ -61,9 +61,9 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
     ];
 
     return (<>
-        <PageHeader title="Users" />
+        <PageHeader title="Clients" />
         <MuiBox className="p-10">
-            <EntityTableToolbar newButtonLabel="Create new User" newEntityPath="/management/users/new"/>
+            <EntityTableToolbar/>
             <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/users/edit" deletePath="/api/management/users/"/>
         </MuiBox>
     </>)
