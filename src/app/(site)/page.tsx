@@ -10,8 +10,6 @@ export default function Home() {
             <CarouselHome />
             <CollectionsGrid />
             <CarrouselProductServer />
-            {/* <Hero />
-      <Features /> */}
         </>)
         ;
 }

@@ -1,5 +1,6 @@
 import MuiBox from '@/components/client/MuiBox'
 import MuiGrid from '@/components/client/MuiGrid'
+import SendEmailsPage from '@/components/management/email/SendEmailsPage'
 import SubscribersCard from '@/components/management/email/SubscribersCard'
 import TemplateList from '@/components/management/email/TemplateList'
 import TemplatePreview from '@/components/management/email/TemplatePreview'
@@ -24,9 +25,7 @@ export default async function () {
         <MuiBox className="p-10 max-w-6xl mx-auto">
             <MuiGrid container spacing={2}>
                 <MuiGrid item xs={12}>
-                    <TemplateList templates={emailTemplates}/>
-                    <TestEmailCard/>
-                    <SubscribersCard count={5}/>
+                    <SendEmailsPage emailTemplates={emailTemplates} />
                 </MuiGrid>
             </MuiGrid>
         </MuiBox>
