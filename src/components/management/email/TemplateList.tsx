@@ -7,19 +7,22 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import TemplatePreview from './TemplatePreview'
 
-function TemplateList({ templates }: { templates: TemplateDto[] }) {
+function TemplateList({ templates, onTemplateSelected }: { templates: TemplateDto[], onTemplateSelected: any }) {
     console.log("templates", templates)
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
     const [templatePreview, setTemplatePreview] = useState<TemplateDto|null>(null);
+    const [showPreview, setShowPreview] = useState<boolean>(false);
 
-    const selectedTemplate = (templateId: string) => {
-        setTemplatePreview(null);
+    const selectedTemplate = (template: TemplateDto) => {
+        setShowPreview(false);
+        setTemplatePreview(template);
+        console.log("template", template)
         router.push(pathname + '?' + createQueryString(
             [{
                 name: 'templateId',
-                value: templateId
+                value: template.id.toString()
             }],
             searchParams.toString())
         )
@@ -36,10 +39,10 @@ function TemplateList({ templates }: { templates: TemplateDto[] }) {
             <Divider />
             {templates?.map((template) => (
                 
-                <ListItemButton key={template.id} selected={searchParams.get('templateId') === template.id.toString()} onClick={(event) => { event.stopPropagation(); selectedTemplate(template.id.toString()) }} >
+                <ListItemButton key={template.id} selected={searchParams.get('templateId') === template.id.toString()} onClick={(event) => { event.stopPropagation(); selectedTemplate(template) }} >
                     <ListItemText primary={template.name} />
-                    {searchParams.get('templateId') === template.id.toString() && templatePreview === null &&
-                        <ListItemIcon onClick={(event) => { event.stopPropagation(); setTemplatePreview(template) }} className='border p-1 rounded shadow'>
+                    {searchParams.get('templateId') === template.id.toString() && !showPreview &&
+                        <ListItemIcon onClick={(event) => { event.stopPropagation(); setShowPreview(true) }} className='border p-1 rounded shadow'>
                             <Typography>Show Preview <FontAwesomeIcon icon={faEye} /></Typography>
                         </ListItemIcon>
                     }
@@ -48,9 +51,7 @@ function TemplateList({ templates }: { templates: TemplateDto[] }) {
 
             ))}
         </List>
-        { templatePreview &&
-            <TemplatePreview template={templatePreview!} onClose={()=>{setTemplatePreview(null)}}/>
-        }
+        <TemplatePreview template={templatePreview!} onClose={()=>{setShowPreview(false)}} show={showPreview} onTemplateHtmlExport={onTemplateSelected}/>
     </>)
 }
 
