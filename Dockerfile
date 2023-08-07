@@ -29,6 +29,8 @@ COPY . .
 
 # RUN yarn build
 
+ENV NODE_OPTIONS --max-old-space-size=1536
+
 # If using npm comment out above and use below instead
 RUN npm run build
 
@@ -57,4 +59,4 @@ EXPOSE 3000
 ENV PORT 3000
 ENV HOSTNAME localhost
 
-CMD ["node", "--max-old-space-size=1536", "server.js"]
+CMD ["node", "server.js"]
