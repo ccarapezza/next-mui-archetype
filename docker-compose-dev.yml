@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  next-mui-archetype:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    links:
+      - db-engine
+  db-engine:
+    image: mariadb
+    ports:
+      - "3307:3306"
+    expose:
+      - 3307
+    environment:
+      - MARIADB_ROOT_PASSWORD=represion
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  mariadb-data:

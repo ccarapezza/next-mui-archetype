@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  next-mui-archetype:
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - db-engine
+  db-engine:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=represion
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  mariadb-data:
