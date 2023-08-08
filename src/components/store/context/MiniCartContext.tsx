@@ -80,7 +80,7 @@ export default function MiniCartProvider({ children }: Props) {
   // Saved to local storage
   useEffect(() => {
     setStoredValue(products);
-  }, [products, setProducts]);
+  }, [products, setStoredValue]);
 
   return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, geTotalMinicart }}>
     {children}

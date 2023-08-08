@@ -8,7 +8,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import CurrencyDisplay from '@/components/management/product/CurrencyDisplay';
 import PriceFormatting from '@/components/management/product/PriceFormatting';
 
-export default function () {
+export default function MiniCart() {
 
   const [state, setState] = useState(false)
   const { products, addProduct, deleteProduct, updateProductQuantity, geTotalMinicart } = useContext(CartContext)

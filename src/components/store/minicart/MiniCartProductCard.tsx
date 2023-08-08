@@ -18,7 +18,7 @@ type Product = {
 };
 
 
-export default function (props: { product: Product }) {
+export default function MiniCartProductCard(props: { product: Product }) {
 
   const { addProduct, deleteProduct, updateProductQuantity } = useContext(CartContext)
 

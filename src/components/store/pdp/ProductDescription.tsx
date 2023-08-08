@@ -19,7 +19,7 @@ const esteProducto = {
   productNameUrl: 'product-name-10'
 }
 
-export default function () {
+export default function ProductDescription() {
 
   const { addProduct } = useContext(CartContext)
   const [ quantity, setQuantity ] = useState(esteProducto.quantity);

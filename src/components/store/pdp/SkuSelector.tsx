@@ -33,7 +33,7 @@ const items = [
   }
 ]
 
-export default function () {
+export default function SkuSelector() {
   const [color, setColor] = useState<string>('green');
   const [size, setSize] = useState<string>('S');
 

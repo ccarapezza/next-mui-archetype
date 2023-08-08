@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 
-export default function (props: { categoryTree: any, listProducts: any }) {
+export default function ProductListMain(props: { categoryTree: any, listProducts: any }) {
   // Rutas
   const pathname = usePathname();
 

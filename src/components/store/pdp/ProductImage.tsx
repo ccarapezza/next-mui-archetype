@@ -1,12 +1,14 @@
 'use client'
 
-export default function () {
+import Image from "next/image"
+
+export default function ProductImage() {
 
   return (
     <div className="w-full md:w-1/2 ">
       <div>
         <div className="relative mt-4">
-          <img
+          <Image
             alt="Tee"
             src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
             className="h-72 w-full rounded-xl object-cover lg:h-[540px]"
@@ -36,7 +38,7 @@ export default function () {
 
         <ul className="mt-1 flex gap-1">
           <li>
-            <img
+            <Image
               alt="Tee"
               src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
               className="h-16 w-16 rounded-md object-cover"
@@ -44,7 +46,7 @@ export default function () {
           </li>
 
           <li>
-            <img
+            <Image
               alt="Tee"
               src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
               className="h-16 w-16 rounded-md object-cover"
@@ -52,7 +54,7 @@ export default function () {
           </li>
 
           <li>
-            <img
+            <Image
               alt="Tee"
               src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
               className="h-16 w-16 rounded-md object-cover"
@@ -60,7 +62,7 @@ export default function () {
           </li>
 
           <li>
-            <img
+            <Image
               alt="Tee"
               src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
               className="h-16 w-16 rounded-md object-cover"

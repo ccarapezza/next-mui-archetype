@@ -1,7 +1,7 @@
 import ProductCard from '@/components/main-ui/ProductCard';
 import React from 'react'
 
-export default function (props: { products: any[] }) {
+export default function ProductGridList(props: { products: any[] }) {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -7,7 +7,7 @@ const fetchProductData = async () => {
   return res.json();
 };
 
-export default async function () {
+export default async function CarrouselProductServer() {
 
     const listProducts = await fetchProductData(); // TODO: Ver Loop infinito!
     const lista = listProducts.rows;

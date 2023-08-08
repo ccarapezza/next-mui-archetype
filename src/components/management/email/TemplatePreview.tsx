@@ -6,37 +6,17 @@ import { Card, CardContent, CardHeader, IconButton, Stack, Typography } from '@m
 import React, { useEffect, useRef, useState } from 'react'
 import { EditorRef, EmailEditor } from 'react-email-editor'
 
-function TemplatePreview({onClose, template, show, onTemplateHtmlExport}: {onClose: any, template: TemplateDto, show: boolean, onTemplateHtmlExport: any}) {
+function TemplatePreview({ onClose, template, show, onTemplateHtmlExport }: { onClose: any, template: TemplateDto, show: boolean, onTemplateHtmlExport: any }) {
     const emailEditorRef = useRef<EditorRef>(null);
     const [loading, setLoading] = useState(true);
     const [ready, setReady] = useState(false);
     const [loaded, setLoaded] = useState(false);
     const [htmlTemplateSelected, setHtmlTemplateSelected] = useState("");
 
-    const loadTemplatePromise = () => {
-        return new Promise((resolve, reject) => {
-            if (template) {
-                const templateJson = JSON.parse(template.template);
-                emailEditorRef.current?.editor?.loadDesign(templateJson);
-                emailEditorRef.current?.editor?.exportHtml((data) => {
-                    const { design, html } = data;
-                    console.log('exportHtml', html);
-                    setHtmlTemplateSelected(html);
-                    if(onTemplateHtmlExport){
-                        onTemplateHtmlExport(html);
-                    }
-                    console.log('design', design);
-                    setLoaded(true);
-                });
-                resolve(true);
-            } else {
-                reject();
-            }
-        });
-    }
+
 
     useEffect(() => {
-        if(htmlTemplateSelected && show){
+        if (htmlTemplateSelected && show) {
             const previewEl = document.getElementById("preview");
             if (previewEl !== null) {
                 previewEl.innerHTML = htmlTemplateSelected;
@@ -52,8 +32,26 @@ function TemplatePreview({onClose, template, show, onTemplateHtmlExport}: {onClo
     }, [template]);
 
     useEffect(() => {
-        if (ready&&template) {
-            loadTemplatePromise().then((result) => {
+        if (ready && template) {
+            new Promise((resolve, reject) => {
+                if (template) {
+                    const templateJson = JSON.parse(template.template);
+                    emailEditorRef.current?.editor?.loadDesign(templateJson);
+                    emailEditorRef.current?.editor?.exportHtml((data) => {
+                        const { design, html } = data;
+                        console.log('exportHtml', html);
+                        setHtmlTemplateSelected(html);
+                        if (onTemplateHtmlExport) {
+                            onTemplateHtmlExport(html);
+                        }
+                        console.log('design', design);
+                        setLoaded(true);
+                    });
+                    resolve(true);
+                } else {
+                    reject();
+                }
+            }).then((result) => {
                 console.log("result", result);
             }).catch((error) => {
                 console.log("error", error);
@@ -61,7 +59,7 @@ function TemplatePreview({onClose, template, show, onTemplateHtmlExport}: {onClo
                 setLoading(false);
             });
         }
-    }, [ready]);
+    }, [ready, template, onTemplateHtmlExport]);
 
     const onReady = () => {
         console.log("ready", ready);
@@ -74,17 +72,17 @@ function TemplatePreview({onClose, template, show, onTemplateHtmlExport}: {onClo
                 <LoadingUI />
             </Card>
         }
-        <Card className={`shadow rounded border p-4 mt-4 ${(!loading && template && show)?"":"hidden"}`}>
+        <Card className={`shadow rounded border p-4 mt-4 ${(!loading && template && show) ? "" : "hidden"}`}>
             <CardHeader title={<Stack direction={'row'}>
                 <FontAwesomeIcon icon={faEye} className='mr-2' />
                 <Typography className='font-bold'>Preview: </Typography>
                 <Typography>{template?.name}</Typography>
             </Stack>}
-            action={
-                <IconButton onClick={onClose}>
-                    <FontAwesomeIcon icon={faClose} />
-                </IconButton>
-            } />
+                action={
+                    <IconButton onClick={onClose}>
+                        <FontAwesomeIcon icon={faClose} />
+                    </IconButton>
+                } />
             <CardContent id="preview">
 
             </CardContent>

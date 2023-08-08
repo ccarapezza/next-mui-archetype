@@ -20,7 +20,7 @@ const schema = yup.object({
 }).required();
 
 
-export default function () {
+export default function OrderFormGuest() {
 
   const { status, data } = useSession();
   

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import SignIn from '@/components/auth/SingIn';
 import { signOut, useSession } from 'next-auth/react';
 
-export default function (props: { providers: any }) {
+export default function NavBarAuth(props: { providers: any }) {
 
   const { status, data } = useSession();
   const { providers } = props;

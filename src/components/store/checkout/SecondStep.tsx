@@ -4,7 +4,7 @@ import OrderFormGuest from './second-step/OrderFormGuest';
 import LoadingUI from '@/components/main-ui/LoadingUI';
 
 
-export default function () {
+export default function SecondStep() {
   const { status, data } = useSession();
 
   return (

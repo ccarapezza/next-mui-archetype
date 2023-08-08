@@ -24,6 +24,7 @@ const CustomInput = forwardRef((props: ExtOutlinedInputProps, ref: ForwardedRef<
         {...props}
     />;
 });
+CustomInput.displayName = "CustomInput";
 
 function CurrencyInput({ name, error, control, prefix, fullWidth }: CurrencyInputProps){
     return (
@@ -54,5 +55,6 @@ function CurrencyInput({ name, error, control, prefix, fullWidth }: CurrencyInpu
         </>
     )
 }
+CurrencyInput.displayName = "CurrencyInput";
 
 export default CurrencyInput;

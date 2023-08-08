@@ -74,8 +74,9 @@ async function uploadFile({ key, file }: { key: string; file: File; }) {
     return result;
 }
 
-
-export default {
+const S3BucketUtil = {
     getSignedUrlByKey,
     uploadFile,
 }
+
+export default S3BucketUtil;

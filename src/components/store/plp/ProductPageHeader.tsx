@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function (props: { categoryTitle: string }) {
+export default function ProductPageHeader(props: { categoryTitle: string }) {
 
   return (
     <header className="text-center">

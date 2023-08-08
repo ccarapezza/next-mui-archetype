@@ -1,6 +1,8 @@
 "use client"
 
-export default function () {
+import Image from "next/image"
+
+export default function PaymentsAndShipping() {
 
   const paymentMethods = [
     { title: "one", paymentImg: "https://dummyimage.com/65x65/fff/0011ff&text=Opci%C3%B3n+1" },
@@ -24,7 +26,7 @@ export default function () {
             {
               paymentMethods.map((pm, index) => (
                 <li key={index}>
-                  <img src={pm.paymentImg} alt={pm.title} />
+                  <Image src={pm.paymentImg} alt={pm.title} />
                 </li>
               ))
             }
@@ -36,7 +38,7 @@ export default function () {
             {
               shippingTypes.map((pm, index) => (
                 <li key={index}>
-                  <img src={pm.paymentImg} alt={pm.title} />
+                  <Image src={pm.paymentImg} alt={pm.title} />
                 </li>
               ))
             }

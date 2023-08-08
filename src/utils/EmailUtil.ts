@@ -108,9 +108,11 @@ async function sendWelcomeEmail({ email, url }: { email: string; url: string; })
     });
 }
 
-export default {
+const emailUtil = {
     sendEmail,
     sendVerificationEmail,
     sendWelcomeEmail,
     sendBulkEmail
 }
+
+export default emailUtil;

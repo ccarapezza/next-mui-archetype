@@ -203,7 +203,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
             setExpandedIds(["root"]);
             setCategories(initialCategories);
         }
-    }, [searchValue]);
+    }, [searchValue, initialCategories]);
 
     return (
         <FormControl {...props}>

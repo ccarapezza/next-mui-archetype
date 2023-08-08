@@ -66,7 +66,7 @@ export default function ReactEmailEditor({id, name, template}:{id?: number, name
         if(name){
             nameRef.current?.setAttribute("value", name);
         }
-    }, [template, name]);
+    }, [template, name, id]);
 
     return (<>
         <Box className="flex items-center justify-between">

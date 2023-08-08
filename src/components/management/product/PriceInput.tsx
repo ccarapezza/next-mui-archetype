@@ -18,6 +18,8 @@ const CustomInput = forwardRef((props: ExtOutlinedInputProps, ref) => {
     />;
 });
 
+CustomInput.displayName = "CustomInput";
+
 interface PriceInputProps extends CurrencyInputProps {
     value?: number;
     onChangeEvent?: (value: string) => void;

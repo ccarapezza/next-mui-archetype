@@ -8,7 +8,7 @@ const fetchCategoryData = async () => {
   return res.json();
 };
 
-export default async function () {
+export default async function FooterServer() {
 
   const categoryTree = await fetchCategoryData();
 

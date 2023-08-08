@@ -1,7 +1,7 @@
 'use client'
 import MiniCartProductCard from "./MiniCartProductCard";
 
-export default function (props: { products: any[] }) {
+export default function MiniCartList(props: { products: any[] }) {
   const { products } = props;
 
   return (
