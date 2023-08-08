@@ -11,7 +11,7 @@ const fetchEmailTemplateData = async (id: number) => {
     return res.json();
 };
 
-export default async function ({ params }: { params: { id: number } }) {
+export default async function EmailTemplatesPage({ params }: { params: { id: number } }) {
     const data = await fetchEmailTemplateData(params.id);
 
     return (<>

@@ -1,6 +1,6 @@
 'use client';
 
-export default function () {
+export default function TerminosCondicionesPage() {
 
   return (
     <section className="flex-1 leading-relaxed max-w-screen-xl pt-5 mx-auto mt-5 px-4 md:px-8">

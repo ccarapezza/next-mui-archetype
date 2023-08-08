@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 
-export default () => {
+export default function EmptyCar(){
   return (
     <div className="max-w-screen-xl px-4 py-2 mx-auto sm:px-6 sm:py-8 lg:px-8 text-center">
       <h2 className="text-xl font-bold text-tertiary sm:text-3xl mb-4 text-center">¡Tú carrito está vacío!</h2>

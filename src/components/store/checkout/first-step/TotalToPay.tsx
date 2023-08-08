@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { CartContext } from "../../context/MiniCartContext";
 import PriceFormatting from "@/components/management/product/PriceFormatting";
 
-export default function () {
+export default function TotalToPay() {
   const { geTotalMinicart } = useContext(CartContext)
 
   return (

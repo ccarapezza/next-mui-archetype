@@ -47,7 +47,7 @@ export default function CredentialsForm({ provider }: { provider: ClientSafeProv
         if (error) {
             setErrorParam(error as string);
         }
-    }, [setErrorParam, params.error])
+    }, [setErrorParam, params])
 
     const getMessageByErrorKey = (errorKey: string) => {
         switch (errorKey) {

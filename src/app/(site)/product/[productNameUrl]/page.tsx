@@ -55,7 +55,7 @@ const esteProducto = {
 //   ]
 // };
 
-export default function () {
+export default function SiteProductPage() {
 
   // const { addProduct } = useContext(CartContext)
 

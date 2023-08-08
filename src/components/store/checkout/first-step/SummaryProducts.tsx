@@ -1,8 +1,7 @@
 "use client"
-import { use, useEffect, useState } from 'react';
 import CardProductCheckout from '../CardProductCheckout';
 
-export default function (props: { cart: any[] }) {
+export default function SummaryProducts(props: { cart: any[] }) {
   const { cart } = props;
 
   return (

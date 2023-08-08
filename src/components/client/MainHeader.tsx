@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'
 import React, { useState } from 'react'
 import SignInButton from './SignInButton';
+import Image from 'next/image';
 
 // Replace / path with your path
 const navigation = [
@@ -21,14 +22,14 @@ export default function MainHeader() {
             <nav className="relative z-30">
                 <div className="max-w-screen items-center py-1 md:flex md:space-x-8 xl:space-x-24">
                     <Link href={"/main"}>
-                        <img
+                        <Image
                             className='dark:hidden'
                             src="https://www.floatui.com/logo.svg"
                             width={120}
                             height={50}
                             alt="Float UI logo"
                         />
-                        <img
+                        <Image
                             className='hidden dark:block'
                             src="https://www.floatui.com/images/logo.svg"
                             width={120}

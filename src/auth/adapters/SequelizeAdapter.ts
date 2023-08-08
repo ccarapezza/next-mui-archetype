@@ -102,7 +102,7 @@ export default function SequelizeAdapter(
                     to: user.email,
                     from: "carapezza.christian@gmail.com",
                     subject: 'Welcome to NextAuth.js',
-                    message: 'Your account has been created.',
+                    html: 'Your account has been created.',
                 });
             } catch (error) {
                 console.error('Error sending email:', error);
@@ -177,8 +177,7 @@ export default function SequelizeAdapter(
 
             await User.update(user, { where: { id: user.id } })
             const userInstance = await User.findByPk(user.id)
-
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            
             return userInstance!
         },
         async deleteUser(userId) {

@@ -14,7 +14,7 @@ const fetchSubscriberListData = async (page: number, size: number, search: strin
     return res.json();
 };
 
-export default async function({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {
+export default async function SubscriberPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {
     const getPaginationParams= () => {
         return {
             page: searchParams.page? searchParams.page : 1,

@@ -12,6 +12,7 @@ import ReactCrop, {
 import 'react-image-crop/dist/ReactCrop.css'
 import { useDebounceEffect } from './crop/useDebounceEffect';
 import { canvasPreview } from './crop/canvasPreview';
+import Image from 'next/image';
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -176,7 +177,7 @@ export default function AvatarUploadModal({src}: {src: string} ) {
                                     onComplete={(c) => setCompletedCrop(c)}
                                     aspect={aspect}
                                 >
-                                    <img
+                                    <Image
                                         ref={imgRef}
                                         alt="Crop me"
                                         src={imgSrc}

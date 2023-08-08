@@ -1,6 +1,6 @@
 import MuiBox from '@/components/client/MuiBox'
 import MuiGrid from '@/components/client/MuiGrid'
-import SendEmailsPage from '@/components/management/email/SendEmailsPage'
+import SendEmailsComponent from '@/components/management/email/SendEmailsComponent'
 import SubscribersCard from '@/components/management/email/SubscribersCard'
 import TemplateList from '@/components/management/email/TemplateList'
 import TemplatePreview from '@/components/management/email/TemplatePreview'
@@ -18,14 +18,14 @@ const fetchEmailTemplatesData = async (page: number, size: number, search: strin
     return res.json();
 };
 
-export default async function () {
+export default async function SendEmailsPage() {
     const emailTemplates: TemplateDto[] = (await fetchEmailTemplatesData(1, 5, ""))?.rows;
     return (<>
         <PageHeader title="Send Emails" />
         <MuiBox className="p-10 max-w-6xl mx-auto">
             <MuiGrid container spacing={2}>
                 <MuiGrid item xs={12}>
-                    <SendEmailsPage emailTemplates={emailTemplates} />
+                    <SendEmailsComponent emailTemplates={emailTemplates} />
                 </MuiGrid>
             </MuiGrid>
         </MuiBox>

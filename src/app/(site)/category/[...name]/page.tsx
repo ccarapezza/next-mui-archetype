@@ -14,7 +14,7 @@ const fetchProductData = async () => {
   return res.json();
 };
 
-export default async function () {
+export default async function SiteCategoryPage() {
 
   const categoryTree = await fetchCategoryData();
   const listProducts = await fetchProductData();

@@ -2,7 +2,7 @@ import MuiBox from '@/components/client/MuiBox'
 import PageHeader from '@/components/management/paperbase/PageHeader'
 import ReactEmailEditor from '@/components/client/ReactEmailEditor'
 
-export default function () {
+export default function EmailTemplateNewPage() {
 
     return (<>
         <PageHeader title="New Template" />

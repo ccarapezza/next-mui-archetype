@@ -4,7 +4,7 @@ import TemplateList from './TemplateList'
 import TestEmailCard from './TestEmailCard'
 import SubscribersCard from './SubscribersCard'
 
-export default function SendEmailsPage({ emailTemplates }: { emailTemplates: TemplateDto[] }) {
+export default function SendEmailsComponent({ emailTemplates }: { emailTemplates: TemplateDto[] }) {
     const [htmlContentSelected, setHtmlContentSelected] = useState<string>("");
 
     return (<>

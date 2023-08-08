@@ -2,7 +2,7 @@
 import SummaryProducts from './first-step/SummaryProducts';
 import TotalToPay from './first-step/TotalToPay';
 
-export default function (props: { products: any[] }) {
+export default function FirstStep(props: { products: any[] }) {
     const { products } = props;
 
     return (

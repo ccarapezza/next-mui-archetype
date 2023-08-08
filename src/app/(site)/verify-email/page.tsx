@@ -36,7 +36,7 @@ const resendVerifyEmail = async ({ email }: { email: string }) => {
     return res;
 };
 
-export default function () {
+export default function VerifyEmailPage() {
     const router = useRouter();
     const searchParam = useSearchParams();
     const [resendVerificationMode, setResendVerificationMode] = useState(false);

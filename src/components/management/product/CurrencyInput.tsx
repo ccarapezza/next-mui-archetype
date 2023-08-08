@@ -25,7 +25,7 @@ const CustomInput = forwardRef((props: ExtOutlinedInputProps, ref: ForwardedRef<
     />;
 });
 
-const CurrencyInput = ({ name, error, control, prefix, fullWidth }: CurrencyInputProps) => {
+function CurrencyInput({ name, error, control, prefix, fullWidth }: CurrencyInputProps){
     return (
         <>
             <Controller               

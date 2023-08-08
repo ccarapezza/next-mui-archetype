@@ -8,9 +8,13 @@ import Link from 'next/link'
 import { useSearchParams } from "next/navigation";
 import { use, useEffect, useState } from "react";
 
-export default function () {
+export default function SiteErrorPage() {
     const searchParam = useSearchParams();
     const [message, setMessage] = useState("");
+    const messageDictionary: any = {
+        "UsernameAlreadyExists": "El nombre de usuario ya existe.",
+        "EmailNotVerified": "Debe verificar su correo electrónico para poder iniciar sesión.",
+    }
 
     useEffect(() => {
         const error = searchParam.get('error');
@@ -19,12 +23,7 @@ export default function () {
             setMessage(messageDictionary[error] || "Error desconocido");
         }
     }, [searchParam]);
-
-    const messageDictionary: any = {
-        "UsernameAlreadyExists": "El nombre de usuario ya existe.",
-        "EmailNotVerified": "Debe verificar su correo electrónico para poder iniciar sesión.",
-    }
-
+    
     return (
         <section className="flex-1 leading-relaxed max-w-screen-xl pt-5 mx-auto px-4 md:px-8 mb-4">
             {message &&

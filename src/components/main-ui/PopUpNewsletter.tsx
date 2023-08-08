@@ -6,7 +6,7 @@ import { useState } from "react"
 import SubscriptionForm from "./SubscriptionForm";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
-export default () => {
+export default function PopUpNewsletter(){
 
     const { status } = useSession();
     const [modalState, setModalState] = useState(true)

@@ -10,6 +10,10 @@ Este es un arquetipo creado a partir de [Next.js](https://nextjs.org/) y utiliza
 
 ## Ejecución en desarrollo
 
+Para la ejecución en desarrollo es necesario contar con docker y docker compose. Se puede descargar e instalar todo junto con [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+
+
 Para instalar las dependencias necesarias:
 
 ```bash

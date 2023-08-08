@@ -2,7 +2,7 @@ import MuiBox from '@/components/client/MuiBox'
 import PageHeader from '@/components/management/paperbase/PageHeader'
 import React from 'react'
 
-export default function() {
+export default function OrdersPage() {
     return (<>
         <PageHeader title="Orders" />
         <MuiBox className="p-10">
