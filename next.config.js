@@ -25,10 +25,10 @@ const nextConfig = {
         ],
         domains: ['dummyimage.com', 'nextjs-image-bucket.s3.us-east-1.amazonaws.com']
     },
-    ...(process.env.NODE_ENV === 'como?') && {experimental: {
+    experimental: {
         /** Needed to fix --"Module not found: Can't resolve 'pg-hstore'"--" */
         serverComponentsExternalPackages: ['sequelize', 'sequelize-typescript'],
-    }},
+    },
     reactStrictMode: false,
     publicRuntimeConfig: {
         apiUrl: process.env.NODE_ENV === 'development'
