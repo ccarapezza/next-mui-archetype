@@ -4,7 +4,7 @@ import UserForm from "@/components/management/users/UserForm";
 import { headers } from "next/headers";
 
 const fetchUserData = async (id: string) => {
-    const res = await fetch(`http://localhost:3000/api/management/user/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/${id}`, {
         cache: 'no-store',
         headers: headers()
     });

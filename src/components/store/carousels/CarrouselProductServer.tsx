@@ -1,10 +1,8 @@
+import { ProductService } from "@/services/ProductService";
 import CarouselProducts from "./CarouselProducts";
 
 const fetchProductData = async () => {
-  const res = await fetch(`http://localhost:3000/api/store/product/list/`, {
-    cache: 'no-store',
-  });
-  return res.json();
+  return ProductService.search(null);
 };
 
 export default async function CarrouselProductServer() {

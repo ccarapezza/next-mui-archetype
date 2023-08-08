@@ -1,11 +1,9 @@
 import { getProviders } from "next-auth/react";
 import Navbar from "./Navbar";
+import { ProductCategoryService } from "@/services/ProductCategoryService";
 
 const fetchCategoryData = async () => {
-  const res = await fetch(`http://localhost:3000/api/store/category/list/`, {
-    cache: 'no-store',
-  });
-  return res.json();
+  return ProductCategoryService.searchCategoryTree(null);
 };
 
 export default async function NavBarServer() {

@@ -9,7 +9,7 @@ import { headers } from "next/headers";
 
 const fetchRolesData = async (page: number, size: number, search: string) => {
     const querySearch = search?`?search=${search}`:"";
-    const res = await fetch(`http://localhost:3000/api/management/role/list/${page}/${size}${querySearch}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/role/list/${page}/${size}${querySearch}`, {
         cache: 'no-store',
         headers: headers()
     });

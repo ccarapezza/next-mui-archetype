@@ -20,7 +20,7 @@ const schema = yup.object({
 
 const updateCategoryData = async (categoryData: any) => {
     console.log("categoryData", categoryData);
-    const res = await fetch(`http://localhost:3000/api/management/category/${categoryData.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/${categoryData.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const updateCategoryData = async (categoryData: any) => {
 
 const saveCategoryData = async (categoryData: any) => {
     console.log("categoryData", categoryData);
-    const res = await fetch(`http://localhost:3000/api/management/category/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

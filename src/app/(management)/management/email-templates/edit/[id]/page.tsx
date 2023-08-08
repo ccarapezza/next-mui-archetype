@@ -4,7 +4,7 @@ import ReactEmailEditor from '@/components/client/ReactEmailEditor'
 import { headers } from "next/headers";
 
 const fetchEmailTemplateData = async (id: number) => {
-    const res = await fetch(`http://localhost:3000/api/management/email-template/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/email-template/${id}`, {
         cache: 'no-store',
         headers: headers()
     } );

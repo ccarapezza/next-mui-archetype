@@ -31,7 +31,7 @@ const saveProductData = async (productData: any, files: File[]) => {
     if(files.length>0){
         fData.set('file', files[0]);
     }
-    const res = await fetch(`http://localhost:3000/api/management/product/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/product/`, {
         method: 'POST',
         body: fData,
     });

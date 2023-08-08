@@ -4,7 +4,7 @@ import ProductForm from "@/components/management/product/ProductForm";
 import { headers } from "next/headers";
 
 const fetchCategoriesData = async () => {
-    const res = await fetch(`http://localhost:3000/api/management/category/list/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/list/`, {
         cache: 'no-store',
         headers: headers()
     });
@@ -12,7 +12,7 @@ const fetchCategoriesData = async () => {
 };
 
 const fetchVariationsData = async () => {
-    const res = await fetch(`http://localhost:3000/api/management/variation/list/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/variation/list/`, {
         cache: 'no-store',
         headers: headers()
     });

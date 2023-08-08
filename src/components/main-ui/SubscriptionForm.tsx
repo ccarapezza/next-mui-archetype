@@ -17,7 +17,7 @@ const schema = yup.object({
 
 const subscribe = async (roleData: { email: string }) => {
     console.log("roleData", roleData);
-    const res = await fetch(`http://localhost:3000/api/subscribe`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/subscribe`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

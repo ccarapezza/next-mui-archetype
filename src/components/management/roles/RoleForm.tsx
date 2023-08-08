@@ -19,7 +19,7 @@ const schema = yup.object({
 
 const updateRoleData = async (roleData: any) => {
     console.log("roleData", roleData);
-    const res = await fetch(`http://localhost:3000/api/management/role/${roleData.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/role/${roleData.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const updateRoleData = async (roleData: any) => {
 
 const saveRoleData = async (roleData: any) => {
     console.log("roleData", roleData);
-    const res = await fetch(`http://localhost:3000/api/management/role/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/role/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

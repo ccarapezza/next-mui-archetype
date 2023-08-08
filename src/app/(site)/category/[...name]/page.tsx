@@ -1,14 +1,14 @@
 import ProductListMain from '@/components/store/plp/ProductListMain';
 
 const fetchCategoryData = async () => {
-  const res = await fetch(`http://localhost:3000/api/store/category/list/`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/store/category/list/`, {
     cache: 'no-store',
   });
   return res.json();
 };
 
 const fetchProductData = async () => {
-  const res = await fetch(`http://localhost:3000/api/store/product/list/`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/store/product/list/`, {
     cache: 'no-store',
   });
   return res.json();

@@ -5,7 +5,7 @@ import { Alert, Button, Card, CardContent, TextField, Typography } from '@mui/ma
 import React, { useRef } from 'react'
 
 const sendTestEmail = async (htmlContent: any, email: string) => {
-    const res = await fetch(`http://localhost:3000/api/management/email-sender/send-test-email`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/email-sender/send-test-email`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

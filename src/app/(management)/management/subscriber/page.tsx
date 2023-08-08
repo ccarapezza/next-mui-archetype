@@ -7,7 +7,7 @@ import { headers } from "next/headers"
 
 const fetchSubscriberListData = async (page: number, size: number, search: string) => {
     const querySearch = search?`?search=${search}`:"";
-    const res = await fetch(`http://localhost:3000/api/management/subscriber/list/${page}/${size}${querySearch}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/subscriber/list/${page}/${size}${querySearch}`, {
         cache: 'no-store',
         headers: headers()
     });

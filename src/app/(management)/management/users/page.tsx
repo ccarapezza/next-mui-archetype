@@ -24,8 +24,8 @@ const fetchUsersByUserType = async (page: number, size: number, search: string, 
 
     const queryParams = createQueryString(paramsArray, "");
     console.log("queryParams", queryParams)
-    console.log("URL!!", `http://localhost:3000/api/management/user/list/${page}/${size}${queryParams?'?'+queryParams:''}`)
-    const res = await fetch(`http://localhost:3000/api/management/user/list/${page}/${size}${queryParams?'?'+queryParams:''}`, {
+    console.log("URL!!", `${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/list/${page}/${size}${queryParams?'?'+queryParams:''}`)
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/list/${page}/${size}${queryParams?'?'+queryParams:''}`, {
         cache: 'no-store',
         headers: headers()
     });

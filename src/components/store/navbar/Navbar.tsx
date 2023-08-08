@@ -8,7 +8,7 @@ import logo from "./../../../assets/logos/CMD-Logo-Navbar.png";
 import MiniCart from '../minicart/MiniCart';
 import NavBarAuth from './NavBarAuth';
 
-export default function Navbar(props: { categoryTree: any, providers:any }) {
+export default function Navbar(props: { categoryTree?: any, providers?:any }) {
 
   const { categoryTree, providers } = props;
 

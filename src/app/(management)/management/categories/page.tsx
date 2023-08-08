@@ -6,7 +6,7 @@ import PageHeader from "@/components/management/paperbase/PageHeader";
 import { headers } from "next/headers";
 
 const fetchCategoriesData = async () => {
-    const res = await fetch(`http://localhost:3000/api/management/category/list/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/list/`, {
         cache: 'no-store',
         headers: headers()
     });

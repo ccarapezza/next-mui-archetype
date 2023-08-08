@@ -1,18 +1,11 @@
+import { ProductCategoryService } from "@/services/ProductCategoryService";
 import Footer from "./Footer";
-
-
-const fetchCategoryData = async () => {
-  const res = await fetch(`http://localhost:3000/api/store/category/list/`, {
-    cache: 'no-store',
-  });
-  return res.json();
-};
+import { Suspense } from "react";
 
 export default async function FooterServer() {
-
-  const categoryTree = await fetchCategoryData();
-
-  return (
-    <Footer categoryTree={categoryTree} />
-  )
+    const categoryTree = await ProductCategoryService.searchCategoryTree(null);
+    
+    return (<Suspense fallback={<div>Loading...</div>}>
+        <Footer categoryTree={categoryTree} />
+    </Suspense>)
 }

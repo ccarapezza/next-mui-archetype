@@ -28,7 +28,7 @@ const schema = yup.object({
 }).required();
 
 const signUp = async ({ name, email, password }:{ name: string, email: string, password: string }) => {
-    const res = await fetch(`http://localhost:3000/api/auth/signup`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/auth/signup`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

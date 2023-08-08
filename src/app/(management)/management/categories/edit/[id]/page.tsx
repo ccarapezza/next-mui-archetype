@@ -4,7 +4,7 @@ import RoleForm from "@/components/management/roles/RoleForm";
 import { headers } from "next/headers";
 
 const fetchRoleData = async (id: string) => {
-    const res = await fetch(`http://localhost:3000/api/management/category/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/${id}`, {
         cache: 'no-store',
         headers: headers()
     } );

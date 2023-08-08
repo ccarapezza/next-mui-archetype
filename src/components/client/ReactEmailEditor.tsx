@@ -24,7 +24,7 @@ export default function ReactEmailEditor({id, name, template}:{id?: number, name
 
     const updateEmailTemplateData = async (emailTemplate: any) => {
         console.log("EmailTemplate", emailTemplate);
-        const res = await fetch(`http://localhost:3000/api/management/email-template/${emailTemplate.id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/email-template/${emailTemplate.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ export default function ReactEmailEditor({id, name, template}:{id?: number, name
     
     const saveEmailTemplateData = async (emailTemplate: any) => {
         console.log("EmailTemplate", emailTemplate);
-        const res = await fetch(`http://localhost:3000/api/management/email-template/`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/email-template/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
