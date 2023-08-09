@@ -62,4 +62,4 @@ ENV NODE_OPTIONS --max-old-space-size=1536
 # 
 # CMD ["node", "server.js"]
 # 
-CMD []
+CMD ["tail","-f","/dev/null"]
