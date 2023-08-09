@@ -6,7 +6,7 @@ import AuthSection from '../../main-ui/AuthSection';
 import Image from 'next/image'
 import logo from "./../../../assets/logos/CMD-Logo-Navbar.png";
 import MiniCart from '../minicart/MiniCart';
-import NavBarAuth from './NavBarAuth';
+import NavBarAuth from './auth/NavBarAuth';
 
 export default (props: { categoryTree: any, providers:any }) => {
 

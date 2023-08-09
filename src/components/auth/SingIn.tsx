@@ -47,7 +47,7 @@ export default function SignIn({ providers }: { providers: Record<LiteralUnion<B
     }
 
     return (
-        <main className="w-full max-w-md mx-auto p-6">
+        <main className="w-full max-w-md mx-auto">
             {errorMessage &&
                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <FontAwesomeIcon icon={faKey} className='mr-2' /><span className="block sm:inline">{getNextAuthErrorMessage(errorMessage)}</span>
@@ -57,9 +57,9 @@ export default function SignIn({ providers }: { providers: Record<LiteralUnion<B
                 <div className="p-4 sm:p-7">
                     <div className="text-center">
                         <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Iniciar sesión</h1>
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        <p className="mt-2 text-sm text-tertiary">
                             ¿Aún no tienes una cuenta?&nbsp;
-                            <Link className="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/signup">
+                            <Link className="text-primary decoration-2 hover:underline font-medium" href="/auth/signup">
                                 Registrate aquí
                             </Link>
                         </p>
@@ -70,9 +70,6 @@ export default function SignIn({ providers }: { providers: Record<LiteralUnion<B
                     </div>
                 </div>
             </div>
-            <Link className="block text-center mt-5 text-blue-600 decoration-2 hover:underline font-medium" href="/">
-                Volver al Inicio
-            </Link>
         </main>
     )
 }

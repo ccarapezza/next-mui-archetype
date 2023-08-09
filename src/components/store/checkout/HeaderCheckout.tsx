@@ -3,7 +3,9 @@ import Link from "next/link";
 import logo from "../../../assets/logos/CMD-Logo-Navbar.png";
 import Image from 'next/image'
 
-export default () => {
+export default (props: {ctaButton: string}) => {
+
+  const {ctaButton} = props
 
   return (
     <nav className="flex justify-center bg-white w-full">
@@ -15,7 +17,7 @@ export default () => {
           className="text-4xl font-tungsten text-primary"
           href="/"
         >
-          Seguir Comprando
+          {ctaButton}
         </Link>
       </div>
     </nav>

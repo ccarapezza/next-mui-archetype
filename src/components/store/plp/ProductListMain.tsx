@@ -28,7 +28,7 @@ export default function (props: { categoryTree: any, listProducts: any }) {
         <ProductPageHeader categoryTitle={categoryUrlName}/>
         <div className='flex flex-col mt-8 lg:flex-row'>
           <div className='w-full lg:w-1/5 px-2'>
-            <ProductFilters />
+            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryUrlName}/>
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
             <ProductGridList products={listProducts} />

@@ -1,8 +1,5 @@
 'use client';
-import { useContext } from "react";
-import { CartContext } from "@/components/store/context/MiniCartContext";
-import { Product } from "@/schemas/product";
-import ProductImage from "@/components/store/pdp/ProductImage";
+import ProductImage from "@/components/store/pdp/product-image/ProductImage";
 import ProductDescription from "@/components/store/pdp/ProductDescription";
 
 const esteProducto = {
