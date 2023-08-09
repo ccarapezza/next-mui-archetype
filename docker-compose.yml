@@ -6,6 +6,7 @@ services:
       - "3000:3000"
     links:
       - db-engine
+    tty: true
   db-engine:
     image: mariadb
     ports:
