@@ -1,11 +1,12 @@
 'use client'
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SkuSelector from "./SkuSelector"
+import SkuSelector from "./sku-selector/SkuSelector"
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import { CartContext } from "../context/MiniCartContext";
 import PriceFormatting from "@/components/management/product/PriceFormatting";
+import ProductHeader from "./ProductHeader";
 
 const esteProducto = {
   name: "Random Name #10",
@@ -38,21 +39,7 @@ export default function ProductDescription() {
   return (
     <div className="relative mt-4 w-full md:w-1/2 md:ml-4">
       <div>
-        <div>
-          <h1 className="text-2xl font-bold text-tertiary lg:text-3xl">{esteProducto.name}</h1>
-
-          <p className="mt-1 text-sm text-gray-500">{esteProducto.sku}</p>
-        </div>
-        <div className="mt-2">
-          <p className="text-2xl font-bold text-primary"><PriceFormatting value={esteProducto.listPrice} /></p>
-        </div>
-        <div className="mt-4">
-          <div className="max-w-none">
-            <p className="text-tertiary">
-              {esteProducto.description}
-            </p>
-          </div>
-        </div>
+        <ProductHeader product={esteProducto} />
         <SkuSelector />
       </div>
 

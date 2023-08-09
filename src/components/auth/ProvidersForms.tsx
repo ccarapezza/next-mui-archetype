@@ -11,7 +11,7 @@ export default function ProvidersForms({ providers }: { providers: Record<Litera
         {providers && Object.values(providers).map((provider, index) => (
             <Fragment key={provider?.name}>
                 {index!==0 &&
-                    <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">Or</div>
+                    <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">O</div>
                 }
                 {(() => {
                     switch (provider?.id) {

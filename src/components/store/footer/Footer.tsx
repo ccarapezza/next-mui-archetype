@@ -11,6 +11,9 @@ export default function Footer(props: { categoryTree: any }) {
 
   const { categoryTree } = props;
 
+  const date = new Date();
+  const currentYear = date.getFullYear();
+
   function clearNameForUrl(urlCategory: string) {
     // Convertir a minúsculas y eliminar acentos
     urlCategory = urlCategory.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
@@ -126,7 +129,7 @@ export default function Footer(props: { categoryTree: any }) {
         </div>
         <div className="mt-8 py-6 border-t items-center justify-between xl:flex">
           <div className="text-center mt-4 sm:mt-0 md:text-center">
-            Todos los derechos reservados CULTIVO MIS DERECHOS &copy; - 2023
+            Todos los derechos reservados CULTIVO MIS DERECHOS &copy; - {currentYear}
           </div>
           <div className="text-center mt-6 sm:mt-0 md:text-center">
             <h5>Desarrollado por: Random Brand!</h5>

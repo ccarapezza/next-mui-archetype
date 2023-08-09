@@ -97,9 +97,9 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                 <div className="p-4 sm:p-7">
                     <div className="text-center">
                         <h1 className="block text-2xl font-bold text-gray-800 dark:text-white">Registrarse</h1>
-                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                        <p className="mt-2 text-sm text-tertiary">
                             ¿Ya tienes una cuenta?&nbsp;
-                            <Link className="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/signin">
+                            <Link className="text-primary decoration-2 hover:underline font-medium" href="/auth/signin">
                                 Iniciar sesión
                             </Link>
                         </p>
@@ -116,7 +116,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                     {providers && Object.values(providers).map((provider, index) => (
                         <Fragment key={provider?.name}>
                             {index!==0 &&
-                                <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">Or</div>
+                                <div className="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">O</div>
                             }
                             {(() => {
                                 switch (provider?.id) {
@@ -176,7 +176,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                                 <input id="terms-and-conditions" name="terms-and-conditions" type="checkbox" checked={acceptTermAndCondition} onChange={(e)=>{}} className="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 pointer-events-none focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800" />
                                                             </div>
                                                             <div className="ml-3">
-                                                                <label htmlFor="terms-and-conditions" className="text-sm dark:text-white">Acepto los <a className="text-blue-600 decoration-2 hover:underline font-medium" href="#">términos y condiciones</a></label>
+                                                                <label htmlFor="terms-and-conditions" className="text-sm text-tertiary">Acepto los <a className="text-primary decoration-2 hover:underline font-medium" href="#">términos y condiciones</a></label>
                                                             </div>
                                                         </div>
                                                         {acceptTermAndCondition&&
@@ -191,7 +191,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                                                         }
                                                     </div>
                     
-                                                    <button type="submit" disabled={!acceptTermAndCondition} className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 disabled:bg-slate-300">Crear cuenta</button>
+                                                    <button type="submit" disabled={!acceptTermAndCondition} className="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-primary text-white hover:bg-tertiary focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 disabled:bg-slate-300">Crear cuenta</button>
                                                 </div>
                                             </form>
                                         );
@@ -204,7 +204,7 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
                     </div>
                 </div>
             </div>
-            <Link className="block text-center mt-5 text-blue-600 decoration-2 hover:underline font-medium" href="/">
+            <Link className="block text-center mt-5 text-primary decoration-2 hover:underline font-medium" href="/">
                 Volver al Inicio
             </Link>
         </main>
