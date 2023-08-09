@@ -32,6 +32,12 @@ ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 ENV NODE_OPTIONS --max-old-space-size=1536
 
+# Add Tini
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini
+ENTRYPOINT ["/tini", "--"]
+
 # If using npm comment out above and use below instead
 # 
 # RUN npm run build
@@ -62,4 +68,3 @@ ENV NODE_OPTIONS --max-old-space-size=1536
 # 
 # CMD ["node", "server.js"]
 # 
-CMD ["tail","-f","/dev/null"]
