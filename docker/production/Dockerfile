@@ -24,6 +24,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # This will do the trick, use the corresponding env file for each environment.
 COPY .env.production .env.production
+ENV NODE_OPTIONS --max-old-space-size=2048
 RUN yarn build
 
 # 3. Production image, copy all the files and run next
