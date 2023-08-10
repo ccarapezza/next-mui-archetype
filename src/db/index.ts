@@ -1,5 +1,5 @@
-import { Sequelize } from "sequelize-typescript";
-import config from "./config/config-docker-db.json";
+import { Sequelize, SequelizeOptions } from "sequelize-typescript";
+import config from "./config/config.js";
 import {
   Account,
   Session,
@@ -16,21 +16,10 @@ import {
   VariationOption
 } from "@/db/models";
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
-import { Dialect } from "sequelize";
 
 const env = process.env.NODE_ENV || 'development';
 const sequelizeInstace = new Sequelize(
-    config[env].database,
-    config[env].username, 
-    config[env].password!,
-    {
-        host: config[env].host,
-        port: Number(config[env].port),
-        dialect: config[env].dialect as Dialect,
-        dialectOptions: {
-            decimalNumbers: true
-        },
-    }
+    config[env] as SequelizeOptions
 );
 
 sequelizeInstace.addModels([

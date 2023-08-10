@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "recreate-database": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
+    "recreate-database": "npx sequelize-cli db:drop --url '%npm_config_url%' && npx sequelize-cli db:create --url '%npm_config_url%' && npx sequelize-cli db:migrate --url '%npm_config_url%' && npx sequelize-cli db:seed:all --url '%npm_config_url%'"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.383.0",
@@ -35,6 +35,7 @@
     "@types/react-email-editor": "^1.5.1",
     "autoprefixer": "10.4.14",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.4.3",
     "next": "^13.4.13",

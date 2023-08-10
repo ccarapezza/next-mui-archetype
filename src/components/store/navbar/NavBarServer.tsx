@@ -12,6 +12,6 @@ export default async function NavBarServer() {
   const categoryTree = await fetchCategoryData();
 
   return (
-    <Navbar categoryTree={categoryTree}/>
+    <Navbar categoryTree={categoryTree} providers={providers!} />
   )
 }

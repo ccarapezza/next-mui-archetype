@@ -5,7 +5,7 @@ import LoadingUI from '@/components/main-ui/LoadingUI';
 
 export default async function SignInPage() {
     const providers = await getProviders();
-    console.log("providers", providers);
+    
     return (<Suspense fallback={<LoadingUI/>}>
         <SignIn providers={providers!} />
     </Suspense>
