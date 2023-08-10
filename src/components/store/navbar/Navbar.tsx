@@ -5,16 +5,20 @@ import Image from 'next/image'
 import logo from "./../../../assets/logos/CMD-Logo-Navbar.png";
 import MiniCart from '../minicart/MiniCart';
 import NavBarAuth from './auth/NavBarAuth';
-import { ClientSafeProvider, LiteralUnion } from 'next-auth/react'
+import { ClientSafeProvider, LiteralUnion, getProviders } from 'next-auth/react'
 import { BuiltInProviderType } from 'next-auth/providers';
 
-export default function Navbar(props: {
-    providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>,
-    categoryTree: any
-}) {
+export default function Navbar(props: {categoryTree: any}) {
 
-    const { categoryTree, providers } = props;
+    const { categoryTree } = props;
     const [state, setState] = useState(false);
+    const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
+
+    useEffect(() => {
+        getProviders().then((providersIncomming) => {
+            setProviders(providersIncomming)
+        })
+    }, []);
 
     function clearNameForUrl(urlCategory: string) {
         // Convertir a minúsculas y eliminar acentos

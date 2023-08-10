@@ -1,19 +1,25 @@
 'use client'
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ClientSafeProvider, LiteralUnion, useSession } from 'next-auth/react'
+import { ClientSafeProvider, LiteralUnion, getProviders, useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import ProvidersForms from '@/components/auth/ProvidersForms'
 import type { BuiltInProviderType } from "next-auth/providers";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBug, faBugSlash, faClose, faKey, faSkull, faSkullCrossbones, faStop, faStopwatch } from '@fortawesome/free-solid-svg-icons'
 
-export default function SignIn({ providers }: { providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> }) {
+export default function SignIn() {
     const router = useRouter();
     const searchParams = useSearchParams()
     const { status } = useSession();
     const errorMessage = searchParams.get('error')
-    console.log("providers-Client", providers);
+    const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
+
+    useEffect(() => {
+        getProviders().then((providersIncomming) => {
+            setProviders(providersIncomming)
+        })
+    }, []);
 
     useEffect(() => {
         if (status === "authenticated") {

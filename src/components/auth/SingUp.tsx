@@ -1,11 +1,11 @@
 'use client'
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import * as yup from "yup";
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import { ClientSafeProvider, LiteralUnion, useSession } from "next-auth/react"
+import { ClientSafeProvider, LiteralUnion, getProviders, useSession } from "next-auth/react"
 import Link from 'next/link'
 import GoogleForm from './providers/GoogleForm';
 import { signIn } from "next-auth/react"
@@ -42,7 +42,7 @@ const signUp = async ({ name, email, password }:{ name: string, email: string, p
     return res.json();
 };
 
-export default function SignUp({providers}: {providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>}) {
+export default function SignUp() {
     const router = useRouter();
     const { status } = useSession();
     if (status === "authenticated") {
@@ -61,6 +61,13 @@ export default function SignUp({providers}: {providers: Record<LiteralUnion<Buil
         subscribe,
         setSubscribe
     ] = useState(true);
+    const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
+
+    useEffect(() => {
+        getProviders().then((providersIncomming) => {
+            setProviders(providersIncomming)
+        })
+    }, []);
 
     const { register, handleSubmit, formState: { errors } } = useForm<IRegisterForm>({
         resolver: yupResolver(schema)

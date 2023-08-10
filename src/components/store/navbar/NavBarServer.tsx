@@ -1,4 +1,3 @@
-import { getProviders } from "next-auth/react";
 import Navbar from "./Navbar";
 import { ProductCategoryService } from "@/services/ProductCategoryService";
 
@@ -7,11 +6,9 @@ const fetchCategoryData = async () => {
 };
 
 export default async function NavBarServer() {
-
-  const providers = await getProviders();
   const categoryTree = await fetchCategoryData();
 
   return (
-    <Navbar categoryTree={categoryTree} providers={providers!} />
+    <Navbar categoryTree={categoryTree} />
   )
 }

@@ -4,10 +4,6 @@ import SignIn from '@/components/auth/SingIn'
 import LoadingUI from '@/components/main-ui/LoadingUI';
 
 export default async function SignInPage() {
-    const providers = await getProviders();
-    
-    return (<Suspense fallback={<LoadingUI/>}>
-        <SignIn providers={providers!} />
-    </Suspense>
+    return (<SignIn />
     )
 }
