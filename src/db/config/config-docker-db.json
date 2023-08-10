@@ -7,7 +7,7 @@
         "dialect": "mysql",
         "port": 3307
     },
-    "staging": {
+    "test": {
         "username": "root",
         "password": "represion",
         "database": "nextjs-archetype-db",
@@ -19,8 +19,8 @@
         "username": "root",
         "password": "represion",
         "database": "nextjs-archetype-db",
-        "host": "db-engine-production",
+        "host": "127.0.0.1",
         "dialect": "mysql",
-        "port": 3306
+        "port": 3308
     }
 }

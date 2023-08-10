@@ -13,6 +13,7 @@ export default function SignIn({ providers }: { providers: Record<LiteralUnion<B
     const searchParams = useSearchParams()
     const { status } = useSession();
     const errorMessage = searchParams.get('error')
+    console.log("providers-Client", providers);
 
     useEffect(() => {
         if (status === "authenticated") {

@@ -1,19 +1,11 @@
 version: "3.9"
 services:
-  next-mui-archetype-production:
-    build:
-      context: ../../
-      dockerfile: docker/production/Dockerfile
-    ports:
-      - "3003:3000"
-    links:
-      - db-engine-production
   db-engine-production:
     image: mariadb
     ports:
-      - "3309:3306"
+      - "3308:3306"
     expose:
-      - 3309
+      - 3308
     environment:
       - MARIADB_ROOT_PASSWORD=represion
     volumes:

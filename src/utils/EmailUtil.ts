@@ -90,7 +90,7 @@ async function sendEmail({ to, from, subject, html }: { to: string; from: string
 }
 
 async function sendVerificationEmail({ email, token }: { email: string; token: string; }) {
-    const url = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
+    const url = `${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/verify-email?token=${token}`;
     return await sendEmail({
         to: email,
         from: `carapezza.christian@gmail.com`,
