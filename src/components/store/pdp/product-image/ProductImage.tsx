@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
 import ProductImageMain from './ProductImageMain';
+import Image from 'next/image';
 
 const images = [
   {
@@ -25,7 +26,7 @@ const images = [
   }
 ]
 
-export default function () {
+export default function ProductImage() {
 
   const [activeImage, setActiveImage] = useState(0)
 
@@ -45,7 +46,7 @@ export default function () {
                 }}
                 className={`rounded-md cursor-pointer ${activeImage == index ? 'opacity-100' : 'opacity-50'}`}
               >
-                <img
+                <Image
                   alt={image.alt}
                   src={image.url}
                   className="h-16 w-16 rounded-md object-cover"

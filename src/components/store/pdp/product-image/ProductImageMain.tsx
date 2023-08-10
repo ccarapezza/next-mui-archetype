@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function (props: { images: any, activeImage: number }) {
+export default function ProductImageMain(props: { images: any, activeImage: number }) {
 
   const { images, activeImage } = props;
 

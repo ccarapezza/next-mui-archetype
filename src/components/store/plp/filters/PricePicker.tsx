@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 
-export default function () {
+export default function PricePicker() {
 
   // Selectors Price
   const [selectedPrice, setSelectedPrice] = useState({ from: 0, to: 0 });

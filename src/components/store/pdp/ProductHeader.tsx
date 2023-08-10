@@ -1,7 +1,7 @@
 'use client'
 import PriceFormatting from "@/components/management/product/PriceFormatting";
 
-export default function (props: { product: any }) {
+export default function ProductHeader(props: { product: any }) {
   const { product } = props;
 
   return (

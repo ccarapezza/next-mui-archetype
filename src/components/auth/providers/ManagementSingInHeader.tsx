@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import logo from "../../../assets/logos/CMD-Logo-Navbar.png";
 
-export default async function () {
+export default async function ManagementSingInHeader() {
 
     return (
         <div className='flex flex-col md:flex-row items-center justify-center mt-2 px-4 pt-4'>

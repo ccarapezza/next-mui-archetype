@@ -2,7 +2,7 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 
-export default function (props: { categoryTree: any, categoryTitle: string }) {
+export default function CategorySelector(props: { categoryTree: any, categoryTitle: string }) {
 
   const { categoryTree, categoryTitle } = props;
 
@@ -23,7 +23,7 @@ export default function (props: { categoryTree: any, categoryTitle: string }) {
   const subcategories = findCategoryByName(categoryTree, categoryTitle);
   useEffect(() => {
     setsubCategories(subcategories);
-  }, [categoryTree])
+  }, [categoryTree, subcategories])
 
   // Selectors Categories
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);

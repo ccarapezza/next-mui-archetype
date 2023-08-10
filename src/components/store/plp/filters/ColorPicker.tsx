@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 
-export default function (props: { colors: any }) {
+export default function ColorPicker(props: { colors: any }) {
 
   const { colors } = props;
 

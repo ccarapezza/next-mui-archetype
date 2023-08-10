@@ -4,7 +4,7 @@ import { useState } from "react";
 import { string } from "yup";
 
 
-export default function (props: { items: any }) {
+export default function ColorSku(props: { items: any }) {
 
   const { items } = props;
 

@@ -35,7 +35,7 @@ const items = [
   }
 ]
 
-export default function () {
+export default function SkuSelector() {
 
   return (
     <div className="py-2 border-y my-4">

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 
-export default function (props: { items: any }) {
+export default function SizeSku(props: { items: any }) {
 
   const { items } = props;
 

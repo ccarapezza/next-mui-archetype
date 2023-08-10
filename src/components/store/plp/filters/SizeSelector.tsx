@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 
-export default function (props: { talles: any }) {
+export default function SizeSelector(props: { talles: any }) {
 
   const { talles } = props;
 
