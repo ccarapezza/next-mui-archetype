@@ -1,26 +1,26 @@
 {
-  "development": {
-    "username": "root",
-    "password": "represion",
-    "database": "nextjs-archetype-db",
-    "host": "db-engine",
-    "dialect": "mysql",
-    "port": 3306
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "db-engine",
-    "dialect": "mysql",
-    "port": 3306
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "db-engine",
-    "dialect": "mysql",
-    "port": 3306
-  }
+    "development": {
+        "username": "root",
+        "password": "represion",
+        "database": "nextjs-archetype-db",
+        "host": "127.0.0.1",
+        "dialect": "mysql",
+        "port": 3307
+    },
+    "staging": {
+        "username": "root",
+        "password": "represion",
+        "database": "nextjs-archetype-db",
+        "host": "db-engine-staging",
+        "dialect": "mysql",
+        "port": 3306
+    },
+    "production": {
+        "username": "root",
+        "password": "represion",
+        "database": "nextjs-archetype-db",
+        "host": "db-engine-production",
+        "dialect": "mysql",
+        "port": 3306
+    }
 }

@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  db-engine-development:
+    image: mariadb
+    ports:
+      - "3307:3306"
+    expose:
+      - 3307
+    environment:
+      - MARIADB_ROOT_PASSWORD=represion
+    volumes:
+      - mariadb-data-development:/var/lib/mysql
+
+volumes:
+  mariadb-data-development:
