@@ -5,10 +5,9 @@ import { useState } from 'react';
 import SignIn from '@/components/auth/SingIn';
 import { signOut, useSession } from 'next-auth/react';
 
-export default function NavBarAuth(props: { providers: any }) {
+export default function NavBarAuth() {
 
   const { status, data } = useSession();
-  const { providers } = props;
 
   const [state, setState] = useState(false);
 
@@ -60,7 +59,7 @@ export default function NavBarAuth(props: { providers: any }) {
                               <FontAwesomeIcon icon={faClose} />
                             </button>
                           </div>
-                          <SignIn providers={providers!} />
+                          <SignIn />
                         </div>
                       </div>
                     </div>

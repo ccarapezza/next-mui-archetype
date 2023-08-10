@@ -52,7 +52,7 @@ export default function Navbar(props: {categoryTree: any}) {
                     </Link>
                     <div className="flex items-center gap-2.5 md:hidden">
                         {/* <AuthSection /> */}
-                        <NavBarAuth providers={providers!} />
+                        <NavBarAuth />
                         <MiniCart />
                         <button className="menu-btn text-tertiary-600 hover:text-primary-800"
                             onClick={() => setState(!state)}
@@ -91,7 +91,7 @@ export default function Navbar(props: {categoryTree: any}) {
                     </div>
                     <div className="flex-1 gap-x-6 items-center justify-end hidden space-y-6 md:space-y-0 md:flex">
                         {/* <AuthSection /> */}
-                        <NavBarAuth providers={providers!} />
+                        <NavBarAuth />
                         <MiniCart />
                     </div>
                 </div>
