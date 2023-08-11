@@ -24,13 +24,13 @@ Para ejecutar el ambiente de desarrollo:
 #Se desplegará la aplicación en http://localhost:3000
 npm run dev
 
-#Se desplegará la aplicación en http://localhost:3000 y en https://localhost:3001 (Segura)
+#Se desplegará la aplicación en https://localhost:3000 (Conexión cifrada) y en http://localhost:3001
 npm run dev-https
 ```
 
 > Tener en cuenta de modificar las variables de entorno NEXT_PUBLIC_SITE_ENDPOINT y NEXTAUTH_URL al utilizar la url segura.
 
-Abrir [http://localhost:3000](http://localhost:3000) ó [https://localhost:3001](https://localhost:3001) con un navegador para ver el resultado.
+Abrir [http://localhost:3000](http://localhost:3000) ó [https://localhost:3000](https://localhost:3000) con un navegador para ver el resultado.
 
 
 ## Login con Providers de 3eros

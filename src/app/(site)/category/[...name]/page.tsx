@@ -1,19 +1,15 @@
 import ProductListMain from '@/components/store/plp/ProductListMain';
+import { ProductCategoryService } from '@/services/ProductCategoryService';
+import { ProductService } from '@/services/ProductService';
 
 const fetchCategoryData = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/store/category/list/`, {
-    cache: 'no-store',
-  });
-  return res.json();
+    return ProductCategoryService.searchCategoryTree(null);
 };
 
 const fetchProductData = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/store/product/list/`, {
-    cache: 'no-store',
-  });
-  return res.json();
+    return ProductService.search(null);
 };
-
+ 
 export default async function SiteCategoryPage() {
 
   const categoryTree = await fetchCategoryData();

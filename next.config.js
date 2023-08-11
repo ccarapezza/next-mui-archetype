@@ -31,9 +31,7 @@ const nextConfig = {
     },
     reactStrictMode: false,
     publicRuntimeConfig: {
-        apiUrl: process.env.NODE_ENV === 'development'
-            ? 'http://localhost:3000' // development api
-            : 'http://localhost:3000' // production api
+        apiUrl: process.env.NEXTAUTH_URL
     },
     webpack: (config, { webpack, isServer, nextRuntime }) => {
         // Avoid AWS SDK Node.js require issue
