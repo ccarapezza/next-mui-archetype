@@ -34,20 +34,20 @@ export const authOptions: NextAuthOptions = {
                 if(credentials?.management==="true"){
 
                     //is dev environment and user "admin" not exists, create it
-                    if(process.env.NODE_ADMIN_USER){
+                    if(process.env.NODE_APP_ADMIN_USER){
                         const existingUser = await User.findOne({
                             where: {
-                                name: process.env.NODE_ADMIN_USER
+                                name: process.env.NODE_APP_ADMIN_USER
                             }
                         });
-                        if ((!existingUser) && process.env.NODE_ADMIN_PASSWORD) {
+                        if ((!existingUser) && process.env.NODE_APP_ADMIN_PASSWORD) {
                             console.log("Create admin user for dev environment");
                             const userCreated = await User.create({
-                                name: process.env.NODE_ADMIN_USER,
+                                name: process.env.NODE_APP_ADMIN_USER,
                                 email: "admin@admin.com",
                                 image: "",
                                 emailVerified: new Date(),
-                                password: bcrypt.hashSync(process.env.NODE_ADMIN_PASSWORD, 10)
+                                password: bcrypt.hashSync(process.env.NODE_APP_ADMIN_PASSWORD, 10)
                             });
                             const adminRole = await Role.findOne({
                                 where: {

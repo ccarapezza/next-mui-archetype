@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "recreate-database": "npx sequelize-cli db:drop --url '%npm_config_url%' && npx sequelize-cli db:create --url '%npm_config_url%' && npx sequelize-cli db:migrate --url '%npm_config_url%' && npx sequelize-cli db:seed:all --url '%npm_config_url%'"
+    "recreate-database": "npx sequelize-cli db:drop --url '%npm_config_url%' && npx sequelize-cli db:create --url '%npm_config_url%' && npx sequelize-cli db:migrate --url '%npm_config_url%' && npx sequelize-cli db:seed:all --url '%npm_config_url%'",
+    "docker-db-container-create-production": "docker compose -f docker/db-engine-production/docker-compose.yml --env-file .env.production build",
+    "docker-db-container-start-production": "docker compose -f docker/db-engine-production/docker-compose.yml --env-file .env.production up -d",
+    "docker-db-container-stop-production": "docker compose -f docker/db-engine-production/docker-compose.yml --env-file .env.production down",
+    "docker-db-container-create-development": "docker compose -f docker/db-engine-development/docker-compose.yml --env-file .env.development build",
+    "docker-db-container-start-development": "docker compose -f docker/db-engine-development/docker-compose.yml --env-file .env.development up -d",
+    "docker-db-container-stop-development": "docker compose -f docker/db-engine-development/docker-compose.yml --env-file .env.development down"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.383.0",

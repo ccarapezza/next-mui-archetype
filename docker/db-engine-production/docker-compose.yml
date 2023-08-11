@@ -3,11 +3,12 @@ services:
   db-engine-production:
     image: mariadb
     ports:
-      - "3308:3306"
+      - "${DOCKER_MYSQL_PORT}:3306"
     expose:
-      - 3308
+      - ${DOCKER_MYSQL_PORT}
     environment:
-      - MARIADB_ROOT_PASSWORD=represion
+      - MARIADB_ROOT_PASSWORD=${DOCKER_MYSQL_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DOCKER_MYSQL_DATABASE}
     volumes:
       - mariadb-data-production:/var/lib/mysql
 
