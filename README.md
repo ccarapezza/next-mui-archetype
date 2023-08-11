@@ -21,12 +21,16 @@ npm install
 Para ejecutar el ambiente de desarrollo:
 
 ```bash
+#Se desplegará la aplicación en http://localhost:3000
 npm run dev
+
+#Se desplegará la aplicación en http://localhost:3000 y en https://localhost:3001 (Segura)
+npm run dev-https
 ```
 
-Abrir [http://localhost:3000](http://localhost:3000) con un navegador para ver el resultado.
+> Tener en cuenta de modificar las variables de entorno NEXT_PUBLIC_SITE_ENDPOINT y NEXTAUTH_URL al utilizar la url segura.
 
-El punto de entrada es `/app/page.tsx`. Las páginas se compilan automaticamente al editarlas.
+Abrir [http://localhost:3000](http://localhost:3000) ó [https://localhost:3001](https://localhost:3001) con un navegador para ver el resultado.
 
 
 ## Login con Providers de 3eros
@@ -65,7 +69,13 @@ npm run docker-db-container-stop-development
 
 Los parametros de conexión a la base de datos se encuentran definidos en variables de entorno, configurarlas es necesario para que los siguientes scripts funcionen correctamete. [Ver especificaciones](<#variables-de-entorno>)
 
-Para crear las tablas utilizamos Sequelize CLI indicando mediante el parametro `--url` la url de conexión a la base de datos objetivo.
+Para crear la base de datos utilizamos Sequelize CLI indicando mediante el parametro `--url` la url de conexión a la base de datos objetivo.
+
+```bash
+npx sequelize-cli db:create --url 'mysql://root:password@host:port/database_name'
+```
+
+Para crear las tablas
 
 ```bash
 npx sequelize-cli db:migrate --url 'mysql://root:password@host:port/database_name'
