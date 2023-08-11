@@ -2,23 +2,13 @@
 import { useEffect, useState } from 'react'
 import Link from "next/link";
 import Image from 'next/image'
-import logo from "./../../../assets/logos/CMD-Logo-Navbar.png";
 import MiniCart from '../minicart/MiniCart';
 import NavBarAuth from './auth/NavBarAuth';
-import { ClientSafeProvider, LiteralUnion, getProviders } from 'next-auth/react'
-import { BuiltInProviderType } from 'next-auth/providers';
 
 export default function Navbar(props: {categoryTree: any}) {
 
     const { categoryTree } = props;
     const [state, setState] = useState(false);
-    const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
-
-    useEffect(() => {
-        getProviders().then((providersIncomming) => {
-            setProviders(providersIncomming)
-        })
-    }, []);
 
     function clearNameForUrl(urlCategory: string) {
         // Convertir a minúsculas y eliminar acentos
@@ -48,7 +38,7 @@ export default function Navbar(props: {categoryTree: any}) {
             <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-1 md:block">
                     <Link href="/">
-                        <Image src={logo} alt='Float UI logo' width={200} />
+                        <Image src="/logos/CMD-Logo-Navbar.png" alt='Float UI logo' width={200} />
                     </Link>
                     <div className="flex items-center gap-2.5 md:hidden">
                         {/* <AuthSection /> */}

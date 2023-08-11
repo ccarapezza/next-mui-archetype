@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image'
-import logo from "./../../../assets/logos/CMD-Logo-Footer.png";
 import SubscriptionForm from '../../main-ui/SubscriptionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
@@ -80,7 +79,7 @@ export default function Footer(props: { categoryTree: any }) {
           <div className="flex-1">
             <div className="flex justify-center items-center md:items-start md:justify-start">
               <Link href="/">
-                <Image src={logo} className="dark:hidden" alt='Float UI logo' width={250} />
+                <Image src="/logos/CMD-Logo-Footer.png" className="dark:hidden" alt='Float UI logo' width={250} />
               </Link>
               {/* <p className="leading-relaxed mt-2 text-[15px]">
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
