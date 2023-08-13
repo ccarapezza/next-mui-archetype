@@ -28,6 +28,6 @@ export default async function findAllSequelizePagination({ model, page = 1, size
     };
 
     const { limit, offset } = getPagination(page, size);
-    const data = await model.findAndCountAll({ distinct: true, attributes, include, where, order, limit, offset });
+    const data = await model.findAndCountAll({ distinct: true, attributes, include, where, order, limit, offset, raw: true });
     return getPagingData(data, page, limit);
 }

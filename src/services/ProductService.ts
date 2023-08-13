@@ -1,45 +1,16 @@
 //Service object for Product Sequelize Model
-
 import { Product, ProductCategory, ProductItem } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
 import S3BucketUtil from "@/utils/S3BucketUtil";
 import { Op, WhereOptions } from "sequelize";
+import { GenericService } from "./GenericService";
 
-export const ProductService = {
-    //Get all categories
-    getAll: async () => {
-        return await Product.findAll();
-    },
-    //Get a category by id
-    getById: async (id: number) => {
-        return await Product.findByPk(id);
-    },
-    //Get a category by name
-    getByName: async (name: string) => {
-        return await Product.findOne({
-            where: { name: name },
-        });
-    },
-    //Create a new category
-    create: async (name: string) => {
-        return await Product.create({ name: name });
-    },
-    //Update a category
-    update: async (id: number, name: string) => {
-        return await Product.update(
-            { name: name },
-            {
-                where: { id: id },
-            }
-        );
-    },
-    //Delete a category
-    delete: async (id: number) => {
-        return await Product.destroy({
-            where: { id: id },
-        });
-    },
-    search: async (searchTerm: string | null, page: number = 1, size: number = 10) => {
+//ProductService extends GenericService
+export class ProductService extends GenericService<Product> {
+    constructor() {
+        super(Product);
+    }
+    search = async (searchTerm: string | null, page: number = 1, size: number = 10) => {
         let where: WhereOptions | undefined = undefined;
         const whereConditions = [];
         if (searchTerm) {
@@ -100,3 +71,6 @@ export const ProductService = {
         return products;
     }
 };
+
+//ProductService as a singleton
+export const productService = new ProductService();

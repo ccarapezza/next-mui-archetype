@@ -4,16 +4,11 @@ import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
 import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
+import { roleService } from "@/services/RoleService";
 import { GridColDef } from "@mui/x-data-grid";
-import { headers } from "next/headers";
 
 const fetchRolesData = async (page: number, size: number, search: string) => {
-    const querySearch = search?`?search=${search}`:"";
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/role/list/${page}/${size}${querySearch}`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await roleService.search(search, page, size);
 };
 
 export default async function RolesPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {

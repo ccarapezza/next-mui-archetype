@@ -2,34 +2,11 @@ import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
 import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import createQueryString from "@/utils/RouterUtil";
+import {  userService } from "@/services/UserService";
 import { GridColDef } from "@mui/x-data-grid";
-import { headers } from "next/headers";
 
 const fetchUsersByUserType = async (page: number, size: number, search: string, userType: string) => {
-    const paramsArray: Array<{ name: string, value: string }> = [];
-    if (search) {
-        paramsArray.push({
-            name: 'search',
-            value: search
-        })
-    }
-
-    if(userType){
-        paramsArray.push({
-            name: 'userType',
-            value: userType
-        })
-    }
-
-    const queryParams = createQueryString(paramsArray, "");
-    console.log("queryParams", queryParams)
-    console.log("URL!!", `${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/list/${page}/${size}${queryParams?'?'+queryParams:''}`)
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/list/${page}/${size}${queryParams?'?'+queryParams:''}`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await userService.search(search, userType, page, size);
 };
 
 export default async function UsersPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {

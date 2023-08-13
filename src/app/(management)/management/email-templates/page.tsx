@@ -4,14 +4,10 @@ import { headers } from "next/headers";
 import { GridColDef } from '@mui/x-data-grid';
 import MuiDataGrid from '@/components/client/DataGrid';
 import EntityTableToolbar from '@/components/management/EntityTableToolbar';
+import { emailTemplateService } from '@/services/EmailTemplateService';
 
 const fetchEmailTemplatesData = async (page: number, size: number, search: string) => {
-    const querySearch = search?`?search=${search}`:"";
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/email-template/list/${page}/${size}${querySearch}`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await emailTemplateService.search(search, page, size);
 };
 
 export default async function EmailTemplatesPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {

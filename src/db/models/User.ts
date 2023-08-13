@@ -14,7 +14,7 @@ interface CustomAdapterUser extends AdapterUser {
   tableName: "users",
   timestamps: true
 })
-export default class User extends Model<CustomAdapterUser, Partial<CustomAdapterUser>>{
+export default class User extends Model{
 
   @Column({...UserDefinition.id})
   declare public id: string;

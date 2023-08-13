@@ -3,15 +3,10 @@ import MuiBox from '@/components/client/MuiBox'
 import PageHeader from '@/components/management/paperbase/PageHeader'
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react'
-import { headers } from "next/headers"
+import { subscriberService } from '@/services/SubscriberService';
 
 const fetchSubscriberListData = async (page: number, size: number, search: string) => {
-    const querySearch = search?`?search=${search}`:"";
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/subscriber/list/${page}/${size}${querySearch}`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await subscriberService.search(search, page, size);
 };
 
 export default async function SubscriberPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {

@@ -1,8 +1,8 @@
-import { ProductService } from "@/services/ProductService";
+import { productService } from "@/services/ProductService";
 import CarouselProducts from "./CarouselProducts";
 
 const fetchProductData = async () => {
-  return ProductService.search(null);
+  return productService.search(null);
 };
 
 export default async function CarrouselProductServer() {

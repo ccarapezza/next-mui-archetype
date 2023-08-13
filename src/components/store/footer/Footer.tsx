@@ -79,7 +79,7 @@ export default function Footer(props: { categoryTree: any }) {
           <div className="flex-1">
             <div className="flex justify-center items-center md:items-start md:justify-start">
               <Link href="/">
-                <Image src="/logos/CMD-Logo-Footer.png" className="dark:hidden" alt='Float UI logo' width={250} />
+                <Image src="/logos/CMD-Logo-Footer.png" className="dark:hidden" alt='Float UI logo' width={250} height={250} />
               </Link>
               {/* <p className="leading-relaxed mt-2 text-[15px]">
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.

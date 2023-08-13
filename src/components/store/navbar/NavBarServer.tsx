@@ -1,8 +1,8 @@
 import Navbar from "./Navbar";
-import { ProductCategoryService } from "@/services/ProductCategoryService";
+import { productCategoryService } from "@/services/ProductCategoryService";
 
 const fetchCategoryData = async () => {
-  return ProductCategoryService.searchCategoryTree(null);
+  return productCategoryService.searchCategoryTree(null);
 };
 
 export default async function NavBarServer() {

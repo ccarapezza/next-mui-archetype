@@ -2,13 +2,10 @@ import MuiBox from '@/components/client/MuiBox'
 import PageHeader from '@/components/management/paperbase/PageHeader'
 import ReactEmailEditor from '@/components/client/ReactEmailEditor'
 import { headers } from "next/headers";
+import { emailTemplateService } from '@/services/EmailTemplateService';
 
 const fetchEmailTemplateData = async (id: number) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/email-template/${id}`, {
-        cache: 'no-store',
-        headers: headers()
-    } );
-    return res.json();
+    return await emailTemplateService.getById(id);
 };
 
 export default async function EmailTemplatesPage({ params }: { params: { id: number } }) {
@@ -17,7 +14,7 @@ export default async function EmailTemplatesPage({ params }: { params: { id: num
     return (<>
         <PageHeader title="Edit Template" />
         <MuiBox className="py-2 px-4">
-            <ReactEmailEditor id={params.id} name={data.name} template={data.template} />
+            <ReactEmailEditor id={params.id} name={data.name} template={data.template.toString()} />
         </MuiBox>
     </>)
 }

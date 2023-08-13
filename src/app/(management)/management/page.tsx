@@ -1,13 +1,14 @@
 'use client'
-import { Grid, Button, Stack } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
+import Image from "next/image";
 
 export default function ManagementHome() {
     return (<Grid container alignItems="center" justifyContent="center" direction="column">
-    <h1>Using Material UI with Next.js 13</h1>
-    <Stack direction="row" columnGap={1}>
-      <Button variant="text" className="hover:bg-blue-100 dark:hover:bg-blue-950">Text</Button>
-      <Button variant="contained" className="bg-blue-600 hover:bg-blue-700">Contained</Button>
-      <Button variant="outlined" className="hover:bg-blue-100 dark:hover:bg-blue-950">Outlined</Button>
-    </Stack>
-  </Grid>)
-  }
+        <Typography variant="h5" className="uppercase mt-4 font-bold">
+            Panel de administración
+        </Typography>
+        <Stack direction="row" columnGap={1}>
+            <Image src="/logos/CMD [Logotipo] variables-03.png" alt='Float UI logo' width={550} height={550} />
+        </Stack>
+    </Grid>)
+}

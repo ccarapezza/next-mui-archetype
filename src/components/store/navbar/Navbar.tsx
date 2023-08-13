@@ -38,7 +38,7 @@ export default function Navbar(props: {categoryTree: any}) {
             <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-1 md:block">
                     <Link href="/">
-                        <Image src="/logos/CMD-Logo-Navbar.png" alt='Float UI logo' width={200} />
+                        <Image src="/logos/CMD-Logo-Navbar.png" alt='Float UI logo' width={200} height={200} />
                     </Link>
                     <div className="flex items-center gap-2.5 md:hidden">
                         {/* <AuthSection /> */}

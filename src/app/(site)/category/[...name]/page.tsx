@@ -1,13 +1,13 @@
 import ProductListMain from '@/components/store/plp/ProductListMain';
-import { ProductCategoryService } from '@/services/ProductCategoryService';
-import { ProductService } from '@/services/ProductService';
+import { productCategoryService } from '@/services/ProductCategoryService';
+import { productService } from '@/services/ProductService';
 
 const fetchCategoryData = async () => {
-    return ProductCategoryService.searchCategoryTree(null);
+    return productCategoryService.searchCategoryTree(null);
 };
 
 const fetchProductData = async () => {
-    return ProductService.search(null);
+    return productService.search(null);
 };
  
 export default async function SiteCategoryPage() {

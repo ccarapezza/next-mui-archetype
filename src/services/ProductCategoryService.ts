@@ -1,44 +1,15 @@
 //Service object for ProductCategory Sequelize Model
-
 import { ProductCategory } from "@/db";
 import { ProductCategoryDto } from "@/schemas/category";
 import { Op, WhereOptions } from "sequelize";
+import { GenericService } from "./GenericService";
 
-export const ProductCategoryService = {
-    //Get all categories
-    getAll: async () => {
-        return await ProductCategory.findAll();
-    },
-    //Get a category by id
-    getById: async (id: number) => {
-        return await ProductCategory.findByPk(id);
-    },
-    //Get a category by name
-    getByName: async (name: string) => {
-        return await ProductCategory.findOne({
-            where: { name: name },
-        });
-    },
-    //Create a new category
-    create: async (name: string) => {
-        return await ProductCategory.create({ name: name });
-    },
-    //Update a category
-    update: async (id: number, name: string) => {
-        return await ProductCategory.update(
-            { name: name },
-            {
-                where: { id: id },
-            }
-        );
-    },
-    //Delete a category
-    delete: async (id: number) => {
-        return await ProductCategory.destroy({
-            where: { id: id },
-        });
-    },
-    searchCategoryTree: async (searchTerm: string | null) => {
+//ProductCategoryService extends GenericService
+export class ProductCategoryService extends GenericService<ProductCategory> {
+    constructor() {
+        super(ProductCategory);
+    }
+    searchCategoryTree = async (searchTerm: string | null) => {
         let where: WhereOptions | undefined = undefined;
         if (searchTerm) {
             where = {
@@ -81,3 +52,6 @@ export const ProductCategoryService = {
         return productTree;
     }
 };
+
+//ProductCategoryService as a singleton
+export const productCategoryService = new ProductCategoryService();
