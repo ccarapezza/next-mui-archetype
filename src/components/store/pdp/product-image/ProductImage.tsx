@@ -50,6 +50,8 @@ export default function ProductImage() {
                   alt={image.alt}
                   src={image.url}
                   className="h-16 w-16 rounded-md object-cover"
+                  width={64}
+                  height={64}
                 />
               </li>
             ))
