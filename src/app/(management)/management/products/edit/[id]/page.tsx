@@ -1,14 +1,10 @@
 import MuiAlert from "@/components/client/MuiAlert";
 import MuiBox from "@/components/client/MuiBox";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import { headers } from "next/headers";
+import { userService } from "@/services/UserService";
 
 const fetchRoleData = async (id: string) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/role/${id}`, {
-        cache: 'no-store',
-        headers: headers()
-    } );
-    return res.json();
+    return await userService.getById(id);
 };
 
 export default async function EditUserPage({ params }: { params: { id: string } }) {

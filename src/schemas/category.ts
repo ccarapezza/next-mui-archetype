@@ -3,5 +3,5 @@ export type ProductCategoryDto = {
     name: string;
     parentId: number | null;
     parent: ProductCategoryDto | null;
-    children?: ProductCategoryDto[];
+    childrens?: ProductCategoryDto[];
 };

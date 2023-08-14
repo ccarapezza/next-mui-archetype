@@ -3,14 +3,10 @@
 import MuiBox from "@/components/client/MuiBox";
 import CategoryTree from "@/components/management/category/CategoryTree";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import { headers } from "next/headers";
+import { productCategoryService } from "@/services/ProductCategoryService";
 
 const fetchCategoriesData = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/list/`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await productCategoryService.searchCategoryTree(null);
 };
 
 export default async function CategoriesPage() {

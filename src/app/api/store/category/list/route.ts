@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
             name: category.name,
             parentId: category.parentId?category.parentId:null,
             parent: null,
-            children: []
+            childrens: []
         }
         return categoryDto;
     })
@@ -34,10 +34,10 @@ export async function GET(request: NextRequest) {
         if (category.parentId) {
             const parent = productCategoriesDto.find(c => c.id === category.parentId);
             if (parent) {
-                if (!parent.children) {
-                    parent.children = [];
+                if (!parent.childrens) {
+                    parent.childrens = [];
                 }
-                parent.children.push(category);
+                parent.childrens.push(category);
             }
         } else {
             tree.push(category);
