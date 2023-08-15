@@ -1,7 +1,7 @@
 //Service object for EmailTemplate Sequelize Model
 import { EmailTemplate } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
-import { Op, WhereOptions } from "sequelize";
+import { Model, Op, WhereOptions } from "sequelize";
 import { GenericService } from "./GenericService";
 
 interface IEmailTemplateService extends GenericService<EmailTemplate> {

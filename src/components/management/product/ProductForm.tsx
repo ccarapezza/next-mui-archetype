@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Alert, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -10,6 +10,8 @@ import CurrencyInput from './CurrencyInput';
 import CategoryTreeSelector from '../category/CategoryTreeSelector';
 import ColorPicker from '../../client/ColorPicker';
 import { ProductInput, productInputSchema } from '../../../schemas/product';
+import { ProductCategoryDto } from '@/schemas/category';
+import { VariationDto } from '@/schemas/variation';
 
 const COLOR_VARIANT_ID = 2;
 
@@ -25,9 +27,7 @@ const MenuProps = {
 };
 
 const saveProductData = async (productData: any, files: File[]) => {
-    console.log("productData", productData);
     const fData:FormData = objectToFormData(productData);
-    console.log("files array:", files);
     if(files.length>0){
         fData.set('file', files[0]);
     }
@@ -72,7 +72,7 @@ export const objectToFormData = (obj: any) => {
     return formData;
 };
 
-const ProductForm = ({categories, variations}:{categories: any[], variations: any[]}) => {
+const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[], variations: VariationDto[]}) => {
     const router = useRouter();
     const [hasVariants, setHasVariants] = useState<boolean>(false);
 
@@ -195,7 +195,6 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
                     control={control}
                     render={({ field: { ref, onChange, ...rest } }) => (
                         <CategoryTreeSelector onChange={(value)=>{
-                            console.log("CategoryTreeSelector", value);
                             if(typeof value === 'string' || typeof value === 'number'){
                                 const valueInt = parseInt(value);
                                 onChange(valueInt);
@@ -210,6 +209,7 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
                     type="file"
                     name="file"
                     accept="image/png, image/gif, image/jpeg"
+                    className='mb-4'
                     onChange={(e) => setFile(e.target.files?.[0])}
                 />
                 {hasVariants ? (
@@ -260,7 +260,7 @@ const ProductForm = ({categories, variations}:{categories: any[], variations: an
                             {variations.map((variationValue) => (
                                 <MenuItem
                                     key={`${variationValue.id}-${variationValue.name}-variant`}
-                                    value={variationValue}
+                                    value={variationValue.name}
                                 >
                                     <Checkbox checked={variantsSelected.find((variantSel)=>variantSel.id===variationValue.id)?true:false} className='mr-2' />
                                     <ListItemText primary={variationValue.name} />

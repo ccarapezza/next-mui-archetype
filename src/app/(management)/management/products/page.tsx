@@ -1,9 +1,6 @@
-import MuiDataGrid from '@/components/client/DataGrid';
 import MuiBox from '@/components/client/MuiBox'
 import EntityTableToolbar from '@/components/management/EntityTableToolbar'
 import PageHeader from '@/components/management/paperbase/PageHeader'
-import { GridColDef } from '@mui/x-data-grid'
-import { headers } from "next/headers";
 import ProductDataGrid from './dataGrid';
 import { productService } from '@/services/ProductService';
 

@@ -5,20 +5,7 @@ import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare, faSquareMinus, faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
-
-
-interface Category {
-    id: string;
-    name: string;
-    parentId?: string | null;
-}
-
-interface CategoryTreeItem {
-    id: string;
-    name: string;
-    childrens?: CategoryTreeItem[];
-    parentId?: string | null;
-}
+import { ProductCategoryDto } from '@/schemas/category';
 
 const SquareXmarkIcon = () => {
     return (
@@ -29,11 +16,10 @@ const SquareXmarkIcon = () => {
     );
 }
 
-const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...props }: { categories: Category[], fullWidth?: boolean, size?: 'small' | 'medium', small?: boolean, className: string, inputProps?: InputBaseComponentProps, onChange: (event: string | React.ChangeEvent<Element>) => void }) => {
-    const [categories, setCategories] = useState<Category[]>(initialCategories);
+const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...props }: { categories: ProductCategoryDto[], fullWidth?: boolean, size?: 'small' | 'medium', small?: boolean, className: string, inputProps?: InputBaseComponentProps, onChange: (event: string | React.ChangeEvent<Element>) => void }) => {
+    const [categories, setCategories] = useState<ProductCategoryDto[]>(initialCategories);
     const [expandedIds, setExpandedIds] = useState<string[]>(['root']);
-    const [categoryTree, setCategoryTree] = useState<CategoryTreeItem[]>();
-    const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<ProductCategoryDto | null>(null);
 
     const CustomContent = forwardRef(function CustomContent(
         props: TreeItemContentProps,
@@ -114,34 +100,12 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
         return <TreeItem ContentComponent={CustomContent} {...props} />;
     }
 
-    const listToTree = (categoriesList: Category[]): CategoryTreeItem[] => {
-        const map = new Map();
-
-        // Primero, mapeamos todos los nodos por su id en un diccionario
-        categoriesList?.forEach((node) => {
-            map.set(node.id, { ...node, childrens: [] });
-        });
-
-        // Luego, construimos la estructura del árbol usando el parent_id
-        const tree: any[] = [];
-        categoriesList?.forEach((node) => {
-            const parent = map.get(node.parentId);
-            if (parent) {
-                parent.childrens.push(map.get(node.id));
-            } else {
-                tree.push(map.get(node.id));
-            }
-        });
-
-        return tree;
-    }
-
-    const recursiveTree = (categories: CategoryTreeItem[]) => {
+    const recursiveTree = (categories: ProductCategoryDto[]) => {
         return categories.map((category) => {
             if (category.childrens) {
                 return (
                     <CustomTreeItem nodeId={category.id?.toString()} label={<div className='flex items-center hover:bg-blue-200 rounded px-1'>
-                        <Typography className=''>{category.name}</Typography>
+                        <Typography className='' data-id={category.id}>{category.name}</Typography>
                     </div>} key={category.id} >
                         {category.childrens?.length > 0 &&
                             <Box className="border-l-2 border-dotted border-gray-600 pl-4">
@@ -162,15 +126,38 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
 
     useEffect(() => {
         setSelectedCategory(null);
-        console.log("listToTree categories", categories);
-        setCategoryTree(listToTree(categories));
-    }, [categories]);
+    }, [initialCategories]);
+
+    const findIdOnTree = (id: number, categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto | null => {
+        let result: ProductCategoryDto | null = null;
+        categories?.forEach((category) => {
+            if (category.id === id) {
+                result = category;
+            } else if (category.childrens && category.childrens.length > 0) {
+                const findedOnChilds = findIdOnTree(id, category.childrens);
+                if (findedOnChilds) {
+                    result = findedOnChilds;
+                }
+            }
+        });
+        return result;
+    }
+
+    const treeToList = (categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto[] => {
+        let result: ProductCategoryDto[] = [];
+        categories?.forEach((category) => {
+            result.push(category);
+            if (category.childrens && category.childrens.length > 0) {
+                result = result.concat(treeToList(category.childrens));
+            }
+        });
+        return result;
+    }
 
     const [open, setOpen] = useState<boolean>(false);
     const [searchValue, setSearchValue] = useState<string>("");
 
     useEffect(() => {
-        console.log("initialCategories", initialCategories)
         if (searchValue) {
             //search to not discard parents saved on parentId
             const categoriesFiltered = initialCategories.filter((category) => category.name.toLowerCase().includes(searchValue.toLowerCase()));
@@ -180,7 +167,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
             //add parents to filtered categories
             categoriesFiltered.forEach((category) => {
                 //search parents recursively
-                const addParents = (categoryParam: Category) => {
+                const addParents = (categoryParam: ProductCategoryDto) => {
                     const parent = initialCategories.find((category) => category.id === categoryParam.parentId);
                     if (parent) {
                         parents.push(parent);
@@ -190,9 +177,6 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                 addParents(category);
 
             });
-
-            console.log("parents", parents);
-            console.log("categoriesFiltered", categoriesFiltered);
             setExpandedIds(parents.map((parent) => parent.id));
             setCategories([
                 ...categoriesFiltered,
@@ -226,7 +210,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                 error={!!inputProps?.error}
             >
                 <MenuItem value={0} className='hidden' />
-                {categories?.map((category) => (
+                {treeToList(categories).map((category) => (
                     <MenuItem key={category.id} value={category.id} className='hidden' />
                 ))}
                 <Box>
@@ -241,19 +225,14 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                         defaultCollapseIcon={<FontAwesomeIcon icon={faSquareMinus} className='ml-px fa-fw' onClick={(e) => { e.preventDefault(); }} />}
                         defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw' onClick={(e) => { e.preventDefault(); }} />}
                         defaultEndIcon={<SquareXmarkIcon />}
-                        onNodeSelect={(event: React.ChangeEvent<{}>, nodeIds: string[]) => {
-                            const categoryFinded = categories.find((category) => category.id == nodeIds.toString());
-                            if (categoryFinded && categoryFinded.id !== selectedCategory?.id) {
-                                setSelectedCategory(categoryFinded);
-                                onChange(categoryFinded.id);
-                            } else {
-                                setSelectedCategory(null);
-                                onChange("");
-                            }
+                        onNodeSelect={(event: React.ChangeEvent<{}>, selectedId: string) => {
+                            const categoryFinded = findIdOnTree(parseInt(selectedId));
+                            setSelectedCategory(categoryFinded);
+                            onChange(categoryFinded?.id.toString()!);
                             setOpen(false);
                         }}
                     >
-                        {recursiveTree(categoryTree || [])}
+                        {recursiveTree(categories || [])}
                     </TreeView>
                 </Box>
             </Select>

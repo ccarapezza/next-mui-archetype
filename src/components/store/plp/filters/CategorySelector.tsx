@@ -30,7 +30,7 @@ export default function CategorySelector(props: { categoryTree: any, categoryTit
   console.log('selectedCategories', selectedCategories);
 
   return (
-    subCategories.length > 0 ?
+    subCategories?.length > 0 ?
       <details
         className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
       >

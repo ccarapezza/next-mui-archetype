@@ -1,28 +1,23 @@
 import MuiBox from "@/components/client/MuiBox";
 import PageHeader from "@/components/management/paperbase/PageHeader";
 import ProductForm from "@/components/management/product/ProductForm";
-import { headers } from "next/headers";
+import { VariationDto } from "@/schemas/variation";
+import { productCategoryService } from "@/services/ProductCategoryService";
+import { variationService } from "@/services/VariationService";
 
 const fetchCategoriesData = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/list/`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await productCategoryService.searchCategoryTree(null);
 };
 
 const fetchVariationsData = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/variation/list/`, {
-        cache: 'no-store',
-        headers: headers()
-    });
-    return res.json();
+    return await variationService.getAll();
 };
 
 export default async function NewProductPage() {
     const categories = await fetchCategoriesData();
-    const variations = await fetchVariationsData();
-    
+    const variations = (await fetchVariationsData()).map(variation => {
+        return variation.toJSON<VariationDto>();
+    });
 
     return (<>
         <PageHeader title="New Product" />
