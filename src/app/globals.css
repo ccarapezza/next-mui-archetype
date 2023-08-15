@@ -5,3 +5,7 @@
 .MuiTreeItem-group{
     margin-left: 15px !important;
 }
+
+.circle-picker span div span div {
+    border: 1px solid #cfcfcf;
+}

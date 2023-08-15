@@ -10,7 +10,7 @@ const fetchCategoriesData = async () => {
 };
 
 const fetchVariationsData = async () => {
-    return await variationService.getAll();
+    return await variationService.getAll({include: "variationOptions"});
 };
 
 export default async function NewProductPage() {
@@ -18,6 +18,7 @@ export default async function NewProductPage() {
     const variations = (await fetchVariationsData()).map(variation => {
         return variation.toJSON<VariationDto>();
     });
+    console.log("variations", variations);
 
     return (<>
         <PageHeader title="New Product" />

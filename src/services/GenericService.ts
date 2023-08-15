@@ -1,4 +1,4 @@
-import { WhereOptions } from "sequelize";
+import { FindOptions, WhereOptions } from "sequelize";
 import { Model } from "sequelize-typescript";
 
 //interface
@@ -17,8 +17,8 @@ export class GenericService<T extends Model> implements IGenericService<T> {
     }
 
     //Get all items
-    getAll = async () => {
-        return await this.model.findAll() as T[];
+    getAll = async (options?: FindOptions) => {
+        return await this.model.findAll(options) as T[];
     };
     //Get an item by id
     getById = async (id: number | string) => {

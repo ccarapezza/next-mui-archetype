@@ -9,7 +9,7 @@ export class VariationService extends GenericService<Variation> {
     constructor() {
         super(Variation);
     }
-    search = async (searchTerm: string | null, page: number = 1, size: number = 10) => {
+    search = async (searchTerm: string | null) => {
         let where : WhereOptions | undefined = undefined;
         if (searchTerm) {
             where = {
@@ -18,15 +18,8 @@ export class VariationService extends GenericService<Variation> {
                 }
             }
         }
-        const roles = await findAllSequelizePagination({
-            model: Variation,
-            page: page,
-            size: size,
-            attributes: ['id', 'name'],
-            where
-        });
-
-        return roles;
+        const data = await Variation.findAndCountAll({ distinct: true, include: ["variationOptions"], where });
+        return data.rows.map((item) => item.toJSON());
     }
 };
 

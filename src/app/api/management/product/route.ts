@@ -16,58 +16,57 @@ function formDataToJSON(formData: FormData): any {
     const formDataArray: FormDataField[] = [];
 
     formData.forEach((value: any, key) => {
-        if(!key.startsWith("file")) {
+        if (!key.startsWith("file")) {
             formDataArray.push({ name: key, value });
         }
     });
-  
+
     formDataArray.forEach((field) => {
-      const { name, value } = field;
-      const keys: string[] = name.split('.');
-      let currentObject: any = result;
-  
-      for (let i = 0; i < keys.length; i++) {
-        const key: string = keys[i];
-        const isArray: boolean = /\d+/.test(keys[i + 1]);
-  
-        if (isArray) {
-          const arrayKey: string = keys[i];
-          const arrayIndex: number = parseInt(keys[i + 1], 10);
-  
-          if (!currentObject[arrayKey]) {
-            currentObject[arrayKey] = [];
-          }
-  
-          if (i === keys.length - 1) {
-            currentObject[arrayKey][arrayIndex] = value;
-          } else {
-            if (!currentObject[arrayKey][arrayIndex]) {
-                if(arrayKey==="variation") {
+        const { name, value } = field;
+        const keys: string[] = name.split('.');
+        let currentObject: any = result;
+
+        for (let i = 0; i < keys.length; i++) {
+            const key: string = keys[i];
+            const isArray: boolean = /\d+/.test(keys[i + 1]);
+
+            if (isArray) {
+                const arrayKey: string = keys[i];
+                const arrayIndex: number = parseInt(keys[i + 1], 10);
+
+                if (!currentObject[arrayKey]) {
+                    currentObject[arrayKey] = [];
+                }
+
+                if (i === keys.length - 1) {
                     currentObject[arrayKey][arrayIndex] = value;
-                }else{
-                    currentObject[arrayKey][arrayIndex] = {};
+                } else {
+                    if (!currentObject[arrayKey][arrayIndex]) {
+                        if (arrayKey === "variation") {
+                            currentObject[arrayKey][arrayIndex] = value;
+                        } else {
+                            currentObject[arrayKey][arrayIndex] = {};
+                        }
+                    }
+                    currentObject = currentObject[arrayKey][arrayIndex];
+                    i++; // Skip the array index since it has been processed
+                }
+            } else {
+                if (!currentObject[key]) {
+                    currentObject[key] = {};
+                }
+
+                if (i === keys.length - 1) {
+                    currentObject[key] = value;
+                } else {
+                    currentObject = currentObject[key];
                 }
             }
-            currentObject = currentObject[arrayKey][arrayIndex];
-            i++; // Skip the array index since it has been processed
-          }
-        } else {
-          if (!currentObject[key]) {
-            currentObject[key] = {};
-          }
-  
-          if (i === keys.length - 1) {
-            currentObject[key] = value;
-          } else {
-            currentObject = currentObject[key];
-          }
         }
-      }
     });
-  
-    return result;
-  }
 
+    return result;
+}
 
 export async function POST(request: NextRequest) {
     const formData = await request.formData();
@@ -81,7 +80,7 @@ export async function POST(request: NextRequest) {
 
     const file: File | null = formData.get('file') as unknown as File;
 
-    if(file!=null){
+    if (file != null) {
         imageName = crypto.randomBytes(32).toString('hex');
         const uploadFileResponse = await S3BucketUtil.uploadFile({
             file: file!,
@@ -99,7 +98,7 @@ export async function POST(request: NextRequest) {
     const productItems = [];
     jsonObject.items.forEach(async (item: ProductItemSchema) => {
         try {
-            
+
             const productItemCreated = await ProductItem.create({
                 masterProductId: productCreated.id,
                 stock: 0,
@@ -112,10 +111,10 @@ export async function POST(request: NextRequest) {
             const variationOptionsIds = item.variation;
             console.log("ITEM:", item);
             console.log("variationOptionsIds", item.variation);
-            if(variationOptionsIds){
+            if (variationOptionsIds) {
                 const variationOptions: VariationOption[] = await VariationOption.findAll({
                     where: {
-                        id:{
+                        id: {
                             [Op.in]: variationOptionsIds,
                         }
                     },
@@ -125,7 +124,7 @@ export async function POST(request: NextRequest) {
             }
 
             console.log("Variation Options finished");
-            
+
         } catch (error) {
             console.log("Error!!", error)
         }
@@ -134,7 +133,7 @@ export async function POST(request: NextRequest) {
     });
 
 
-    
+
 
     /*
         {
@@ -152,9 +151,9 @@ export async function POST(request: NextRequest) {
             ]
         }
     */
-    
 
-    
+
+
     /*
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)

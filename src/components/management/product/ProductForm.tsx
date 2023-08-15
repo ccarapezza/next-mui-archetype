@@ -1,8 +1,8 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Alert, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {  faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {  faPlus, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,6 +12,7 @@ import ColorPicker from '../../client/ColorPicker';
 import { ProductInput, productInputSchema } from '../../../schemas/product';
 import { ProductCategoryDto } from '@/schemas/category';
 import { VariationDto } from '@/schemas/variation';
+import { VariationOptionDto } from '@/schemas/variationOption';
 
 const COLOR_VARIANT_ID = 2;
 
@@ -76,10 +77,9 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
     const router = useRouter();
     const [hasVariants, setHasVariants] = useState<boolean>(false);
 
-
     const onSubmit = async (data: any) => {
         saveProductData(data, [file!]).then((response) => {
-            console.log("response", response);
+            console.log("response", data);
             router.push('/management/products');
             router.refresh();//Need to refresh the page to get the updated data
         }).catch((error) => {
@@ -87,11 +87,11 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
         });
     };
 
-    const getValuesByVariantId = (variantId: number) : any[] => {
-        return variations.find(({ id }) => id === variantId)?.variationOptions || [];
+    const getValuesByVariantId = (variantId: number) : VariationOptionDto[] => {
+        return variations.find((variation) => variation.id === variantId)?.variationOptions || [];
     };
 
-    const { register, control, handleSubmit, reset, formState: { errors }, setValue, watch } = useForm<ProductInput>({
+    const { register, control, handleSubmit, reset, formState: { errors, isSubmitting, isLoading }, setValue, watch } = useForm<ProductInput>({
         resolver: yupResolver(productInputSchema),
         defaultValues: {
             name: '',
@@ -149,19 +149,22 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
         }
     };
 
-    /*
+    
     useEffect(() => {
         //TODO: borrar!
         console.log("errors", errors);
+        
         console.log("watch", watch());
     }, [errors, watch]);
-    */
+    
 
     const [file, setFile] = useState<File>();
 
     return (
         <div className="max-w-md mx-auto bg-white p-4 rounded-md shadow-lg">
             <h1 className="text-xl font-semibold mb-4">Crear nuevo producto</h1>
+            {isSubmitting?"SUBMITING!!!!!!!!!!!!!!!!!!!":"No pasa nada....."}
+            {isLoading?"LOADIG!!!!!!!!!!!!!!!!!!!":"No pasa nada....."}
             <Box>
                 {/*
                     <pre>{JSON.stringify(variations, null, 2)}</pre>
@@ -250,9 +253,12 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
                             input={<OutlinedInput id="select-multiple-chip" label="Tipos de variantes" />}
                             renderValue={(value) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                    {value.map((value) => (
-                                        <Chip variant='outlined' size='small' key={`${value.id}-${value.name}-selected-variants`} label={value.name} />
-                                    ))}
+                                    {value.map((value) => {
+                                        const variant = variations.find((variation)=>variation.id===value);
+                                        return(
+                                            <Chip variant='outlined' size='small' key={`${variant?.id}-${variant?.name}-selected-variants`} label={variant?.name} />
+                                        )
+                                    })}
                                 </Box>
                             )}
                             MenuProps={MenuProps}
@@ -260,9 +266,9 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
                             {variations.map((variationValue) => (
                                 <MenuItem
                                     key={`${variationValue.id}-${variationValue.name}-variant`}
-                                    value={variationValue.name}
+                                    value={variationValue.id}
                                 >
-                                    <Checkbox checked={variantsSelected.find((variantSel)=>variantSel.id===variationValue.id)?true:false} className='mr-2' />
+                                    <Checkbox checked={variantsSelected.find((variantSel)=>variantSel===variationValue.id)?true:false} className='mr-2' />
                                     <ListItemText primary={variationValue.name} />
                                 </MenuItem>
                             ))}
@@ -272,12 +278,12 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
                 {hasVariants && variantsSelected.length > 0 && fields.map((variant, itemIndex) => (
                     <div key={itemIndex} className="mt-2">
                         <Divider><Chip label={`Item #${itemIndex + 1}`} className='mb-2 mt-4' /></Divider>
-                        {variantsSelected.map((variant, variantTypeIndex) => (
+                        {variations.filter((variation)=>variantsSelected.find((variantSel)=>variantSel===variation.id)).map((variant, variantTypeIndex) => (
                             <Box key={`${itemIndex}-${variant?.id}-${variant?.name}`}>
                                 {
                                     variant?.id === COLOR_VARIANT_ID ?
                                     <Box className="flex items-center mb-4">
-                                        <Typography className='pl-1 pr-4'>{variant?.name}</Typography>
+                                        <Typography className='pl-1 pr-4'>{variant?.name}{!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]!&&<FontAwesomeIcon className='text-red-500' icon={faWarning}/>}</Typography>
                                         <ColorPicker
                                             key={variantTypeIndex}
                                             inputProps={{
@@ -285,7 +291,8 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
                                                 ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)
                                             }}
                                             name="variantValue"
-                                            colors={getValuesByVariantId(variant?.id).map(item => item.value) || []}
+                                            error={!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]}
+                                            variationOptions={getValuesByVariantId(variant?.id) || []}
                                         />
                                     </Box>
                                     :
