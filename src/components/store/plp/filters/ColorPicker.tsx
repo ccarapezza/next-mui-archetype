@@ -1,21 +1,15 @@
-'use client'
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
 
+export default function ColorPicker(props: { colors: any, filters: any, setFilters: any }) {
 
-export default function ColorPicker(props: { colors: any }) {
-
-  const { colors } = props;
-
-  // Selectors Colors
-  const [selectedColor, setSelectedColor] = useState<string[]>([]);
-  console.log('selectedColor', selectedColor);
+  const { colors, filters, setFilters } = props;
 
   return (
     colors.length > 0 ?
       <details
         className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+        open={filters.selectedColor.length > 0}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"
@@ -29,13 +23,13 @@ export default function ColorPicker(props: { colors: any }) {
 
         <div className="border-t border-gray-200 bg-white">
           <header className="flex items-center justify-between p-4">
-            <span className="text-sm text-gray-700"> {selectedColor.length} Seleccionado/s </span>
+            <span className="text-sm text-gray-700"> {filters.selectedColor.length} Seleccionado/s </span>
 
             <button
               type="button"
               className="text-sm text-gray-900 underline underline-offset-4"
               onClick={() => {
-                setSelectedColor([])
+                setFilters({ ...filters, selectedColor: [] });
               }}
             >
               Reset
@@ -51,15 +45,18 @@ export default function ColorPicker(props: { colors: any }) {
                       onClick={
                         () => {
                           const colorName = color.name;
-                          setSelectedColor(
-                            selectedColor.includes(colorName)
-                              ? selectedColor.filter((color) => color !== colorName)
-                              : [...selectedColor, colorName]
+                          setFilters(
+                            {
+                              ...filters, selectedColor:
+                                filters.selectedColor.includes(colorName)
+                                  ? filters.selectedColor.filter((color: string) => color !== colorName)
+                                  : [...filters.selectedColor, colorName]
+                            }
                           );
                         }
                       }
                     >
-                      <div className={`flex items-center justify-center w-6 h-6 rounded-full ${selectedColor.includes(color.name) ? 'border border-black' : ''}`}>
+                      <div className={`flex items-center justify-center w-6 h-6 rounded-full ${filters.selectedColor.includes(color.name) ? 'border border-black' : ''}`}>
                         <div className='w-4 h-4 rounded-full'
                           style={{ backgroundColor: color.color }}
                         >

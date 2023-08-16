@@ -6,6 +6,8 @@ const fetchCategoryData = async () => {
     return productCategoryService.searchCategoryTree(null);
 };
 
+// category, color*, talle*, minPrice, maxPrice, page, pageSize, search
+//* variantes dinamicas!
 const fetchProductData = async () => {
     return productService.search(null);
 };

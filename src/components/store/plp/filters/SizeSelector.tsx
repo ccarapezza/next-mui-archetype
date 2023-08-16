@@ -1,21 +1,17 @@
 'use client'
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
 
 
-export default function SizeSelector(props: { talles: any }) {
+export default function SizeSelector(props: { talles: any, filters: any, setFilters: any }) {
 
-  const { talles } = props;
-
-  // Selectors Talle
-  const [selectedTalle, setSelectedTalle] = useState<string[]>([]);
-  console.log('selectedColor', selectedTalle);
+  const { talles, filters, setFilters } = props;
 
   return (
     talles.length > 0 ?
       <details
         className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+        open={filters.selectedTalle.length}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"
@@ -29,13 +25,13 @@ export default function SizeSelector(props: { talles: any }) {
 
         <div className="border-t border-gray-200 bg-white">
           <header className="flex items-center justify-between p-4">
-            <span className="text-sm text-gray-700"> {selectedTalle.length} Seleccionado/s </span>
+            <span className="text-sm text-gray-700"> {filters.selectedTalle.length} Seleccionado/s </span>
 
             <button
               type="button"
               className="text-sm text-gray-900 underline underline-offset-4"
               onClick={() => {
-                setSelectedTalle([])
+                setFilters({ ...filters, selectedTalle: [] });
               }}
             >
               Reset
@@ -51,15 +47,18 @@ export default function SizeSelector(props: { talles: any }) {
                       onClick={
                         () => {
                           const talleName = talle.talle;
-                          setSelectedTalle(
-                            selectedTalle.includes(talleName)
-                              ? selectedTalle.filter((talle) => talle !== talleName)
-                              : [...selectedTalle, talleName]
+                          setFilters(
+                            {
+                              ...filters, selectedTalle:
+                                filters.selectedTalle.includes(talleName)
+                                  ? filters.selectedTalle.filter((talle: string) => talle !== talleName)
+                                  : [...filters.selectedTalle, talleName]
+                            }
                           );
                         }
                       }
                     >
-                      <div className={`flex items-center justify-center w-[40px] rounded-md border ${selectedTalle.includes(talle.talle) ? 'text-tertiary font-semibold border-black' : 'text-gray border-gray'}`}>
+                      <div className={`flex items-center justify-center w-[40px] rounded-md border ${filters.selectedTalle.includes(talle.talle) ? 'text-tertiary font-semibold border-black' : 'text-gray border-gray'}`}>
                         {talle.talle}
                       </div>
                     </label>

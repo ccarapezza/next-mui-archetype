@@ -1,38 +1,41 @@
+import { ProductCategoryDto } from '@/schemas/category';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 
-export default function CategorySelector(props: { categoryTree: any, categoryTitle: string }) {
-
-  const { categoryTree, categoryTitle } = props;
+export default function CategorySelector(props: { categoryTree: ProductCategoryDto[], categoryTitle: string, filters: any, setFilters: any }) {
+  
+  const { categoryTree, categoryTitle, filters, setFilters } = props;
 
   // Subcategory List
-  const [subCategories, setsubCategories] = useState([]);
+  const [subCategories, setsubCategories] = useState<ProductCategoryDto[]>([]);
 
-  // Filter subcategories according to parent category.
-  function findCategoryByName(categories: any, categoryName: string) {
-    for (const category of categories) {
-      category.name = category.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
-      if (category.name === categoryName) {
-        return category.children;
-      }
-    }
-    return null;
-  }
+  const findNameOnTree = (name: string, categories: ProductCategoryDto[] = categoryTree): ProductCategoryDto | null => {
+    let result: ProductCategoryDto | null = null;
+    categories?.forEach((category) => {
+        if (category.name.toLocaleLowerCase() === name.toLocaleLowerCase()) {
+            result = category;
+        } else if (category.childrens && category.childrens.length > 0) {
+            const findedOnChilds = findNameOnTree(name, category.childrens);
+            if (findedOnChilds) {
+                result = findedOnChilds;
+            }
+        }
+    });
+    return result;
+}
 
-  const subcategories = findCategoryByName(categoryTree, categoryTitle);
+  
   useEffect(() => {
-    setsubCategories(subcategories);
-  }, [categoryTree, subcategories])
-
-  // Selectors Categories
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  console.log('selectedCategories', selectedCategories);
+    const category = findNameOnTree(categoryTitle);
+    setsubCategories(category?.childrens!);
+  }, [categoryTree])
 
   return (
     subCategories?.length > 0 ?
       <details
         className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+        open={filters.selectedCategories.length > 0}
       >
         <summary
           className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"
@@ -47,13 +50,13 @@ export default function CategorySelector(props: { categoryTree: any, categoryTit
 
         <div className="border-t border-gray-200 bg-white">
           <header className="flex items-center justify-between p-4">
-            <span className="text-sm text-gray-700"> {selectedCategories.length} Seleccionado/s </span>
+            <span className="text-sm text-gray-700"> {filters.selectedCategories.length} Seleccionado/s </span>
 
             <button
               type="button"
               className="text-sm text-gray-900 underline underline-offset-4"
               onClick={() => {
-                setSelectedCategories([])
+                setFilters({...filters, selectedCategories: []});
                 const checkboxes = document.querySelectorAll<HTMLInputElement>('.category-checkbox');
                 checkboxes.forEach((checkbox) => {
                   checkbox.checked = false;
@@ -73,15 +76,18 @@ export default function CategorySelector(props: { categoryTree: any, categoryTit
                       <input
                         type="checkbox"
                         id="FilterSubcategory"
-                        className="h-5 w-5 rounded border-gray-300 category-checkbox accent-primary focus:ring-tertiary"
+                        className={`h-5 w-5 rounded border-gray-300 category-checkbox accent-primary focus:ring-tertiary`}
                         onChange={(e) => {
                           const categoryName = subcategory.name;
-                          setSelectedCategories(
-                            selectedCategories.includes(categoryName)
-                              ? selectedCategories.filter((category) => category !== categoryName)
-                              : [...selectedCategories, categoryName]
+                          setFilters(
+                            {...filters, selectedCategories:
+                              filters.selectedCategories.includes(categoryName)
+                                ? filters.selectedCategories.filter((category: any) => category !== categoryName)
+                                : [...filters.selectedCategories, categoryName]
+                            }
                           );
                         }}
+                        checked={filters.selectedCategories.includes(subcategory.name)}
                       />
 
                       <span className="text-sm font-medium text-gray-700">
