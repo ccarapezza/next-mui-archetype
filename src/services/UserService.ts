@@ -27,10 +27,14 @@ export class UserService extends GenericService<User> {
             include = [
                 {
                     model: Role,
-                    as: "roles",
+                    as: "_roles",
                     where: {
                         name: userType
                     }
+                },
+                {
+                    model: Role,
+                    as: "roles",
                 }
             ]
         }
@@ -39,7 +43,7 @@ export class UserService extends GenericService<User> {
             model: User,
             page: page,
             size: size,
-            attributes: ['id', 'name', 'email', 'image'],
+            attributes: ['id', 'name', 'email', 'image', 'emailVerified'],
             include,
             where
         });

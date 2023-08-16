@@ -1,10 +1,8 @@
-import { UserService } from '@/services/UserService';
+import { userService } from '@/services/UserService';
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest, {params}: {params: {page:number, size:number, search?:string}}) {
-    console.log("search", request.nextUrl.searchParams.get("search"))
     const searchTerm = request.nextUrl.searchParams.get("search");
-    const users = await UserService.search(searchTerm, null, params.page, params.size);
-    console.log("Users: ", users, params);
+    const users = await userService.search(searchTerm, null, params.page, params.size);
     return NextResponse.json(users);
 }

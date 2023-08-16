@@ -66,7 +66,7 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
   const getColumns = () => {
     let finalColumns = [...columns];
     if(editPath || deletePath){
-      finalColumns.push({ field: 'actions', headerName: 'Actions', width: 400, renderCell: (params) => {
+      finalColumns.push({ field: 'actions', headerName: 'Actions', width: 120, renderCell: (params) => {
         return (<>
           {editPath&&
             <IconButton onClick={(e) => onEdit(e, params.row)}>

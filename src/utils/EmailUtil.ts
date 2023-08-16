@@ -99,12 +99,12 @@ async function sendVerificationEmail({ email, token }: { email: string; token: s
     });
 }
 
-async function sendWelcomeEmail({ email, url }: { email: string; url: string; }) {
+async function sendWelcomeEmail({ email, url, temporalPassword }: { email: string; url: string; temporalPassword: string; }) {
     return await sendEmail({
         to: email,
         from: `carapezza.christian@gmail.com`,
         subject: `Welcome to localhost`,
-        html: `Use the link below to sign in to localhost.\n\n${url}`,
+        html: `Your temporal password is <strong>${temporalPassword}</strong>. Use the link below to sign in to localhost.\n\n${url}`,
     });
 }
 

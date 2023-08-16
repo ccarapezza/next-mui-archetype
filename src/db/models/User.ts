@@ -40,5 +40,13 @@ export default class User extends Model{
     otherKey: 'roleId',
   })
   public roles?: Role[];
+
+  @BelongsToMany(() => Role, {
+    through: 'user_roles',
+    foreignKey: 'userId',
+    otherKey: 'roleId',
+  })
+  public _roles?: Role[];
   declare addRole: BelongsToManyAddAssociationMixin<Role, number>;
+  declare addRoles: BelongsToManyAddAssociationMixin<Role[], number>;
 }

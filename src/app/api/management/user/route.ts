@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
         where: {
             [Op.or]: [
                 { email: userData.email! },
-                { name: userData.name }
+                { name: userData.username }
             ]
         }
     });
@@ -31,27 +31,37 @@ export async function POST(request: NextRequest) {
     });
 
     try {
+        console.log("TOKEN:",`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/verify-email?token=${verificationToken.token}`);
         await EmailUtil.sendVerificationEmail({
             email: userData?.email!,
             token: verificationToken.token
         })
     } catch (error) {
         console.error('Error sending email:', error);
-        throw error;
+        //throw error is dev environment
+        if (process.env.NODE_ENV !== 'development')
+            throw error;
     }
 
     //create user
     const createdUser = await User.create({
-        name: userData.name,
+        name: userData.username,
         email: userData.email,
         password: userData.password
     });
-    const clientRole = await Role.findOne({
+
+    const seletedRoles = await Role.findAll({
         where: {
-            name: "admin"
+            //or
+            [Op.or]: [
+                { id: userData.roles },
+                { name: "user" }
+            ]
+
         }
     });
-    await createdUser.addRole(clientRole!);
 
-    return NextResponse.json(createdUser, { status: 200 });
+    await createdUser.addRoles(seletedRoles);
+
+    return NextResponse.json(createdUser.toJSON(), { status: 200 });
 }

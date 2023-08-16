@@ -8,9 +8,7 @@ import React from 'react'
 const fetchEmailTemplatesData = async (page: number, size: number, search: string) => {
     const data = await emailTemplateService.search(search, page, size);
     //data to EmailTemplateDto
-    const emailTemplates: any[] = data.rows.map((item: any) => {
-        return item.toJson();
-    })
+    const emailTemplates: any[] = data.rows;
     return {
         rows: emailTemplates,
         totalItems: data.totalItems
