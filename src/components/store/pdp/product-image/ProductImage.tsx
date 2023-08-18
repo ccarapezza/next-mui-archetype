@@ -7,8 +7,6 @@ import Image from 'next/image';
 export default function ProductImage(props : {images: any}) {
 
   const { images } = props
-  console.log('Imagenes!', images);
-  
   const [activeImage, setActiveImage] = useState(0)
 
 

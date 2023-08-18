@@ -31,6 +31,9 @@ type ProductToCart = {
 export default function ProductDescription(props: { product: Product }) {
 
   const { product } = props;
+
+  console.log('Este producto', product);
+  
   const { items, name, id } = product;
 
   const productToCart: ProductToCart = {

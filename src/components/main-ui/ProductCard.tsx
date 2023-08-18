@@ -13,9 +13,6 @@ const ProductCard = (props: { product: Product }) => {
   const name = props?.product?.name;
   const id = props?.product?.id;
 
-  console.log('Info del prodcuto', props.product);
-  
-
   return (
     <Link
       className="group block overflow-hidden cursor-pointer"

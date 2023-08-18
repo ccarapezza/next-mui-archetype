@@ -1,6 +1,6 @@
-'use client';
 import ProductImage from "@/components/store/pdp/product-image/ProductImage";
 import ProductDescription from "@/components/store/pdp/ProductDescription";
+import { productService } from "@/services/ProductService";
 
 // const esteProducto = {
 //   name: "Random Name #10",
@@ -111,7 +111,16 @@ const testProduct = {
   ]
 }
 
-export default function SiteProductPage() {
+// ----------------------------------------------------------//
+const fetchProductData = async () => {
+  return productService.getById(2)
+};
+
+export default async function SiteProductPage() {
+
+  // const product = await fetchProductData();
+  // console.log('Producto!', product);
+  
 
   return (
     <section>

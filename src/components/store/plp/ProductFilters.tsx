@@ -13,7 +13,8 @@ interface FilterState {
     selectedPrice: { from: string; to: string };
 }
 
-export default function ProductFilters(props: { categoryTree: any, categoryTitle: string }) {
+export default function ProductFilters(props: { categoryTree: any, categoryTitle: string, filtersDTO: any }) {
+
     const colors = [
         {
             color: '#000000',
@@ -50,7 +51,9 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
 
     //----------------------------------------------------------------------//
 
-    const { categoryTree, categoryTitle } = props;
+    const { categoryTree, categoryTitle, filtersDTO } = props;
+
+    console.log('Filtros desde pdpFilters', filtersDTO);
 
     const pathname = usePathname();
     const router = useRouter();

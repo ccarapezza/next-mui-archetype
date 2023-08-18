@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 
 
-export default function ProductListMain(props: { categoryTree: any, listProducts: any }) {
+export default function ProductListMain(props: { categoryTree: any, listProducts: any, filters: any }) {
   // Rutas
   const pathname = usePathname();
 
@@ -14,7 +14,7 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
   const categoryUrlName = segments[segments.length - 1];
 
   // Props
-  const { categoryTree, listProducts } = props;
+  const { categoryTree, listProducts, filters } = props;
 
   // console.log('props.categoryTree', categoryTree);
 
@@ -28,7 +28,7 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
         <ProductPageHeader categoryTitle={categoryUrlName}/>
         <div className='flex flex-col mt-8 lg:flex-row'>
           <div className='w-full lg:w-1/5 px-2'>
-            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryUrlName}/>
+            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryUrlName} filtersDTO={filters}/>
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
             <ProductGridList products={listProducts} />
