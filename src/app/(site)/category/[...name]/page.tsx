@@ -9,7 +9,7 @@ const fetchCategoryData = async () => {
 // category, color*, talle*, minPrice, maxPrice, page, pageSize, search
 //* variantes dinamicas!
 const fetchProductData = async () => {
-    return productService.search(null);
+    return productService.search(null, 1, 10);
 };
  
 export default async function SiteCategoryPage() {

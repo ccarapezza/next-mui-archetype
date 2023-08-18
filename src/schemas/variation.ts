@@ -7,3 +7,9 @@ export type VariationDto = {
     category: ProductCategoryDto;
     variationOptions: VariationOptionDto[];
 };
+
+//used in productItem response
+export type ItemVariationDto = {
+    id: number;
+    name: string;
+};

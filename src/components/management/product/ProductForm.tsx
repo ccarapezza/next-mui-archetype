@@ -149,22 +149,19 @@ const ProductForm = ({categories, variations}:{categories: ProductCategoryDto[],
         }
     };
 
-    
+    /*
     useEffect(() => {
         //TODO: borrar!
         console.log("errors", errors);
-        
         console.log("watch", watch());
     }, [errors, watch]);
-    
+    */
 
     const [file, setFile] = useState<File>();
 
     return (
         <div className="max-w-md mx-auto bg-white p-4 rounded-md shadow-lg">
             <h1 className="text-xl font-semibold mb-4">Crear nuevo producto</h1>
-            {isSubmitting?"SUBMITING!!!!!!!!!!!!!!!!!!!":"No pasa nada....."}
-            {isLoading?"LOADIG!!!!!!!!!!!!!!!!!!!":"No pasa nada....."}
             <Box>
                 {/*
                     <pre>{JSON.stringify(variations, null, 2)}</pre>
