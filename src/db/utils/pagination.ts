@@ -1,7 +1,7 @@
 import { Includeable, Order, WhereOptions } from "sequelize";
 import { Model, ModelCtor } from "sequelize-typescript";
 
-export default async function findAllSequelizePagination({ model, page = 1, size = 10, attributes, include, where, order, json=true }: {
+export default async function findAllSequelizePagination({ model, page = 1, size = 10, attributes, include, where, order, json = true }: {
     model: ModelCtor<Model>;
     page: number;
     size: number;
