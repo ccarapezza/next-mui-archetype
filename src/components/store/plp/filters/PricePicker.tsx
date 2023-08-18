@@ -1,14 +1,17 @@
+import { useEffect, useRef, useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDebounce } from "@uidotdev/usehooks";
-import { useEffect, useState } from "react";
+
 
 export default function PricePicker(props: { filters: any, setFilters: any }) {
 
   const { filters, setFilters } = props;
+  const refFrom = useRef<HTMLInputElement>(null);
+  const refTo = useRef<HTMLInputElement>(null);
 
-  const [priceFrom, setPriceFrom] = useState<string>('');
-  const [priceTo, setPriceTo] = useState<string>('');
+  const [priceFrom, setPriceFrom] = useState<string>(filters?.selectedPrice?.from ? filters?.selectedPrice?.from : '');
+  const [priceTo, setPriceTo] = useState<string>(filters?.selectedPrice?.to ? filters?.selectedPrice?.to : '');
   const debouncedPriceFrom = useDebounce(priceFrom, 1000);
   const debouncedPriceTo = useDebounce(priceTo, 1000);
 
@@ -21,30 +24,20 @@ export default function PricePicker(props: { filters: any, setFilters: any }) {
   };
 
   useEffect(() => {
-    if (debouncedPriceFrom) {
-      setFilters({
-        ...filters,
-        selectedPrice:
-          { from: parseInt(debouncedPriceFrom), to: filters.selectedPrice.to, }
-      })
-    }
-  }, [debouncedPriceFrom])
+    setFilters({
+      ...filters,
+      selectedPrice:
+        { from: debouncedPriceFrom, to: debouncedPriceTo, }
+    })
+  }, [debouncedPriceFrom, debouncedPriceTo])
 
   useEffect(() => {
-    if (debouncedPriceTo) {
-      setFilters({
-        ...filters,
-        selectedPrice:
-          { from: filters.selectedPrice.from, to: parseInt(debouncedPriceTo) }
-      })
+    if (refFrom.current != null) {
+      refFrom.current.value = filters.selectedPrice.from.toString();
     }
-  }, [debouncedPriceTo])
-
-  useEffect(() => {
-    const inputFrom = document.getElementById('FilterPriceFrom') as HTMLInputElement;
-    const inputTo = document.getElementById('FilterPriceTo') as HTMLInputElement;
-    inputFrom.value = filters.selectedPrice.from.toString();
-    inputTo.value = filters.selectedPrice.to.toString();
+    if (refTo.current != null) {
+      refTo.current.value = filters.selectedPrice.to.toString();
+    }
   }, [filters.selectedPrice])
 
 
@@ -70,11 +63,14 @@ export default function PricePicker(props: { filters: any, setFilters: any }) {
             type="button"
             className="text-sm text-gray-900 underline underline-offset-4"
             onClick={() => {
-              setFilters({ ...filters, selectedPrice: { from: 0, to: 0 } })
-              const inputFrom = document.getElementById('FilterPriceFrom') as HTMLInputElement;
-              const inputTo = document.getElementById('FilterPriceTo') as HTMLInputElement;
-              inputFrom.value = '';
-              inputTo.value = '';
+              setPriceFrom('');
+              setPriceTo('');
+              if (refFrom.current != null) {
+                refFrom.current.value = '';
+              }
+              if (refTo.current != null) {
+                refTo.current.value = '';
+              }
             }}
           >
             Reset
@@ -92,6 +88,7 @@ export default function PricePicker(props: { filters: any, setFilters: any }) {
                 placeholder="Desde"
                 className="w-full border-b border-gray-200 focus:outline-none focus:border-tertiary"
                 onChange={handleChangeFrom}
+                ref={refFrom}
               />
             </label>
 
@@ -104,6 +101,7 @@ export default function PricePicker(props: { filters: any, setFilters: any }) {
                 placeholder="Hasta"
                 className="w-full border-b border-gray-200 focus:outline-none focus:border-tertiary"
                 onChange={handleChangeTo}
+                ref={refTo}
               />
             </label>
           </div>
