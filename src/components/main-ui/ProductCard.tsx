@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { Product } from "@/schemas/product";
 import Image from 'next/image';
 import PriceFormatting from '../management/product/PriceFormatting';
+import Link from 'next/link';
 
 const ProductCard = (props: { product: Product }) => {
 
@@ -10,13 +11,15 @@ const ProductCard = (props: { product: Product }) => {
 
   const image = props?.product?.items?.[0]?.image;
   const name = props?.product?.name;
+  const id = props?.product?.id;
+
+  console.log('Info del prodcuto', props.product);
+  
 
   return (
-    <div
+    <Link
       className="group block overflow-hidden cursor-pointer"
-      onClick={() => {
-        router.push(`/product/remera-1`)
-      }}
+      href={`/product/${id}`}
     >
       <div className="relative h-[500px] sm:h-[450px]">
         <Image
@@ -40,7 +43,7 @@ const ProductCard = (props: { product: Product }) => {
         <h3 className="text-lg text-gray-700 group-hover:underline group-hover:underline-offset-4">{props.product.name}</h3>
         <p className="text-lg mt-1.5 font-bold tracking-wide text-primary"><PriceFormatting value={props.product.items[0].price}/></p>
       </div>
-    </div>
+    </Link>
   )
 }
 

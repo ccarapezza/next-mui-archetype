@@ -1,7 +1,7 @@
 import { array, number, object, string, InferType } from 'yup';
 
 export const productItemSchema = object({
-    image: string().required(),
+    image: array(string().required().url()).optional().min(1),
     price: number().required().positive(),
     variation: array(
         object({

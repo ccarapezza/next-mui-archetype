@@ -36,8 +36,8 @@ export default function ProductImageMain(props: { images: any, activeImage: numb
         images.map((image: any, i: number) => (
           <Image
             key={i}
-            alt={image.alt}
-            src={image.url}
+            alt={'Nombre pdp'}
+            src={image}
             className="h-72 w-full rounded-xl object-cover lg:h-[540px]"
             height={540}
             width={700}

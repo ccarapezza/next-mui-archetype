@@ -17,6 +17,9 @@ export default async function SiteCategoryPage() {
   const categoryTree = await fetchCategoryData();
   const listProducts = await fetchProductData();
 
+  console.log('Lista de productos', listProducts);
+  
+
   // const products = [
   //   {
   //     name: "Random Name #1",

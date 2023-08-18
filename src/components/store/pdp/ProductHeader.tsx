@@ -8,10 +8,10 @@ export default function ProductHeader(props: { product: any }) {
     <>
       <div>
         <h1 className="text-2xl font-bold text-tertiary lg:text-3xl">{product.name}</h1>
-        <p className="mt-1 text-sm text-gray-500">SKU: {product.sku}</p>
+        <p className="mt-1 text-sm text-gray-500">SKU: {product.items[0].sku}</p>
       </div>
       <div className="mt-2">
-        <p className="text-2xl font-bold text-primary"><PriceFormatting value={product.listPrice} /></p>
+        <p className="text-2xl font-bold text-primary"><PriceFormatting value={product.items[0].price} /></p>
       </div>
       <div className="mt-4">
         <div className="max-w-none">
