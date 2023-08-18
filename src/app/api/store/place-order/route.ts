@@ -2,6 +2,8 @@ import { ProductItem } from '@/db';
 import OrderLine from '@/db/models/OrderLine';
 import ShopOrder from '@/db/models/ShopOrder';
 import { PlaceOrderDto } from '@/schemas/placeOrder';
+import { userService } from '@/services/UserService';
+import { getSession } from 'next-auth/react';
 import { NextRequest, NextResponse } from 'next/server'
 import { Op } from 'sequelize';
 
@@ -42,11 +44,13 @@ export async function POST(request: NextRequest) {
             status: 400,
         });
     }else{
+        const session = await getSession()
+        const userLogged = await userService.getByEmail(session?.user?.email!);
         //create shopOrder sequelize
         const shopOrder = await ShopOrder.create({
             orderDate: new Date(),
             orderTotal: orderTotal,
-            userId: null,//TODO: Obtener el usuario logueado
+            userId: userLogged?userLogged.id:null,
             statusId: 1,//TODO: Obtener el status por defecto
         });
         //create orderLines sequelize
@@ -68,7 +72,7 @@ export async function POST(request: NextRequest) {
             orderLines: orderLines,
         };
     
-        return NextResponse.json({});
+        return NextResponse.json(response);
     }
 
 }
