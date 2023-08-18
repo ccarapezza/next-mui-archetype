@@ -1,4 +1,5 @@
 import { array, number, object, string, InferType } from 'yup';
+import { VariationOptionDto } from './variationOption';
 
 export const productItemSchema = object({
     image: string().required(),
@@ -21,10 +22,7 @@ export type ProductItem = InferType<typeof productItemSchema>;
 export type ProductItemInput = InferType<typeof productItemInputSchema>;
 
 export type ProductItemDto = {
-    variation?: {
-        name: string;
-        value: string;
-    }[] | undefined;
+    variationOptions?: VariationOptionDto[] | undefined;
     images: string[];
     price: number;
     sku: string;
