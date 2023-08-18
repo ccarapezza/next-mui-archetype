@@ -1,17 +1,16 @@
 'use client'
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import CategorySelector from './filters/CategorySelector';
 import ColorPicker from './filters/ColorPicker';
 import SizeSelector from './filters/SizeSelector';
 import PricePicker from './filters/PricePicker';
-import { useEffect, useState } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import createQueryString from '@/utils/RouterUtil';
 
 interface FilterState {
     selectedCategories: string[];
     selectedTalle: string[];
     selectedColor: string[];
-    selectedPrice: { from: number; to: number };
+    selectedPrice: { from: string; to: string };
 }
 
 export default function ProductFilters(props: { categoryTree: any, categoryTitle: string }) {
@@ -61,15 +60,14 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
     const colorParams = searchParams.get('color');
     const priceMinParams = searchParams.get('pricemin');
     const priceMaxParams = searchParams.get('pricemax');
-    
 
     const [filters, setFilters] = useState<FilterState>({
         selectedCategories: categoryParam ? categoryParam.split(',') : [],
         selectedTalle: talleParams ? talleParams.split(',') : [],
         selectedColor: colorParams ? colorParams.split(',') : [],
         selectedPrice: {
-            from: priceMinParams ? parseInt(priceMinParams) : 0,
-            to: priceMaxParams ? parseInt(priceMaxParams) : 15000
+            from: priceMinParams ? priceMinParams : '',
+            to: priceMaxParams ? priceMaxParams : ''
         }
     });
 
@@ -77,42 +75,42 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
         setStateToUrl(filters)
     }, [filters])
 
+    const setStateToUrl = ({
+        selectedCategories,
+        selectedTalle,
+        selectedColor,
+        selectedPrice
+    }: FilterState) => {
+        const paramsToAdd: any = [];
 
-    const setStateToUrl = (filtersState: FilterState) => {
-        const { selectedCategories, selectedTalle, selectedColor, selectedPrice } = filtersState;
-        router.push(pathname + '?' + createQueryString(
-            [{
-                name: 'category',
-                value: selectedCategories.join(',')
+        const addParam = (name: string, value: string[]) => {
+            if (value.length > 0) {
+                paramsToAdd.push({
+                    name,
+                    value: value.join(',')
+                });
             }
-                , {
-                name: 'talle',
-                value: selectedTalle.join(',')
+        };
+
+        addParam('category', selectedCategories);
+        addParam('talle', selectedTalle);
+        addParam('color', selectedColor);
+
+        if (selectedPrice.from !== '' || selectedPrice.to !== '') {
+            if (selectedPrice.from !== '') {
+                addParam('pricemin', [selectedPrice.from]);
             }
-                , {
-                name: 'color',
-                value: selectedColor.join(',')
+            if (selectedPrice.to !== '') {
+                addParam('pricemax', [selectedPrice.to]);
             }
-                , {
-                name: 'pricemin',
-                value: selectedPrice.from.toString()
-            },
-            {
-                name: 'pricemax',
-                value: selectedPrice.to.toString()
-            },
-            {
-                name: 'page',
-                value: '1'
-            },
-            {
-                name: 'limit',
-                value: '12'
-            }
-        ],
-            searchParams.toString())
-        )
-    }
+        }
+
+        const queryParams = new URLSearchParams(
+            paramsToAdd.map((param: any) => [param.name, param.value])
+        );
+
+        router.push(`${pathname}?${queryParams.toString()}`);
+    };
 
     return (
         <div className="space-y-2">
