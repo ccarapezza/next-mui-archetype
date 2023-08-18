@@ -1,5 +1,6 @@
 import { Product, ProductCategory, ProductItem, Variation, VariationOption, sequelizeInstace } from '@/db';
 import findAllSequelizePagination from '@/db/utils/pagination';
+import { ProductDto } from '@/schemas/product';
 import { VariationDto } from '@/schemas/variation';
 import { VariationOptionDto } from '@/schemas/variationOption';
 import S3BucketUtil from '@/utils/S3BucketUtil';
@@ -12,6 +13,7 @@ export async function GET(request: NextRequest) {
     const categoryParam = request.nextUrl.searchParams.get('category');
     const priceMinParam = request.nextUrl.searchParams.get('pricemin');
     const priceMaxParam = request.nextUrl.searchParams.get('pricemax');
+
     /*
     const talleParam = request.nextUrl.searchParams.get('talle');
     const colorParam = request.nextUrl.searchParams.get('color');
@@ -86,14 +88,16 @@ export async function GET(request: NextRequest) {
     );
     
     //Group by product
-    const resultSetGrouped = resultSet.reduce((acc: any, item: any) => {
+    const resultSetGrouped = resultSet.reduce((acc: ProductDto[], item: any) => {
         const product = acc.find((p: any) => p.id === item.id);
         if (product) {
             product.items.push({
                 sku: item.items.sku,
                 stock: item.items.stock,
-                image: item.items.image,
-                price: item.items.price
+                images: item.items.image?item.items.image.split(','):[],
+                price: item.items.price,
+                createdAt: item.createdAt,
+                updatedAt: item.updatedAt,
             });
         } else {
             acc.push({
@@ -109,13 +113,28 @@ export async function GET(request: NextRequest) {
                 items: [{
                     sku: item.items.sku,
                     stock: item.items.stock,
-                    image: item.items.image,
-                    price: item.items.price
+                    images: item.items.image?item.items.image.split(','):[],
+                    price: item.items.price,
+                    createdAt: item.createdAt,
+                    updatedAt: item.updatedAt,
                 }]
             });
         }
         return acc;
-    }, []);
+    }, [] as ProductDto[]);
 
+    //set S3 images to images array prop
+    for (const product of resultSetGrouped) {
+        for (const item of product.items) {
+            if (item.images.length > 0) {
+                item.images = await Promise.all(item.images.map(async (image) => {
+                    return await S3BucketUtil.getSignedUrlByKey({key: image});
+                }));
+            } else {
+                item.images = [];
+            }
+        }
+    }
+    
     return NextResponse.json(resultSetGrouped);
 }

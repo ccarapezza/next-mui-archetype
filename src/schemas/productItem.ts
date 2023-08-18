@@ -19,3 +19,16 @@ export const productItemInputSchema = object({
 
 export type ProductItem = InferType<typeof productItemSchema>;
 export type ProductItemInput = InferType<typeof productItemInputSchema>;
+
+export type ProductItemDto = {
+    variation?: {
+        name: string;
+        value: string;
+    }[] | undefined;
+    images: string[];
+    price: number;
+    sku: string;
+    stock: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
