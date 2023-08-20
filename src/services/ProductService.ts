@@ -125,12 +125,14 @@ export class ProductService extends GenericService<Product> {
         const variationsIdsSearchs = [];
         const variations: VariationDto[] = (await Variation.findAll({attributes: ['id', 'name']}))?.map((v) => v.toJSON<VariationDto>());
         for (const variation of variations) {
-            const variationSearch = filters.variations?.find((v) => v.key === variation.name.toLowerCase())?.value;
+            const variationSearch = filters.variations?.find((v) => v.key === variation.name.toLowerCase())?.values;
             
             if (variationSearch) {
-                const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationSearch}}))?.toJSON<VariationOptionDto>();
-                if(variationOption){
-                    variationsIdsSearchs.push(variationOption.id);
+                for(const variationValue of variationSearch){
+                    const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationValue}}))?.toJSON<VariationOptionDto>();
+                    if(variationOption){
+                        variationsIdsSearchs.push(variationOption.id);
+                    }
                 }
             }
         }
@@ -157,7 +159,7 @@ export class ProductService extends GenericService<Product> {
         }
 
         for (let index = 0; index < variationsIdsSearchs.length; index++) {
-            whereVariantClauses.push(`vo.id = :variationId-${index}`);
+            whereVariantClauses.push(`vo.id IN(:variationId-${index})`);
         }
 
         if(whereVariantClauses.length > 0){
