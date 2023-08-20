@@ -6,7 +6,7 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import { CartContext } from "../context/MiniCartContext";
 import PriceFormatting from "@/components/management/product/PriceFormatting";
-import { Product } from "@/schemas/product";
+import { Product, ProductDto } from "@/schemas/product";
 import ProductHeader from "./ProductHeader";
 
 // const esteProducto = {
@@ -22,22 +22,17 @@ import ProductHeader from "./ProductHeader";
 // }
 
 type ProductToCart = {
-  product: Product,
   quantity: number
 };
 
-
-
-export default function ProductDescription(props: { product: Product }) {
+export default function ProductDescription(props: { product: ProductDto | null }) {
 
   const { product } = props;
 
   console.log('Este producto', product);
   
-  const { items, name, id } = product;
 
   const productToCart: ProductToCart = {
-    product: product,
     quantity: 1
   }
 
