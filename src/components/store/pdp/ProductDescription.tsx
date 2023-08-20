@@ -6,40 +6,54 @@ import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
 import { CartContext } from "../context/MiniCartContext";
 import PriceFormatting from "@/components/management/product/PriceFormatting";
+import { Product, ProductDto } from "@/schemas/product";
 import ProductHeader from "./ProductHeader";
 
-const esteProducto = {
-  name: "Random Name #10",
-  description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam totameos iusto repellat blanditiis voluptate aspernatur, quae nemo exercitationem cum debitis!",
-  listPrice: 100,
-  specialPrice: 50,
-  sku: '012346',
-  quantity: 1,
-  urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
-  urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
-  productNameUrl: 'product-name-10'
-}
+// const esteProducto = {
+//   name: "Random Name #10",
+//   description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam totameos iusto repellat blanditiis voluptate aspernatur, quae nemo exercitationem cum debitis!",
+//   listPrice: 100,
+//   specialPrice: 50,
+//   sku: '012346',
+//   quantity: 1,
+//   urlImageMain: 'https://dummyimage.com/500x600/111827/4F46E5.png&text=First',
+//   urlImageHover: 'https://dummyimage.com/500x600/111827/FFF.png&text=Second',
+//   productNameUrl: 'product-name-10'
+// }
 
-export default function ProductDescription() {
+type ProductToCart = {
+  quantity: number
+};
+
+export default function ProductDescription(props: { product: ProductDto | null }) {
+
+  const { product } = props;
+
+  console.log('Este producto', product);
+  
+
+  const productToCart: ProductToCart = {
+    quantity: 1
+  }
 
   const { addProduct } = useContext(CartContext)
-  const [ quantity, setQuantity ] = useState(esteProducto.quantity);
+  const [ quantity, setQuantity ] = useState(productToCart.quantity);
   console.log('quantity', quantity);
   
 
   const addToCart = () => {
-    addProduct(
-      {
-        ...esteProducto,
-        quantity: quantity
-      }
-    )
+    // addProduct(
+    //   {
+    //     ...productToCart,
+    //     quantity: quantity
+    //   }
+    // )
   }
 
   return (
     <div className="relative mt-4 w-full md:w-1/2 md:ml-4">
       <div>
-        <ProductHeader product={esteProducto} />
+        <ProductHeader product={product} />
         <SkuSelector />
       </div>
 

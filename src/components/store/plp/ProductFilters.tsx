@@ -2,69 +2,46 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import CategorySelector from './filters/CategorySelector';
-import ColorPicker from './filters/ColorPicker';
-import SizeSelector from './filters/SizeSelector';
 import PricePicker from './filters/PricePicker';
+import MainGenericSelector from './filters/generic-filters/MainGenericSelector';
+import { VariationFilter } from '@/schemas/filterProduct';
 
 interface FilterState {
     selectedCategories: string[];
-    selectedTalle: string[];
-    selectedColor: string[];
     selectedPrice: { from: string; to: string };
 }
 
-export default function ProductFilters(props: { categoryTree: any, categoryTitle: string }) {
-    const colors = [
-        {
-            color: '#000000',
-            name: 'Negro',
-        },
-        {
-            color: '#002BFF',
-            name: "Azul",
-        },
-        {
-            color: '#FF0000',
-            name: "Rojo",
-        },
-        {
-            color: '#00FF04',
-            name: "Verde",
-        }
-    ]
+export default function ProductFilters(props: { categoryTree: any, categoryTitle: string, varationsDTO: any }) {
+    // Porps
+    const { categoryTree, categoryTitle, varationsDTO } = props;
 
-    const talles = [
-        {
-            talle: 'S',
-        },
-        {
-            talle: "M",
-        },
-        {
-            talle: "L",
-        },
-        {
-            talle: "XL",
-        }
-    ]
-
-    //----------------------------------------------------------------------//
-
-    const { categoryTree, categoryTitle } = props;
-
+    // Routes
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get('category');
-    const talleParams = searchParams.get('talle');
-    const colorParams = searchParams.get('color');
-    const priceMinParams = searchParams.get('pricemin');
-    const priceMaxParams = searchParams.get('pricemax');
+    const priceMinParams = searchParams.get('priceMin');
+    const priceMaxParams = searchParams.get('priceMax');
+
+    // Filter State
+
+    const variationList = varationsDTO.map((variation: any) => {
+        return {
+            key: variation.name,
+            value: ''
+        }
+    });
+
+    const initialVariationStates: { [key: string]: string[] } = {};
+    variationList.forEach((variation: VariationFilter) => {
+        const genericFiltersParams = searchParams.get(variation.key)?.split(',');
+        initialVariationStates[variation.key] = [] || searchParams.get(variation.key)?.split(',');
+        initialVariationStates[variation.key] = genericFiltersParams ? genericFiltersParams : [];
+    });
 
     const [filters, setFilters] = useState<FilterState>({
         selectedCategories: categoryParam ? categoryParam.split(',') : [],
-        selectedTalle: talleParams ? talleParams.split(',') : [],
-        selectedColor: colorParams ? colorParams.split(',') : [],
+        ...initialVariationStates,
         selectedPrice: {
             from: priceMinParams ? priceMinParams : '',
             to: priceMaxParams ? priceMaxParams : ''
@@ -75,12 +52,12 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
         setStateToUrl(filters)
     }, [filters])
 
+    // Function to set URL
     const setStateToUrl = ({
         selectedCategories,
-        selectedTalle,
-        selectedColor,
-        selectedPrice
-    }: FilterState) => {
+        selectedPrice,
+        ...variationStates
+    }: any) => {
         const paramsToAdd: any = [];
 
         const addParam = (name: string, value: string[]) => {
@@ -92,18 +69,24 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
             }
         };
 
-        addParam('category', selectedCategories);
-        addParam('talle', selectedTalle);
-        addParam('color', selectedColor);
 
+        addParam('category', selectedCategories);
         if (selectedPrice.from !== '' || selectedPrice.to !== '') {
             if (selectedPrice.from !== '') {
-                addParam('pricemin', [selectedPrice.from]);
+                addParam('priceMin', [selectedPrice.from]);
             }
             if (selectedPrice.to !== '') {
-                addParam('pricemax', [selectedPrice.to]);
+                addParam('priceMax', [selectedPrice.to]);
             }
         }
+
+        Object.entries(variationStates).forEach((variationStates: any) => {
+            const variationName = variationStates[0];
+            const variationValues = variationStates[1];
+            if (variationValues.length > 0) {
+                addParam(variationName , variationValues);
+            }
+        });
 
         const queryParams = new URLSearchParams(
             paramsToAdd.map((param: any) => [param.name, param.value])
@@ -116,8 +99,7 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
         <div className="space-y-2">
             <h3 className='text-lg text-tertiary-800 font-semibold pb-2 border-b border-gray-300 mb-4'>Filtros:</h3>
             <CategorySelector categoryTree={categoryTree} categoryTitle={categoryTitle} filters={filters} setFilters={setFilters} />
-            <ColorPicker colors={colors} filters={filters} setFilters={setFilters} />
-            <SizeSelector talles={talles} filters={filters} setFilters={setFilters} />
+            <MainGenericSelector filters={filters} setFilters={setFilters} varationsDTO={varationsDTO} />
             <PricePicker filters={filters} setFilters={setFilters} />
         </div>
     )

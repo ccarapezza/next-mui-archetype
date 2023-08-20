@@ -2,7 +2,7 @@ import { array, number, object, string, InferType } from 'yup';
 import { VariationOptionDto } from './variationOption';
 
 export const productItemSchema = object({
-    image: string().required(),
+    image: array(string().required().url()).optional().min(1),
     price: number().required().positive(),
     variation: array(
         object({

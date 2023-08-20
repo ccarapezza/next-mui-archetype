@@ -2,6 +2,7 @@ import { array, object, string, InferType, number } from 'yup';
 import { ProductItemDto, productItemInputSchema, productItemSchema } from './productItem';
 
 export const productSchema = object({
+    id: number().integer().positive().required(),
     name: string().required().min(2).max(100),
     description: string().required().min(2).max(100),
     category: object({

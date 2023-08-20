@@ -3,31 +3,10 @@ import { useState } from 'react';
 import ProductImageMain from './ProductImageMain';
 import Image from 'next/image';
 
-const images = [
-  {
-    url: 'https://dummyimage.com/700x500/322f30/EFE6D9.jpg&text=Imagen+1',
-    alt: 'Image 1'
-  },
-  {
-    url: 'https://dummyimage.com/700x500/322f30/EFE6D9.jpg&text=Imagen+2',
-    alt: 'Image 2'
-  },
-  {
-    url: 'https://dummyimage.com/700x500/322f30/EFE6D9.jpg&text=Imagen+3',
-    alt: 'Image 3'
-  },
-  {
-    url: 'https://dummyimage.com/700x500/322f30/EFE6D9.jpg&text=Imagen+4',
-    alt: 'Image 4'
-  },
-  {
-    url: 'https://dummyimage.com/700x500/322f30/EFE6D9.jpg&text=Imagen+5',
-    alt: 'Image 5'
-  }
-]
 
-export default function ProductImage() {
+export default function ProductImage(props : {images: any}) {
 
+  const { images } = props
   const [activeImage, setActiveImage] = useState(0)
 
 
@@ -39,7 +18,7 @@ export default function ProductImage() {
         </div>
         <ul className="mt-1 flex gap-1 hidden md:flex">
           {
-            images.map((image, index) => (
+            images.map((image:any, index:number) => (
               <li key={index}
                 onClick={() => {
                   setActiveImage(index)
@@ -47,8 +26,8 @@ export default function ProductImage() {
                 className={`rounded-md cursor-pointer ${activeImage == index ? 'opacity-100' : 'opacity-50'}`}
               >
                 <Image
-                  alt={image.alt}
-                  src={image.url}
+                  alt={'Nombre del prodcuto'}
+                  src={image}
                   className="h-16 w-16 rounded-md object-cover"
                   width={64}
                   height={64}
