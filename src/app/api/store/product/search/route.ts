@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     for(const variation of variations){
         const variationParam = request.nextUrl.searchParams.get(variation.name);
         if(variationParam){
-            variationsFilter.push({key: variation.name, value: variationParam});
+            variationsFilter.push({key: variation.name, values: variationParam.split(",")});
         }
     }
 

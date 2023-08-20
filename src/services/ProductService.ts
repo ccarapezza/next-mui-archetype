@@ -125,8 +125,9 @@ export class ProductService extends GenericService<Product> {
         const variationsIdsSearchs = [];
         const variations: VariationDto[] = (await Variation.findAll({attributes: ['id', 'name']}))?.map((v) => v.toJSON<VariationDto>());
         for (const variation of variations) {
-            const variationSearch = filters.variations?.find((v) => v.key === variation.name.toLowerCase())?.values;
-            
+            const variationSearch = filters.variations?.find((v) => v.key.toLowerCase() === variation.name.toLowerCase())?.values;
+            console.log("variationSearch", variationSearch)
+
             if (variationSearch) {
                 for(const variationValue of variationSearch){
                     const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationValue}}))?.toJSON<VariationOptionDto>();
@@ -158,13 +159,8 @@ export class ProductService extends GenericService<Product> {
             whereClauses.push('pi.price <= :maxPrice');
         }
 
-        for (let index = 0; index < variationsIdsSearchs.length; index++) {
-            whereVariantClauses.push(`vo.id IN(:variationId-${index})`);
-        }
-
-        if(whereVariantClauses.length > 0){
-            const variantWherer = "(".concat(whereVariantClauses.join(" or ")).concat(")");
-            whereClauses.push(variantWherer);
+        if(variationsIdsSearchs?.length > 0){
+            whereClauses.push('vo.id IN(:variationsIds)');
         }
 
         let where = '';
@@ -178,7 +174,7 @@ export class ProductService extends GenericService<Product> {
             categoryId: categoryId,
             minPrice: filters.priceMin,
             maxPrice: filters.priceMax,
-            ...variationsIdsSearchs.map((variationSearch, index) => ({[`variationId-${index}`]: variationSearch}))
+            variationsIds: variationsIdsSearchs
         };
 
         const resultSet = await sequelizeInstace.query(

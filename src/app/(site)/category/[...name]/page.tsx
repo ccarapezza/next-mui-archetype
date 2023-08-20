@@ -37,9 +37,10 @@ export default async function SiteCategoryPage(props: { params: any, searchParam
   for (const key in props.searchParams) {
     if (props.searchParams.hasOwnProperty(key)) {
       if (key != 'category' && key != 'priceMin' && key != 'priceMax') {
+        const values = props.searchParams[key].split(",");
         filters.variations?.push({
           key: key,
-          value: props.searchParams[key],
+          values: values,
         });
       }
     }
