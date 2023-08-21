@@ -34,3 +34,13 @@ export type ProductDto = {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export type ProductToCart = {
+    productId: number,
+    name: string,
+    quantity: number,
+    price: number,
+    image: string,
+    itemId: number
+};
+  

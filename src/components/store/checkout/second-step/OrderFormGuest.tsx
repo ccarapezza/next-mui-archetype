@@ -4,13 +4,9 @@ import PaymentsAndShipping from "./PaymentsAndShipping";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useSession } from "next-auth/react";
-
-interface OrderFormGuest {
-  name: string
-  lastName: string
-  phone: number
-  email: string
-}
+import { useContext } from "react";
+import { CartContext } from "../../context/MiniCartContext";
+import { ContactFormDto, OrderItemDto, PlaceOrderDto } from "@/schemas/placeOrder";
 
 const schema = yup.object({
   name: yup.string().min(3).max(50).required(),
@@ -19,12 +15,10 @@ const schema = yup.object({
   email: yup.string().email().min(3).max(50).required(),
 }).required();
 
-
 export default function OrderFormGuest() {
 
+  // User Data
   const { status, data } = useSession();
-  
-
   function separateName(nombreCompleto:any) {
     const words = nombreCompleto.split(' ');
     const lastName = words.pop();
@@ -36,23 +30,42 @@ export default function OrderFormGuest() {
   let userInformation = {
     name: '',
     lastName: '',
-    email: ''
+    email: '',
+    phone: ''
   }
 
   if (status !== 'unauthenticated') {
     userInformation = {
       name: separateName(data?.user?.name).name,
       lastName: separateName(data?.user?.name).lastName,
-      email: data?.user?.email || ''
+      email: data?.user?.email || '',
+      phone: ''
     }
   }
 
-  const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm<OrderFormGuest>({
+  const { register, handleSubmit, setError, formState: { errors, isValid } } = useForm<ContactFormDto>({
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = async (data: OrderFormGuest) => {
-    console.log('Submiteado', data);
+  // Order Data
+  const {products, emptyMinicart} = useContext(CartContext)
+
+  const orderItems = products.map(product => {
+    return {
+      productItemId: product.itemId,
+      qty: product.quantity,
+      price: product.price
+    }
+  })
+
+  // Submit
+  const onSubmit = async (data: ContactFormDto) => {
+    const order: PlaceOrderDto = {
+      contactForm: data,
+      orderItems: orderItems
+    }
+    console.log('PLACE ORDER --->', order);
+    emptyMinicart()
   };
 
   return (

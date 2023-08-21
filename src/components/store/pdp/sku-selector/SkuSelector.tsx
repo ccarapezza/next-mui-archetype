@@ -1,72 +1,67 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ColorSku from "./ColorSku";
 import SizeSku from "./SizeSku";
 import SkuComponent from "./SkuComponent";
+import { ProductItemDto } from "@/schemas/productItem";
 
-interface Variation {
-  id: number;
-  name: string;
+interface VariationObject {
+  [key: string]: string;
 }
 
-interface VariationOption {
-  id: number;
-  value: string;
-  variation: Variation;
-  product_configuration: {
-      createdAt: string;
-      updatedAt: string;
-      productItemId: number;
-      variationOptionId: number;
-  };
-}
+export default function SkuSelector(props: { items: ProductItemDto[], setProductAvailable: (productAvailable: boolean) => void, setItemId: any}) {
 
-interface Item {
-  id: number;
-  sku: string;
-  stock: number;
-  price: number;
-  variationOptions: VariationOption[];
-  images: string[];
-}
+  // Props
+  const { items, setProductAvailable, setItemId } = props;
 
-// const items = [
-//   {
-//     price: 200,
-//     // SKU: '012345',
-//     variation: [
-//       {
-//         name: "Talle",
-//         value: "S"
-//       },
-//       {
-//         name: "Color",
-//         value: "#000000"
-//       }
-//     ]
-//   },
-//   {
-//     price: 200,
-//     // SKU: '012346',
-//     variation: [
-//       {
-//         name: "Talle",
-//         value: "M"
-//       },
-//       {
-//         name: "Color",
-//         value: "#FF0000"
-//       }
-//     ]
-//   }
-// ]
+  // Get the available variations of the product.
+  const variationMap: any = {};
+  items.forEach((product: any) => {
+    product.variationOptions.forEach((option: any, i: number) => {
+      const variationName = option.variation.name;
+      const optionValue = option.value;
 
-export default function SkuSelector(props: { items: any }) {
+      if (!variationMap[variationName]) {
+        variationMap[variationName] = {
+          variationName: variationName,
+          values: []
+        };
+      }
 
-const { items } = props;
+      if (!variationMap[variationName].values.includes(optionValue)) {
+        variationMap[variationName].values.push(optionValue);
+      }
+    });
+  });
+
+  const resultArray = Object.values(variationMap);
+
+  // Status selected variations
+  const initialVariationStates: { [key: string]: string } = {};
+  resultArray.forEach((option: any) => {
+    initialVariationStates[option.variationName] = option.values[0];
+  });
+
+  const [variationState, setVariationState] = useState<VariationObject>({
+    ...initialVariationStates
+  });
+
+  // Check if the selected state matches any available variable and return the id of the same
+  useEffect(() => {
+    const selectedSku = items.find((item: any) => {
+      return item.variationOptions.every((option: any) => {
+        return variationState[option.variation.name] === option.value;
+      });
+    });
+  
+    selectedSku && selectedSku.stock > 0 ? setProductAvailable(true) : setProductAvailable(false);
+    selectedSku ? props.setItemId(selectedSku.id) : props.setItemId(0);
+  }, [variationState, items, setProductAvailable]);
 
   return (
-      <SkuComponent items={items} />
+    <div className="my-4 py-2 border-y">
+      <SkuComponent items={items} setSelectedOption={setVariationState} variationState={variationState} resultArray={resultArray} />
+    </div>
   )
 }

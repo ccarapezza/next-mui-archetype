@@ -22,6 +22,7 @@ export type ProductItem = InferType<typeof productItemSchema>;
 export type ProductItemInput = InferType<typeof productItemInputSchema>;
 
 export type ProductItemDto = {
+    id: number;
     variationOptions?: VariationOptionDto[] | undefined;
     images: string[];
     price: number;

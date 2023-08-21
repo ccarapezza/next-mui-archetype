@@ -5,19 +5,20 @@ import MiniCartList from './MiniCartList';
 import Link from "next/link";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import CurrencyDisplay from '@/components/management/product/CurrencyDisplay';
 import PriceFormatting from '@/components/management/product/PriceFormatting';
+import MiniCartTotalizer from './MiniCartTotalizer';
 
 export default function MiniCart() {
 
   const [state, setState] = useState(false)
-  const { products, addProduct, deleteProduct, updateProductQuantity, geTotalMinicart } = useContext(CartContext)
+  const { products } = useContext(CartContext)
   const [quantity, setQuantity] = useState(0)
-  geTotalMinicart
   useEffect(() => {
-    console.log(products.length);
     setQuantity(products.length);
   }, [products])
+
+  console.log('Este carrito', products);
+  
 
   return (
     <>
@@ -48,7 +49,7 @@ export default function MiniCart() {
         }
         <FontAwesomeIcon className='text-tertiary hover:text-primary' icon={faCartShopping} />
       </div>
-      {/* Trigger Minicart */}
+      {/* Modal Minicart */}
       {
         state ?
           (
@@ -79,33 +80,8 @@ export default function MiniCart() {
                           <p className='text-stone-500 font-bold text-lg'>¡Tú carrito está vacío!</p>
                         </div>
                     }
-
                   </div>
-                  {
-                    quantity > 0 ?
-                      <div className="space-y-2 p-4 mt-3 mb-4 text-center border-t text-lg">
-                        <div className="flex justify-between px-2 py-1">
-                          <span className="text-stone-500 font-bold">Subtotal:</span>
-                          <span className="text-stone-500 font-bold"><PriceFormatting value={geTotalMinicart().subtotal} /></span>
-                        </div>
-                        <div className="flex justify-between px-2 py-1">
-                          <span className="text-stone-500 font-bold">Descuentos:</span>
-                          <span className="text-stone-500 font-bold">- <PriceFormatting value={geTotalMinicart().descuento} /></span>
-                        </div>
-                        <div className="flex justify-between px-2 py-1">
-                          <span className="text-tertiary font-bold">Total:</span>
-                          <span className="text-tertiary font-bold"><PriceFormatting value={geTotalMinicart().total} /></span>
-                        </div>
-                        <Link
-                          href="/checkout"
-                          className="block rounded bg-primary px-5 py-3 text-gray-100 transition hover:bg-tertiary font-bold text-lg"
-                        >
-                          FINALIZAR COMPRA
-                        </Link>
-                      </div>
-                      :
-                      <></>
-                  }
+                  <MiniCartTotalizer quantity={quantity}/>
                 </div>
               </div>
             </div>

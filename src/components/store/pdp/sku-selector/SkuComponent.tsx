@@ -1,73 +1,52 @@
 'use client'
-import Variation from "@/db/models/Variation";
-import VariationOption from "@/db/models/VariationOption";
-import { useState } from "react";
 
+export default function SkuComponent(props: { items: any, setSelectedOption: any, resultArray: any, variationState: any }) {
 
-export default function SkuComponent(props: { items: any }) {
-
-    const { items } = props;
-
-    // LOGICA FALOPA --------------------------------------------- //
-    // Create an empty object to store the grouped variations
-    const groupedVariations: { [key: string]: { variation: Variation; variationOptions: VariationOption[] } } = {};
-
-    // Loop through the original array and group variations
-    items.forEach((item: any) => {
-        item.variationOptions.forEach((option: any) => {
-            if (!groupedVariations[option.variation.name]) {
-                groupedVariations[option.variation.name] = {
-                    variation: option.variation,
-                    variationOptions: []
-                };
-            }
-            groupedVariations[option.variation.name].variationOptions.push(option);
-        });
-    });
-
-    // Convert the groupedVariations object into an array
-    const groupedArray = Object.values(groupedVariations);
-
-    console.log(groupedArray);
-
-    const estaCaquieta = groupedArray.map((group: any, i: number) => {
-        return {
-            name: group.variation.name,
-            variation: group.variationOptions.map((option: any) => {
-                return {
-                    id: option.id,
-                    value: option.value
-                }
-            }
-            )
-        }
-    });
-
-    console.log('estaCaquieta', estaCaquieta);
-
-
-    // LOGICA FALOPA --------------------------------------------- //
-
+    const { setSelectedOption, resultArray, variationState } = props;
 
     return (
         <>
             {
-                estaCaquieta.map((group: any, i: number) => {
+                resultArray.map((group: any, i: number) => {
                     return (
-                        <div key={i} className="py-2 border-y my-4">
-                            <h1>{group.name}</h1>
-                            {
-                                group.variation.map((option: any, i: number) => {
-                                    return (
-                                        <div key={i}>
-                                            <input type="radio" name={group.name} value={option.value} />
-                                            <label htmlFor={option.value}>{option.value}</label>
-                                        </div>
-                                    )
-                                })
-                            }
+                        <div key={i}>
+                            <h3 >{group.variationName}</h3>
+                            <ul className="flex items-center py-2">
+                                {
+                                    group.values?.map((option: any, i: number) => {
+                                        return (
+                                            <li key={i} className="mr-2">
+                                                <label className="inline-flex items-center gap-4 cursor-pointer"
+                                                    onClick={
+                                                        () => {
+                                                            const variationName = group.variationName;
+                                                            setSelectedOption({
+                                                                ...variationState, [variationName]: option
+                                                            }
+                                                            );
+                                                        }
+                                                    }
+                                                >
+                                                    {
+                                                        group.variationName === 'Color' ?
+                                                            <div className={`flex items-center justify-center w-6 h-6 rounded-full border ${variationState[group.variationName] === option ? 'border-2 border-black' : ''}`}>
+                                                                <div className='w-4 h-4 rounded-full border'
+                                                                    style={{ backgroundColor: option }}
+                                                                >
+                                                                </div>
+                                                            </div>
+                                                            :
+                                                            <div className={`flex items-center justify-center w-[50px] rounded-md border ${variationState[group.variationName] === option ? 'text-tertiary font-semibold border-black border-2' : 'text-gray border-gray'}`}>
+                                                                {option}
+                                                            </div>
+                                                    }
+                                                </label>
+                                            </li>
+                                        )
+                                    })
+                                }
+                            </ul>
                         </div>
-
                     )
                 })
             }

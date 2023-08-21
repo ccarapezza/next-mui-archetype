@@ -13,7 +13,6 @@ export default function Checkout() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    console.log(products.length);
     setQuantity(products.length);
     setLoaded(true);
   }, [products])
