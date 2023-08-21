@@ -123,11 +123,18 @@ export class ProductService extends GenericService<Product> {
 
         //obtain searchs for variants
         const variationsIdsSearchs = [];
-        const variations: VariationDto[] = (await Variation.findAll({attributes: ['id', 'name']}))?.map((v) => v.toJSON<VariationDto>());
+        
+        const variations: VariationDto[] = (await Variation.findAll({
+            attributes: ['id', 'name'],
+            where: {
+                name: {
+                    [Op.in]: filters.variations?.map((v) => v.key)
+                }
+            },
+        }))?.map((v) => v.toJSON<VariationDto>());
+
         for (const variation of variations) {
             const variationSearch = filters.variations?.find((v) => v.key.toLowerCase() === variation.name.toLowerCase())?.values;
-            console.log("variationSearch", variationSearch)
-
             if (variationSearch) {
                 for(const variationValue of variationSearch){
                     const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationValue}}))?.toJSON<VariationOptionDto>();
@@ -147,7 +154,6 @@ export class ProductService extends GenericService<Product> {
         LEFT JOIN variation_option as vopt on pconf.variationOptionId = vopt.id`;
         
         const whereClauses: string[] = [];
-        const whereVariantClauses: string[] = [];
 
         if(categoryId){
             whereClauses.push('pc.id = :categoryId');
