@@ -135,6 +135,7 @@ export class ProductService extends GenericService<Product> {
 
         for (const variation of variations) {
             const variationSearch = filters.variations?.find((v) => v.key.toLowerCase() === variation.name.toLowerCase())?.values;
+
             if (variationSearch) {
                 for(const variationValue of variationSearch){
                     const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationValue}}))?.toJSON<VariationOptionDto>();

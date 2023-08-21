@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
         where: {
             [Op.or]: [
                 { email: userData.email! },
-                { name: userData.username }
+                { name: userData.name }
             ]
         }
     });
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
 
     //create user
     const createdUser = await User.create({
-        name: userData.username,
+        name: userData.name,
         email: userData.email,
         password: userData.password
     });
