@@ -13,7 +13,7 @@ export default function SizeSku(props: { items: any }) {
   });
 
   const [selectedTalle, setSelectedTalle] = useState(talleVariations[0]);
-  console.log('selectedColor', selectedTalle);
+  // console.log('selectedColor', selectedTalle);
 
   return (
     <>

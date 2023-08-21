@@ -29,7 +29,8 @@ export default function ProductDescription(props: { product: ProductDto | null }
 
   const { product } = props;
 
-  console.log('Este producto', product);
+  console.log('Este producto Items', product?.items);
+  const items = product?.items;
   
 
   const productToCart: ProductToCart = {
@@ -54,7 +55,7 @@ export default function ProductDescription(props: { product: ProductDto | null }
     <div className="relative mt-4 w-full md:w-1/2 md:ml-4">
       <div>
         <ProductHeader product={product} />
-        <SkuSelector />
+        <SkuSelector items={items}/>
       </div>
 
       <div>

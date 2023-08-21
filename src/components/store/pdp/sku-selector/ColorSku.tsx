@@ -14,9 +14,9 @@ export default function ColorSku(props: { items: any }) {
   });
 
   const [selectedColor, setSelectedColor] = useState(colorVariations[0]);
-  console.log('selectedColor', selectedColor);
+  // console.log('selectedColor', selectedColor);
 
-  console.log('Color Producto', colorVariations);
+  // console.log('Color Producto', colorVariations);
 
 
   return (

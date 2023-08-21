@@ -4,6 +4,8 @@ import GenericSelector from "./GenericSelector";
 export default function MainGenericSelector(props: { filters: any, setFilters: any, varationsDTO: any }) {
 
     const { filters, setFilters, varationsDTO } = props;
+    console.log('varationsDTO', varationsDTO);
+    
 
     return (
         <>
