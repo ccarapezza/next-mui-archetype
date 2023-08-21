@@ -198,6 +198,7 @@ export class ProductService extends GenericService<Product> {
             const product = acc.find((p: any) => p.id === item.id);
             if (product) {
                 product.items.push({
+                    id: item.items.id,
                     sku: item.items.sku,
                     stock: item.items.stock,
                     images: item.items.image?item.items.image.split(','):[],
@@ -217,6 +218,7 @@ export class ProductService extends GenericService<Product> {
                         name: item.category.name,
                     },
                     items: [{
+                        id: item.items.id,
                         sku: item.items.sku,
                         stock: item.items.stock,
                         images: item.items.image?item.items.image.split(','):[],
