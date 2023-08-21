@@ -123,14 +123,24 @@ export class ProductService extends GenericService<Product> {
 
         //obtain searchs for variants
         const variationsIdsSearchs = [];
-        const variations: VariationDto[] = (await Variation.findAll({attributes: ['id', 'name']}))?.map((v) => v.toJSON<VariationDto>());
+        
+        const variations: VariationDto[] = (await Variation.findAll({
+            attributes: ['id', 'name'],
+            where: {
+                name: {
+                    [Op.in]: filters.variations?.map((v) => v.key)
+                }
+            },
+        }))?.map((v) => v.toJSON<VariationDto>());
+
         for (const variation of variations) {
-            const variationSearch = filters.variations?.find((v) => v.key === variation.name.toLowerCase())?.value;
-            
+            const variationSearch = filters.variations?.find((v) => v.key.toLowerCase() === variation.name.toLowerCase())?.values;
             if (variationSearch) {
-                const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationSearch}}))?.toJSON<VariationOptionDto>();
-                if(variationOption){
-                    variationsIdsSearchs.push(variationOption.id);
+                for(const variationValue of variationSearch){
+                    const variationOption : VariationOptionDto | undefined = (await VariationOption.findOne({attributes: ['id'], where: {value: variationValue}}))?.toJSON<VariationOptionDto>();
+                    if(variationOption){
+                        variationsIdsSearchs.push(variationOption.id);
+                    }
                 }
             }
         }
@@ -144,7 +154,6 @@ export class ProductService extends GenericService<Product> {
         LEFT JOIN variation_option as vopt on pconf.variationOptionId = vopt.id`;
         
         const whereClauses: string[] = [];
-        const whereVariantClauses: string[] = [];
 
         if(categoryId){
             whereClauses.push('pc.id = :categoryId');
@@ -156,13 +165,8 @@ export class ProductService extends GenericService<Product> {
             whereClauses.push('pi.price <= :maxPrice');
         }
 
-        for (let index = 0; index < variationsIdsSearchs.length; index++) {
-            whereVariantClauses.push(`vo.id = :variationId-${index}`);
-        }
-
-        if(whereVariantClauses.length > 0){
-            const variantWherer = "(".concat(whereVariantClauses.join(" or ")).concat(")");
-            whereClauses.push(variantWherer);
+        if(variationsIdsSearchs?.length > 0){
+            whereClauses.push('vo.id IN(:variationsIds)');
         }
 
         let where = '';
@@ -176,7 +180,7 @@ export class ProductService extends GenericService<Product> {
             categoryId: categoryId,
             minPrice: filters.priceMin,
             maxPrice: filters.priceMax,
-            ...variationsIdsSearchs.map((variationSearch, index) => ({[`variationId-${index}`]: variationSearch}))
+            variationsIds: variationsIdsSearchs
         };
 
         const resultSet = await sequelizeInstace.query(

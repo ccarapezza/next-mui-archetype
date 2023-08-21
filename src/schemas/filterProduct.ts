@@ -1,6 +1,6 @@
 export type VariationFilter = {
     key: string,
-    value: string
+    values: string[]
 }
 
 export type FilterProduct = {

@@ -12,6 +12,14 @@ export class UserService extends GenericService<User> {
     constructor() {
         super(User);
     }
+    getByEmail = async (email: string) => {
+        return await User.findOne({
+            where: {
+                email
+            },
+            include: ["roles"]
+        });
+    }
     search= async (searchTerm: string | null, userType: string | null, page: number = 1, size: number = 10) => {
         let where: WhereOptions | undefined = undefined;
         let include: any[] | undefined = undefined;
