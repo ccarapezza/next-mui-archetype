@@ -13,18 +13,18 @@ import { useForm } from 'react-hook-form'
 import * as yup from "yup";
 
 interface IUserForm {
-    username: string
+    name: string
     email: string
 }
 
 const schema = yup.object({
-    username: yup.string().min(3).max(20).required(),
+    name: yup.string().min(3).max(20).required(),
     email: yup.string().email().required()
 }).required();
 
 const updateUserData = async (userData: any) => {
     console.log("userData", userData);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/${userData.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/user/edit/${userData.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -68,9 +68,11 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
         setUserRoles(newChecked);
     }
 
+    console.log("data", userData);
     const onSubmit = async (data: IUserForm) => {
         setLoading(true);
         const reqObj = {
+            ...userData,
             ...data,
             roles: userRoles.map(role => role.id)
         };
@@ -102,12 +104,12 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                 }
                 <Grid item xs={12}>
                     <TextField
-                        {...register("username")}
+                        {...register("name")}
                         label="Username"
                         type="text"
                         fullWidth
-                        error={!!errors.username}
-                        defaultValue={userData.username} />
+                        error={!!errors.name}
+                        defaultValue={userData.name} />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField

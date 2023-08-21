@@ -1,24 +1,26 @@
 'use client'
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
 export default function GenericSelector(props: { filters: any, setFilters: any, variation: any }) {
 
     const { filters, setFilters, variation } = props;
     const { name, variationOptions } = variation;
+    const [variatonCollapse, setVariatonCollapse] = useState(filters[name].length?true:false);
 
     return (
         variationOptions.length > 0 ?
             <details
-                className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
-                open={filters[name].length}
+                className="group overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
+                open={variatonCollapse}
             >
                 <summary
                     className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"
                 >
                     <span className="text-sm font-medium"> {name} </span>
 
-                    <span className="transition group-open:-rotate-180">
+                    <span className="transition group-open:rotate-180">
                         <FontAwesomeIcon icon={faChevronDown} className="h-4 w-4" />
                     </span>
                 </summary>
