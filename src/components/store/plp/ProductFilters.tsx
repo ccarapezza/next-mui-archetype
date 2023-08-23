@@ -48,6 +48,8 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
         }
     });
 
+    console.log('filters', filters);
+    
     useEffect(() => {
         setStateToUrl(filters)
     }, [filters])

@@ -1,14 +1,13 @@
 'use client'
-import { useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import ProductImageMain from './ProductImageMain';
 import Image from 'next/image';
 
 
-export default function ProductImage(props : {images: any}) {
+export default function ProductImage(props: { images: string[] }) {
 
   const { images } = props
   const [activeImage, setActiveImage] = useState(0)
-
 
   return (
     <div className="w-full md:w-1/2 ">
@@ -18,7 +17,7 @@ export default function ProductImage(props : {images: any}) {
         </div>
         <ul className="mt-1 flex gap-1 hidden md:flex">
           {
-            images.map((image:any, index:number) => (
+            images.map((image: string, index: number) => (
               <li key={index}
                 onClick={() => {
                   setActiveImage(index)

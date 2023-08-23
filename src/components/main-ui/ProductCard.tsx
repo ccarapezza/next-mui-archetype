@@ -1,15 +1,15 @@
 'use client'
-import { useRouter } from 'next/navigation';
-import { Product, ProductDto } from "@/schemas/product";
+import { ProductDto } from "@/schemas/product";
 import Image from 'next/image';
 import PriceFormatting from '../management/product/PriceFormatting';
 import Link from 'next/link';
 
 const ProductCard = (props: { product: ProductDto }) => {
 
-  const router = useRouter();
+  const { product } = props;
 
   const image = props?.product?.items?.[0]?.images?.[0];
+  
   const name = props?.product?.name;
   const id = props?.product?.id;
 

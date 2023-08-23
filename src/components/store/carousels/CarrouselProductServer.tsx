@@ -1,8 +1,21 @@
 import { productService } from "@/services/ProductService";
 import CarouselProducts from "./CarouselProducts";
+import { FilterProduct } from "@/schemas/filterProduct";
 
 const fetchProductData = async () => {
-  return productService.search(null);
+  const filters: FilterProduct = {
+    category: null,
+    priceMin: null,
+    priceMax: null,
+    variations: [],
+}
+  const products = await productService.searchByFilters(filters, 1, 10);
+  return {
+    totalItems: products.length,
+    rows: products,
+    totalPages: 1,
+    currentPage: 1
+}
 };
 
 export default async function CarrouselProductServer() {
