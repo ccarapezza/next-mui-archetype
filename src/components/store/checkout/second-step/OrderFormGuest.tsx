@@ -58,14 +58,35 @@ export default function OrderFormGuest() {
     }
   })
 
+  const placeOrder = async (order: PlaceOrderDto) => {
+    const res = await fetch('/api/store/place-order', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(order)
+    })
+
+    if (!res.ok) {
+      throw new Error((await res.json()).message || 'Something went wrong')
+    }
+
+    return res.json();
+  }
+
   // Submit
   const onSubmit = async (data: ContactFormDto) => {
     const order: PlaceOrderDto = {
       contactForm: data,
       orderItems: orderItems
     }
-    console.log('PLACE ORDER --->', order);
-    emptyMinicart()
+
+    placeOrder(order).then((data) => {
+        emptyMinicart();
+        console.log(data)
+    }).catch((error) => {
+        console.log(error)
+    });
   };
 
   return (

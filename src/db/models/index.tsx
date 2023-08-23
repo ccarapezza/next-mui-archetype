@@ -11,6 +11,9 @@ import Product from '@/db/models/Product';
 import ProductItem from '@/db/models/ProductItem';
 import Variation from '@/db/models/Variation';
 import VariationOption from '@/db/models/VariationOption';
+import ShopOrder from '@/db/models/ShopOrder'
+import OrderLine from '@/db/models/OrderLine'
+import OrderStatus from '@/db/models/OrderStatus'
 
 export {
     Account,
@@ -25,5 +28,8 @@ export {
     Product,
     ProductItem,
     Variation,
-    VariationOption
+    VariationOption,
+    ShopOrder,
+    OrderLine,
+    OrderStatus
 }

@@ -13,7 +13,10 @@ import {
   Product,
   ProductItem,
   Variation,
-  VariationOption
+  VariationOption,
+  ShopOrder,
+  OrderLine,
+  OrderStatus
 } from "@/db/models";
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
 
@@ -35,7 +38,10 @@ sequelizeInstace.addModels([
   Product,
   ProductItem,
   Variation,
-  VariationOption
+  VariationOption,
+  ShopOrder,
+  OrderLine,
+  OrderStatus
 ]);
 
 const adapter = SequelizeAdapter(sequelizeInstace!, {
@@ -61,7 +67,10 @@ export {
   Product,
   ProductItem,
   Variation,
-  VariationOption
+  VariationOption,
+  ShopOrder,
+  OrderLine,
+  OrderStatus
 }
 
 export { sequelizeInstace, adapter }
