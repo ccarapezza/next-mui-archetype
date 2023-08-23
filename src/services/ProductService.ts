@@ -99,7 +99,18 @@ export class ProductService extends GenericService<Product> {
                 {
                     model: ProductItem,
                     as: 'items',
-                    include: ['variationOptions']
+                    include: [
+                        {
+                            model: VariationOption,
+                            as: 'variationOptions',
+                            attributes: ['id', 'value'],
+                            include: [{
+                                model: Variation,
+                                as: 'variation',
+                                attributes: ['id', 'name']
+                            }]
+                        }
+                    ]
                 }
             ],
             where

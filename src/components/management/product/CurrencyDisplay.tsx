@@ -10,6 +10,7 @@ const CurrencyDisplay = (props: NumericFormatProps) => {
             fixedDecimalScale={true}
             prefix={props.prefix || "AR$ "}
             {...props}
+            className={'bg-transparent '+props.className || ''}
         />
     )
 }

@@ -91,6 +91,9 @@ async function sendEmail({ to, from, subject, html }: { to: string; from: string
 
 async function sendVerificationEmail({ email, token }: { email: string; token: string; }) {
     const url = `${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/verify-email?token=${token}`;
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`Verification link: ${url}`);
+    }
     return await sendEmail({
         to: email,
         from: `carapezza.christian@gmail.com`,

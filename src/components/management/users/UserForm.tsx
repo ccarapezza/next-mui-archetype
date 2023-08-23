@@ -31,6 +31,9 @@ const updateUserData = async (userData: any) => {
         },
         body: JSON.stringify(userData)
     });
+    if(!res.ok){
+        throw new Error((await res.json()).error||res.statusText);
+    }
     return res.json();
 };
 
@@ -43,6 +46,9 @@ const saveUserData = async (userData: any) => {
         },
         body: JSON.stringify(userData)
     });
+    if(!res.ok){
+        throw new Error((await res.json()).error||res.statusText);
+    }
     return res.json();
 };
 
@@ -78,6 +84,7 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
         };
         const saveFunction = userData.id ? updateUserData : saveUserData;
         saveFunction(reqObj).then((response) => {
+            console.log("response", response);
             enqueueSnackbar(userData.id ? 'Update success!' : 'Create success!', { variant: 'success' });
             router.push('/management/users');
             router.refresh();//Need to refresh the page to get the updated data
