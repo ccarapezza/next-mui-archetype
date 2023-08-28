@@ -21,8 +21,8 @@ export default function MiniCartProductCard(props: { product: ProductToCart }) {
           src={image}
           alt={name}
           className="h-20 w-16 rounded object-cover"
-          width={16}
-          height={20}
+          width={64}
+          height={64}
         />
 
         <div className="flex flex-col justify-around ml-4 w-full">

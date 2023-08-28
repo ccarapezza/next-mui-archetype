@@ -180,7 +180,7 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
 
                                         return <Typography key={variationOption.id} variant='caption' className='ml-2 whitespace-nowrap flex'>{variationOption.variation.name}:
                                             {(variationOption.variation.name.toLowerCase()=='color')?
-                                                <div key={variationOption.id} className='border-black ml-1 whitespace-nowrap border rounded-full w-4 h-4 ' style={{backgroundColor: variationOption.variation.value}}></div>
+                                                <div key={variationOption.id} className='border-black ml-1 whitespace-nowrap border rounded-full w-4 h-4 ' style={{backgroundColor: variationOption.value}}></div>
                                                 :
                                                 <span>{variationOption.value}</span>
                                             }
