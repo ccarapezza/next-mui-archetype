@@ -2,7 +2,6 @@
 import { ContactForm, OrderLine, ProductItem, ShopOrder, VariationOption } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
 import { GenericService } from "./GenericService";
-import { ShopOrderDto } from "@/schemas/shopOrder";
 import S3BucketUtil from "@/utils/S3BucketUtil";
 
 //VariationService extends GenericService
@@ -61,12 +60,21 @@ export class ShopOrderService extends GenericService<ShopOrder> {
             }
             rows.push(shopOrderDto);
         }
-        console.log("······",data.rows);
-        console.log("++++++",rows);
         return {
             ...data,
             rows: rows
         };
+    };
+    moveToStatus = async (id: number, statusId: number) => {
+        const shopOrder = await ShopOrder.findByPk(id);
+        console.log("shopOrder", shopOrder);
+        console.log("statusId", statusId);
+        if (shopOrder) {
+            shopOrder.statusId = statusId;
+            await shopOrder.save();
+            return shopOrder;
+        }
+        return null;
     }
 };
 

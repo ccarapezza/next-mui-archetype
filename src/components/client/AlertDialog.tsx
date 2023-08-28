@@ -51,9 +51,9 @@ export default function AlertDialog({id, type, message, title, open = true, setO
         </DialogContent>
         <DialogActions>
           {type==="confirm"&&
-            <Button onClick={handleClose}>Cancelar</Button>
+            <Button variant='contained' color='error' onClick={handleClose}>Cancelar</Button>
           }
-          <Button onClick={handleConfirm} autoFocus>OK</Button>
+          <Button variant='contained' color='success' onClick={handleConfirm} autoFocus>OK</Button>
         </DialogActions>
       </Dialog>
   );

@@ -21,7 +21,7 @@ type SnackbarMessage = {
 
 export const DialogContext = createContext({
     showMessage: (title: string, message: string) => { },
-    showConfirm: (title: string, message: string, onConfirm: () => void, onCancel: () => void) => { }
+    showConfirm: (title: string, message: string, onConfirm: () => void, onCancel?: () => void) => { }
 });
 
 export const DialogContextProvider = ({
@@ -37,7 +37,7 @@ export const DialogContextProvider = ({
             showMessage: (title: string, message: string) => {
                 setDialogs([...dialogs, { type: "confirm", title, message }]);
             },
-            showConfirm: (title: string, message: string, onConfirm: () => void, onCancel: () => void) => {
+            showConfirm: (title: string, message: string, onConfirm: () => void, onCancel?: () => void) => {
                 setDialogs([...dialogs, { type: "confirm", title, message, onConfirm, onCancel }]);
             }
         }}>
