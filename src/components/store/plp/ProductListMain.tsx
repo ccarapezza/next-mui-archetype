@@ -29,6 +29,13 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
             <ProductFilters categoryTree={categoryTree} categoryTitle={categoryUrlName} varationsDTO={varations}/>
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
+            {
+              listProducts.length === 0 && (
+                <div className='w-full h-full flex justify-center items-center'>
+                  <h2 className='text-2xl text-center'>No se encontraron resultados para esta búsqueda!</h2>
+                </div>
+              )
+            }
             <ProductGridList products={listProducts} />
           </div>
         </div>

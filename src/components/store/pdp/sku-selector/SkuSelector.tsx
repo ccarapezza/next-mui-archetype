@@ -1,8 +1,6 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import ColorSku from "./ColorSku";
-import SizeSku from "./SizeSku";
 import SkuComponent from "./SkuComponent";
 import { ProductItemDto } from "@/schemas/productItem";
 
@@ -10,10 +8,21 @@ interface VariationObject {
   [key: string]: string;
 }
 
-export default function SkuSelector(props: { items: ProductItemDto[], setProductAvailable: (productAvailable: boolean) => void, setItemId: any}) {
+export default function SkuSelector(props: { items: ProductItemDto[], setProductAvailable: (productAvailable: boolean) => void, setItemId: any }) {
 
   // Props
   const { items, setProductAvailable, setItemId } = props;
+
+  // Function to find the index of the first object with stock greater than 0
+  function findFirstPositiveStockIndex(data: any) {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].stock > 0) {
+        return i;
+      }
+    }
+    return 0;
+  }
+  const firstItemWithStock = findFirstPositiveStockIndex(items);
 
   // Get the available variations of the product.
   const variationMap: any = {};
@@ -40,7 +49,7 @@ export default function SkuSelector(props: { items: ProductItemDto[], setProduct
   // Status selected variations
   const initialVariationStates: { [key: string]: string } = {};
   resultArray.forEach((option: any) => {
-    initialVariationStates[option.variationName] = option.values[0];
+    initialVariationStates[option.variationName] = option.values[firstItemWithStock];
   });
 
   const [variationState, setVariationState] = useState<VariationObject>({
@@ -54,7 +63,7 @@ export default function SkuSelector(props: { items: ProductItemDto[], setProduct
         return variationState[option.variation.name] === option.value;
       });
     });
-  
+
     selectedSku && selectedSku.stock > 0 ? setProductAvailable(true) : setProductAvailable(false);
     selectedSku ? props.setItemId(selectedSku.id) : props.setItemId(0);
   }, [variationState, items, setProductAvailable]);

@@ -41,6 +41,7 @@ export type ProductToCart = {
     quantity: number,
     price: number,
     image: string,
-    itemId: number
+    itemId: number,
+    variations: { name: string, value: string }[]
 };
   
