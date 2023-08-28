@@ -48,13 +48,14 @@ export class ProductService extends GenericService<Product> {
                     //obtain images url from s3 bucket
                     const images = []
                     for (const image of imagesKeys) {
-                        images.push(await S3BucketUtil.getSignedUrlByKey({key: image}))
+                        images.push(await S3BucketUtil.getSignedUrlByKey({key: "temp/"+image}))
                     }
                     item.images = images;
                     delete item.image;
                 }
             }
         }
+        console.log("!!!!!!!!!!!!!!!!!!!!!!!!", productDto.items?.[0],null,2);
         return productDto;
     };
     search = async (searchTerm: string | null, page: number = 1, size: number = 10) => {
@@ -247,13 +248,17 @@ export class ProductService extends GenericService<Product> {
             for (const item of product.items) {
                 if (item.images.length > 0) {
                     item.images = await Promise.all(item.images.map(async (image) => {
-                        return await S3BucketUtil.getSignedUrlByKey({key: image});
+                        return await S3BucketUtil.getSignedUrlByKey({key: "temp/"+image});
                     }));
                 } else {
                     item.images = [];
                 }
             }
         }
+
+        resultSetGrouped.forEach((product: ProductDto) => {
+            console.log("··#################",product.items);
+        });
         
         return resultSetGrouped;
     }

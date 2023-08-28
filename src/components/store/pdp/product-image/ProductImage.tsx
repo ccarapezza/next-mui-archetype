@@ -17,7 +17,7 @@ export default function ProductImage(props: { images: string[] }) {
         </div>
         <ul className="mt-1 flex gap-1 hidden md:flex">
           {
-            images.map((image: string, index: number) => (
+            images?.map((image: string, index: number) => (
               <li key={index}
                 onClick={() => {
                   setActiveImage(index)

@@ -146,13 +146,15 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip id={"remove-stock-"+index} leaveDelay={0} title="Eliminar stock" placement='right'>
-                                        <IconButton disabled={item?.stock<=0} size='small' className='m-0 p-0 text-red-500 disabled:text-slate-400' onClick={()=>{setItemSelected({
-                                            item: item,
-                                            productName: params.row.name,
-                                            remove: true
-                                        }); setStockNumber(0)}}>
-                                            <FontAwesomeIcon icon={faCircleMinus} className='px-1' />
-                                        </IconButton>
+                                        <span>
+                                            <IconButton disabled={item?.stock<=0} size='small' className='m-0 p-0 text-red-500 disabled:text-slate-400' onClick={()=>{setItemSelected({
+                                                item: item,
+                                                productName: params.row.name,
+                                                remove: true
+                                            }); setStockNumber(0)}}>
+                                                <FontAwesomeIcon icon={faCircleMinus} className='px-1' />
+                                            </IconButton>
+                                        </span>
                                     </Tooltip>
                                 </Box>
                             </Stack>

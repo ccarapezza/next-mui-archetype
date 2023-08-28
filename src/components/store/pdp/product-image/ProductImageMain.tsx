@@ -33,7 +33,7 @@ export default function ProductImageMain(props: { images: string[], activeImage:
       PrevIcon={<FontAwesomeIcon icon={faChevronLeft} />}
     >
       {
-        images.map((image: string, i: number) => (
+        images?.map((image: string, i: number) => (
           <Image
             key={i}
             alt={'Nombre pdp'}

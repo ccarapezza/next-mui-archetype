@@ -25,6 +25,10 @@ module.exports = {
                 type: Sequelize.INTEGER,
                 allowNull: false
             },
+            contactFormId: {
+                type: Sequelize.INTEGER,
+                allowNull: false
+            },
             createdAt: {
                 type: Sequelize.DATE,
                 allowNull: false,
@@ -53,6 +57,17 @@ module.exports = {
             name: 'shop_order_fk_order_status',
             references: {
                 table: 'order_status',
+                field: 'id'
+            },
+            onDelete: 'restrict',
+            onUpdate: 'cascade'
+        });
+        queryInterface.addConstraint('shop_order', {
+            fields: ['contactFormId'],
+            type: 'foreign key',
+            name: 'shop_order_fk_contact_form',
+            references: {
+                table: 'contact_form',
                 field: 'id'
             },
             onDelete: 'restrict',

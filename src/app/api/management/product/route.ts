@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Product, ProductItem, VariationOption } from '../../../../db';
-import { ProductItem as ProductItemSchema } from '@/schemas/productItem';
+import { Product as ProductInput } from '@/schemas/product';
 import { Op } from 'sequelize';
 import S3BucketUtil from '@/utils/S3BucketUtil';
 import crypto from 'crypto';
+import { it } from 'node:test';
 
 interface FormDataField {
     name: string;
@@ -16,7 +17,7 @@ function formDataToJSON(formData: FormData): any {
     const formDataArray: FormDataField[] = [];
 
     formData.forEach((value: any, key) => {
-        if (!key.startsWith("file")) {
+        if (!key.startsWith("files")) {
             formDataArray.push({ name: key, value });
         }
     });
@@ -69,42 +70,38 @@ function formDataToJSON(formData: FormData): any {
 }
 
 export async function POST(request: NextRequest) {
-    const formData = await request.formData();
-    const jsonObject = formDataToJSON(formData);
-    console.log("formData", formData);
-    console.log("JSON Object", jsonObject);
-    console.log("Variants", jsonObject.items[0].variation);
-    console.log("Price", jsonObject.items[0].price);
-
-    let imageName: string | null = null;
-
-    const file: File | null = formData.get('file') as unknown as File;
-
-    if (file != null) {
-        imageName = crypto.randomBytes(32).toString('hex');
-        const uploadFileResponse = await S3BucketUtil.uploadFile({
-            file: file!,
-            key: imageName
-        });
-        console.log("uploadFileResponse", uploadFileResponse);
-    }
+    const requestJSON = await request.json();
+    console.log("Request JSON", requestJSON);
 
     const productCreated = await Product.create({
-        name: jsonObject.name,
-        description: jsonObject.description,
-        categoryId: jsonObject.categoryId,
+        name: requestJSON.name,
+        description: requestJSON.description,
+        categoryId: requestJSON.categoryId,
     });
 
-    const productItems = [];
-    jsonObject.items.forEach(async (item: ProductItemSchema) => {
-        try {
+    //move temp images to product folder
+    const images: string[] | undefined = requestJSON.items.map((item: { images: string[]; }) => item.images).reduce((acc: string[], val: string[]) =>{
+        if(val&&val.length>0){
+            acc?.concat(val);
+        }
+        return acc;
+    }, [] as string[]);
 
+    if(images){
+        for (const image of images) {
+            await S3BucketUtil.renameFile({oldKey: `temp/${image}`, newKey: image});
+        }
+    }
+    
+    const productItems = [];
+    requestJSON.items.forEach(async (item: { price: any; images: any[]; variation: any; }) => {
+        try {
             const productItemCreated = await ProductItem.create({
                 masterProductId: productCreated.id,
                 stock: 0,
                 sku: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),//TODO: Generar un SKU
                 price: item.price,
-                image: imageName
+                image: item.images?item.images?.join(","):null
             });
             productItems.push(productItemCreated);
 

@@ -1,4 +1,4 @@
-import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand, PutObjectCommand, CopyObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const client = new S3Client({
@@ -74,9 +74,45 @@ async function uploadFile({ key, file }: { key: string; file: File; }) {
     return result;
 }
 
+async function getPresignedUploadUrl({key, contentType}: {key: string; contentType: string;}) {
+    const input = { // PutObjectRequest
+        Bucket: process.env.AWS_S3_BUCKET_NAME, // required
+        Key: key, // required
+        ContentType: contentType,
+    };
+    const command = new PutObjectCommand(input);
+    const result = await getSignedUrl(client, command, { expiresIn: 3600 });
+    return result;
+}
+
+async function renameFile({oldKey, newKey}: {oldKey: string; newKey: string;}) {
+    const input = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        CopySource: oldKey,
+        Key: newKey,
+    };
+    const command = new CopyObjectCommand(input);
+    const result = await client.send(command);
+    await deleteFile({key: oldKey});
+    return result;
+}
+
+async function deleteFile({key}: {key: string;}) {
+    const input = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: key,
+    };
+    const command = new DeleteObjectCommand(input);
+    const result = await client.send(command);
+    return result;
+}
+
 const S3BucketUtil = {
     getSignedUrlByKey,
     uploadFile,
+    getPresignedUploadUrl,
+    renameFile,
+    deleteFile,
 }
 
 export default S3BucketUtil;

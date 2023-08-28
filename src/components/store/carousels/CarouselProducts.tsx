@@ -50,7 +50,6 @@ export default function CarouselProducts(props: { products: any[] }) {
           style: {
             marginTop: '30px'
           }
-
         }}
         NextIcon={<FontAwesomeIcon icon={faChevronRight} />}
         PrevIcon={<FontAwesomeIcon icon={faChevronLeft} />}

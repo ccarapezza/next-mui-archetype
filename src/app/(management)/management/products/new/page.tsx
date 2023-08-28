@@ -10,7 +10,9 @@ const fetchCategoriesData = async () => {
 };
 
 const fetchVariationsData = async () => {
-    return await variationService.getAll({include: "variationOptions"});
+    return await variationService.getAll({include: "variationOptions",order: [
+        ['id', 'ASC']
+    ]});
 };
 
 export default async function NewProductPage() {
@@ -18,8 +20,7 @@ export default async function NewProductPage() {
     const variations = (await fetchVariationsData()).map(variation => {
         return variation.toJSON<VariationDto>();
     });
-    console.log("variations", variations);
-
+    
     return (<>
         <PageHeader title="New Product" />
         <MuiBox className="px-4 pt-8 flex justify-center">

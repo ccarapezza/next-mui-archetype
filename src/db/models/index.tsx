@@ -14,6 +14,7 @@ import VariationOption from '@/db/models/VariationOption';
 import ShopOrder from '@/db/models/ShopOrder'
 import OrderLine from '@/db/models/OrderLine'
 import OrderStatus from '@/db/models/OrderStatus'
+import ContactForm from '@/db/models/ContactForm'
 
 export {
     Account,
@@ -31,5 +32,6 @@ export {
     VariationOption,
     ShopOrder,
     OrderLine,
-    OrderStatus
+    OrderStatus,
+    ContactForm
 }

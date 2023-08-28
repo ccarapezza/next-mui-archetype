@@ -2,9 +2,13 @@
 import { VariationOptionDto } from '@/schemas/variationOption';
 import { faWarning } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Stack, Switch, Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import { Box, Button, Stack, Switch, Typography } from '@mui/material';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useRef, useState } from 'react'
 import { CirclePicker, SketchPicker } from 'react-color'
+import LoadingBlocker from './LoadingBlocker';
+
+const COLOR_VARIATION_ID = 2;
 
 interface ColorPickerProps {
     name?: string,
@@ -14,14 +18,31 @@ interface ColorPickerProps {
     inputProps?: any,
     className?: string,
     variationOptions?: VariationOptionDto[],
-    error?: boolean
+    error?: boolean,
+    reloadVariations?: Function
 }
 
-export default function ColorPicker({name, initialColor, onChange, ref, inputProps, className, variationOptions, error }: ColorPickerProps) {
+const saveVariantOption = async (value: string) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/variationOption`, {
+        method: 'POST',
+        body: JSON.stringify({
+            variationId: COLOR_VARIATION_ID,
+            value: value
+        }),
+    });
+    if (!res.ok) {
+        throw new Error("Error creando la variante...");
+    }
+    return res.json();
+};
+
+export default function ColorPicker({ initialColor, name, onChange, inputProps, className, variationOptions, error, reloadVariations }: ColorPickerProps) {
     const [advanceMode, setAdvanceMode] = useState<any>(false)
     const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false)
-    const [color, setColor] = useState<any>(initialColor?initialColor:"#fff");
+    const [color, setColor] = useState<any>(initialColor?initialColor:variationOptions?.[0]?.value?variationOptions?.[0]?.value:"#ffffff");
     const [colors, setColors] = useState<any>();
+    const [newColor, setNewColor] = useState<any>();
+    const { enqueueSnackbar } = useSnackbar();
 
     useEffect(() => {
         if (variationOptions) {
@@ -34,19 +55,27 @@ export default function ColorPicker({name, initialColor, onChange, ref, inputPro
     }, [variationOptions])
 
     useEffect(() => {
-        const variantOptionId = getVariantIdByColor(color);
-        if(onChange){
-            onChange(variantOptionId);
+        if(variationOptions?.length!>0){
+            const variantOptionId = color?getVariantIdByColor(color):variationOptions?.[0].id;
+            if(onChange){
+                onChange(variantOptionId);
+            }
+            if (hiddenInputRef.current) {
+                hiddenInputRef.current.value = variantOptionId?variantOptionId.toString():"";
+            }
         }
-    }, [color])
+    }, [color,variationOptions])
 
     const getVariantIdByColor = (color: string) => {
         let variantId: number = 0;
         variationOptions?.forEach((variationOption: VariationOptionDto) => {
-            if (variationOption.value === color) {
+            const castedValue = parseInt(variationOption.value.replace("#",""), 16);
+            const castedColorValue = parseInt(color.replace("#",""), 16);
+            if (castedValue === castedColorValue) {
                 variantId = variationOption.id;
             }
         })
+        console.log("Selected", variantId?variantId:null);
         return variantId?variantId:null;
     }
 
@@ -60,14 +89,38 @@ export default function ColorPicker({name, initialColor, onChange, ref, inputPro
 
     const handleChange = (color: any) => {
         setColor(color.hex)
-        if(onChange){
-            onChange(color.hex);
-        }
     };
 
-    return (
+    const handleNewChange = (color: any) => {
+        setNewColor(color.hex)
+    };
+
+    const hiddenInputRef = useRef<HTMLInputElement | null>(null)
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const saveNewColor = async () => {
+        if (newColor) {
+            setLoading(true);
+            saveVariantOption(newColor).then((data) => {
+                if(reloadVariations){
+                    reloadVariations();
+                }
+            }).then(() => {
+                setAdvanceMode(false);
+                setColor(newColor);
+            }).catch((error) => {
+                enqueueSnackbar("Error guardando el color", { variant: 'error' });
+            }).finally(() => {
+                setLoading(false);
+            })
+        }
+    }
+
+    return (<>
         <Box className={className?className:""+(error!&&' border-red-500 border-2 rounded-full')}>
-            <input type='hidden' value={getVariantIdByColor(color)} {...inputProps} />
+            {loading &&
+                <LoadingBlocker/>
+            }
             <Box className="rounded-full shadow-md w-fit bg-white border cursor-pointer" onClick={handleClick}>
                 <Box className="w-10 h-10 rounded-full" style={{ backgroundColor: color }}/>
             </Box>
@@ -82,7 +135,12 @@ export default function ColorPicker({name, initialColor, onChange, ref, inputPro
                         </Stack>
                     </div>
                     {advanceMode ?
-                        <SketchPicker presetColors={colors} color={color} onChange={handleChange} />
+                        <div className="bg-white-500 text-center">
+                            <SketchPicker presetColors={[]} color={newColor} onChange={handleNewChange} />
+                            <Button size='small' variant='contained' onClick={() => { saveNewColor() }} autoFocus className='m-2'>
+                                Guardar Color
+                            </Button>
+                        </div>
                         :
                         <CirclePicker colors={colors} color={color} onChange={handleChange} className='mr-0 pt-4 pl-4 bg-white border border-grey-500 rounded-md box-content shadow-lg' />
                     }
@@ -92,5 +150,5 @@ export default function ColorPicker({name, initialColor, onChange, ref, inputPro
             }
 
         </Box>
-    )
+    </>)
 }

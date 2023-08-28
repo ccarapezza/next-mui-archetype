@@ -1,35 +1,19 @@
 import OrderLine from '@/db/models/OrderLine';
 import ShopOrder from '@/db/models/ShopOrder';
 import { authOptions } from '@/auth/authOptions';
-import { ProductItem } from '@/db';
+import { ContactForm, ProductItem } from '@/db';
 import { PlaceOrderDto } from '@/schemas/placeOrder';
 import { userService } from '@/services/UserService';
 import { getServerSession } from 'next-auth';
 import { NextRequest, NextResponse } from 'next/server'
 import { Op } from 'sequelize';
 
+const INITIAL_STATUS_ID = 1;
+
 export async function POST(request: NextRequest) {
     const placeOrderData : PlaceOrderDto = await request.json();
     const itemsIds = placeOrderData.orderItems.map(item => item.productItemId);
-    
-    /*
-    const qtyItems:any = placeOrderData.orderItems.reduce((total: {itemId: number, qty: number}[], item) => {
-        const totalEl = total.find((totalItem) => {
-            if(totalItem.itemId === item.productItemId){
-                totalItem.qty = totalItem.qty + item.qty;
-                return true;
-            }
-            return false;
-        });
-        if(!totalEl){
-            total.push({itemId: item.productItemId, qty: item.qty});
-        }else{
-            totalEl.qty = totalEl.qty + item.qty;
-        }
-        return total;
-    }, []);
-    */
-    
+
     const items = await ProductItem.findAll({
         where: {
             id:{
@@ -61,12 +45,20 @@ export async function POST(request: NextRequest) {
     }else{
         const session = await getServerSession(authOptions);
         const userLogged = session?.user?.email?await userService.getByEmail(session.user.email):null;
+        //create contactForm sequelize
+        const contactForm = await ContactForm.create({
+            name: placeOrderData.contactForm.name,
+            lastName: placeOrderData.contactForm.lastName,
+            phone: placeOrderData.contactForm.phone,
+            email: placeOrderData.contactForm.email
+        });
         //create shopOrder sequelize
         const shopOrder = await ShopOrder.create({
             orderDate: new Date(),
             orderTotal: orderTotal,
             userId: userLogged?userLogged.id:null,
-            statusId: 1,//TODO: Obtener el status por defecto
+            statusId: INITIAL_STATUS_ID,
+            contactFormId: contactForm.id,
         });
         //create orderLines sequelize
         const orderLines = itemsIds.map(async (itemId) => {

@@ -9,6 +9,9 @@ export async function GET(request: NextRequest) {
             model: VariationOption,
             attributes: ['id', 'value']
         }],
+        order: [
+            ['id', 'ASC']
+        ]
     });
 
     return NextResponse.json(variations);

@@ -1,9 +1,11 @@
-import { InputAdornment, OutlinedInput, OutlinedInputProps, TextField } from "@mui/material"
+import { FormControl, InputAdornment, InputLabel, OutlinedInput, OutlinedInputProps, TextField } from "@mui/material"
 import { ForwardedRef, forwardRef } from "react"
 import { Control, Controller, FieldError, FieldErrorsImpl, Merge } from "react-hook-form"
 import { NumericFormat } from 'react-number-format'
 type CurrencyInputProps = {
     name: string
+    className?: string
+    label?: string
     error?: boolean | undefined
     control: Control<any, any> | undefined,
     prefix?: string,
@@ -16,17 +18,21 @@ interface ExtOutlinedInputProps extends OutlinedInputProps {
 }
 
 const CustomInput = forwardRef((props: ExtOutlinedInputProps, ref: ForwardedRef<HTMLInputElement>) => {
-    return <OutlinedInput
+    return <FormControl variant="outlined" fullWidth={props.fullWidth}>
+    <InputLabel htmlFor='display-name' className="font-bold text-black">{props.label}</InputLabel>
+    <OutlinedInput
+        label={props.label}
         ref={ref}
         autoComplete='off'
         size="small"
         startAdornment={<InputAdornment position="start">{props.customprefix}</InputAdornment>}
         {...props}
-    />;
+    />
+    </FormControl>;
 });
 CustomInput.displayName = "CustomInput";
 
-function CurrencyInput({ name, error, control, prefix, fullWidth }: CurrencyInputProps){
+function CurrencyInput({ className, label, name, error, control, prefix, fullWidth }: CurrencyInputProps){
     return (
         <>
             <Controller               
@@ -34,6 +40,8 @@ function CurrencyInput({ name, error, control, prefix, fullWidth }: CurrencyInpu
                 control={control}
                 render={({ field: { ref, onChange, ...rest } }) => (
                     <NumericFormat
+                        className={className}
+                        label={label}
                         decimalSeparator=","
                         thousandSeparator="."
                         prefix=""

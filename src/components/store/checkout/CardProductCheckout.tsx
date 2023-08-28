@@ -34,8 +34,8 @@ export default function CardProductCheckout(props: { product: ProductToCart }) {
             src={image}
             alt={name}
             className="h-16 w-16 rounded object-cover"
-            width={16}
-            height={16}
+            width={128}
+            height={128}
           />
           <div className='flex flex-col justify-around'>
             <h3 className="text-sm text-gray-900 font-bold">{name}</h3>

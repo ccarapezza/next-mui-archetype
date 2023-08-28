@@ -222,8 +222,8 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                         onNodeToggle={(event: React.ChangeEvent<{}>, nodeIds: string[]) => {
                             setExpandedIds(nodeIds);
                         }}
-                        defaultCollapseIcon={<FontAwesomeIcon icon={faSquareMinus} className='ml-px fa-fw' onClick={(e) => { e.preventDefault(); }} />}
-                        defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw' onClick={(e) => { e.preventDefault(); }} />}
+                        defaultCollapseIcon={<FontAwesomeIcon icon={faSquareMinus} className='ml-px fa-fw text-slate-900 hover:shadow-sm' onClick={(e) => { e.preventDefault(); }} />}
+                        defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw text-slate-900 hover:shadow-sm' onClick={(e) => { e.preventDefault(); }} />}
                         defaultEndIcon={<SquareXmarkIcon />}
                         onNodeSelect={(event: React.ChangeEvent<{}>, selectedId: string) => {
                             const categoryFinded = findIdOnTree(parseInt(selectedId));

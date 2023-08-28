@@ -4,6 +4,7 @@ import PageHeader from '@/components/management/paperbase/PageHeader'
 import { shopOrderService } from '@/services/ShopOrderService';
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react'
+import OrderDataGrid from './dataGrid';
 
 const fetchPendingOrdersData = async (page: number, size: number) => {
     return await shopOrderService.getPendingOrders(page, size);
@@ -25,6 +26,11 @@ export default async function OrdersPage({ searchParams }: { searchParams: { pag
             flex: 1
         },
         {
+            field: 'contactForm.name',
+            headerName: 'Contact Name',
+            flex: 1
+        },
+        {
             field: 'orderDate',
             headerName: 'Order Date',
             flex: 1
@@ -38,7 +44,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: { pag
     return (<>
         <PageHeader title="Orders" />
         <MuiBox className="p-10">
-            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} />
+            <OrderDataGrid rows={data.rows} rowCount={data.totalItems} />
         </MuiBox>
     </>)
 }
