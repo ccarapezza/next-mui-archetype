@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useContext } from "react";
 import { CartContext } from "../../context/MiniCartContext";
 import { ContactFormDto, OrderItemDto, PlaceOrderDto } from "@/schemas/placeOrder";
+import { useRouter } from 'next/navigation'
 
 const schema = yup.object({
   name: yup.string().min(3).max(50).required(),
@@ -16,6 +17,8 @@ const schema = yup.object({
 }).required();
 
 export default function OrderFormGuest() {
+
+  const router = useRouter();
 
   // User Data
   const { status, data } = useSession();
@@ -83,6 +86,7 @@ export default function OrderFormGuest() {
 
     placeOrder(order).then((data) => {
         emptyMinicart();
+        router.push('/checkout/gracias');
         console.log(data)
     }).catch((error) => {
         console.log(error)

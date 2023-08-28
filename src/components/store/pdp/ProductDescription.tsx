@@ -19,40 +19,35 @@ export default function ProductDescription(props: { product: ProductDto | null, 
 
   const { addProduct } = useContext(CartContext)
   const [quantity, setQuantity] = useState(1);
-  // console.log('quantity', quantity);
 
-   // Assemble product to go to the minicart
-   const productToCart: ProductToCart = {
+  const variationsArray = (selectedItem?.variationOptions || [])
+  .map((item: any) => ({
+    name: item?.variation?.name,
+    value: item?.value
+  }));
+
+  // Assemble product to go to the minicart
+  const productToCart: ProductToCart = {
     productId: product?.id ? product.id : 0,
     name: product?.name ? product.name : '',
     quantity: quantity,
     price: selectedItem?.price ? selectedItem.price : 0,
-    image: selectedItem?.images?.[0] ? selectedItem.images[0] : '',
-    itemId: selectedItem?.id ? selectedItem.id : 0
+    image: selectedItem?.images[0] ? selectedItem.images[0] : '',
+    itemId: selectedItem?.id ? selectedItem.id : 0,
+    variations: variationsArray,
   }
-
-  // console.log('productToCart', productToCart);
-
-
-  // const addToCart = () => {
-  //   addProduct(
-  //     {
-  //       ...productToCart
-  //     }
-  //   )
-  // }
 
   return (
     <div className="relative mt-4 w-full md:w-1/2 md:ml-4">
       <div>
-        <ProductHeader product={product} selectedItem={selectedItem}/>
-        <SkuSelector items={items} setProductAvailable={setProductAvailable} setItemId={setItemId}/>
+        <ProductHeader product={product} selectedItem={selectedItem} />
+        <SkuSelector items={items} setProductAvailable={setProductAvailable} setItemId={setItemId} />
       </div>
 
       <div>
         <div className="block gap-2 md:flex">
           {/* QuantitySelector */}
-          <QuantitySelector quantity={quantity} setQuantity={setQuantity}/>
+          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
           {/* Agregar al Carrito */}
           {
             !productAvailable ?
@@ -65,7 +60,7 @@ export default function ProductDescription(props: { product: ProductDto | null, 
               :
               <button
                 className="w-full rounded bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wide text-white hover:bg-tertiary transition"
-                onClick={() => addProduct({...productToCart})}
+                onClick={() => addProduct({ ...productToCart })}
               >
                 Agregar al Carrito!
               </button>

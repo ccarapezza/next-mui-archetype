@@ -36,7 +36,7 @@ export default function SkuComponent(props: { items: any, setSelectedOption: any
                                                                 </div>
                                                             </div>
                                                             :
-                                                            <div className={`flex items-center justify-center w-[50px] rounded-md border ${variationState[group.variationName] === option ? 'text-tertiary font-semibold border-black border-2' : 'text-gray border-gray'}`}>
+                                                            <div className={`flex items-center justify-center min-w-[50px] px-2 rounded-md border ${variationState[group.variationName] === option ? 'text-tertiary font-semibold border-black border-2' : 'text-gray border-gray'}`}>
                                                                 {option}
                                                             </div>
                                                     }

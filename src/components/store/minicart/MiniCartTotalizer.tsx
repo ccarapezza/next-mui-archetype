@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useContext } from "react"
 import { CartContext } from "../context/MiniCartContext"
 
-export default function MiniCartTotalizer(props: { quantity: number }) {
+export default function MiniCartTotalizer(props: { quantity: number | null }) {
 
     const { geTotalMinicart } = useContext(CartContext)
     const { quantity } = props
@@ -12,7 +12,7 @@ export default function MiniCartTotalizer(props: { quantity: number }) {
     return (
         <>
             {
-                quantity > 0 ?
+                quantity !=null && quantity > 0 ?
                     <div className="space-y-2 p-4 mt-3 mb-4 text-center border-t text-lg">
                         <div className="flex justify-between px-2 py-1">
                             <span className="text-stone-500 font-bold">Subtotal:</span>
