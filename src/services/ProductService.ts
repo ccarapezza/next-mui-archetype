@@ -55,7 +55,6 @@ export class ProductService extends GenericService<Product> {
                 }
             }
         }
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!", productDto.items?.[0],null,2);
         return productDto;
     };
     search = async (searchTerm: string | null, page: number = 1, size: number = 10) => {

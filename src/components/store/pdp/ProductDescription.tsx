@@ -32,7 +32,7 @@ export default function ProductDescription(props: { product: ProductDto | null, 
     name: product?.name ? product.name : '',
     quantity: quantity,
     price: selectedItem?.price ? selectedItem.price : 0,
-    image: selectedItem?.images[0] ? selectedItem.images[0] : '',
+    image: selectedItem?.images?.[0] ? selectedItem.images[0] : '',
     itemId: selectedItem?.id ? selectedItem.id : 0,
     variations: variationsArray,
   }

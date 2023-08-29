@@ -105,7 +105,7 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
             align: 'center',
             flex: 3,
             renderCell: (params: GridRenderCellParams) => {
-                return (<Stack direction={'column'} className='cursor-pointer box-border w-full' >
+                return (<Stack direction={'column'} className='cursor-pointer box-border w-full py-2' >
                     {params.value.map((item: any, index: number) =>
                         
                             <Stack key={`product-item-${item.sku}`} direction={"row"} className='w-full grid grid-cols-2 px-2 rounded hover:bg-yellow-300 hover:bg-opacity-20'>
@@ -119,7 +119,7 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
                                             </Typography>)}
                                         </Stack>
                                     }>
-                                        <Box className="flex items-center">
+                                        <Box className="grid grid-cols-2">
                                             <Box className="m-0 p-0">
                                                 <span>#{item.id}</span>
                                                 <FontAwesomeIcon icon={faChevronRight} className='px-2' />
@@ -207,7 +207,7 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
             </DialogActions>
         </Dialog>
 
-        <MuiDataGrid loading={loading} columns={columns} rows={rows} rowCount={rowCount} editPath={editPath} deletePath={deletePath} />
+        <MuiDataGrid getRowHeight={()=>'auto'} loading={loading} columns={columns} rows={rows} rowCount={rowCount} editPath={editPath} deletePath={deletePath} />
     </>)
 }
 

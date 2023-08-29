@@ -1,7 +1,7 @@
 "use client"
 import { ReactNode, useCallback, useContext } from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRowHeightParams, GridRowHeightReturnValue } from '@mui/x-data-grid';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { IconButton, Stack, Tooltip } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DialogContext } from '../management/context/DialogContext';
 import { useSnackbar } from 'notistack';
 
-export default function MuiDataGrid({ columns, rows, rowCount, editPath, deletePath, customActions, loading }: { columns: GridColDef[], rows: any[], rowCount: number, editPath?: string, deletePath?: string, customActions?: CustomAction[], loading?: boolean }) {
+export default function MuiDataGrid({ columns, rows, rowCount, editPath, deletePath, customActions, loading, getRowHeight }: { columns: GridColDef[], rows: any[], rowCount: number, editPath?: string, deletePath?: string, customActions?: CustomAction[], loading?: boolean, getRowHeight?: (params: GridRowHeightParams) => GridRowHeightReturnValue }) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -118,6 +118,7 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
                             },
                         },
                     }}
+                    getRowHeight={getRowHeight}
                     pageSizeOptions={[5]}
                     disableRowSelectionOnClick
                     paginationMode='server'

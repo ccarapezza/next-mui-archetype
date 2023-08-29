@@ -163,8 +163,8 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
                     </tr>
                 {selected&&selected.orderLines.map((orderLine: any) => {
                     return<tr className='border'>
-                        <td className='border w-20 h-20 text-center'>
-                            <Image src={orderLine.item.images?.[0]} className='p-2 w-20 h-20 object-cover max-w-none' width={64} height={64} alt={''} />
+                        <td className='border w-20 h-20 text-center p-2'>
+                            <Image src={orderLine.item.images?.[0]} className='rounded w-16 h-16 object-cover max-w-none' width={64} height={64} alt={''} />
                         </td>
                         <td className='border text-center py-2 px-4'>
                             <Typography className='font-bold text-xs'>{orderLine.item.masterProduct.name}</Typography>
@@ -180,9 +180,9 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
 
                                         return <Typography key={variationOption.id} variant='caption' className='ml-2 whitespace-nowrap flex'>{variationOption.variation.name}:
                                             {(variationOption.variation.name.toLowerCase()=='color')?
-                                                <div key={variationOption.id} className='border-black ml-1 whitespace-nowrap border rounded-full w-4 h-4 ' style={{backgroundColor: variationOption.value}}></div>
+                                                <div key={variationOption.id} className='border-black ml-1 whitespace-nowrap border rounded-full w-4 h-4' style={{backgroundColor: variationOption.value}}></div>
                                                 :
-                                                <span>{variationOption.value}</span>
+                                                <span className='font-bold'>{variationOption.value}</span>
                                             }
                                             
                                         </Typography>

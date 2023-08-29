@@ -88,7 +88,7 @@ async function getPresignedUploadUrl({key, contentType}: {key: string; contentTy
 async function renameFile({oldKey, newKey}: {oldKey: string; newKey: string;}) {
     const input = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
-        CopySource: oldKey,
+        CopySource: `${process.env.AWS_S3_BUCKET_NAME}/${oldKey}`,
         Key: newKey,
     };
     const command = new CopyObjectCommand(input);
