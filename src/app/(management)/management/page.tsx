@@ -8,7 +8,7 @@ export default function ManagementHome() {
             Panel de administración
         </Typography>
         <Stack direction="row" columnGap={1}>
-            <Image src="/logos/CMD [Logotipo] variables-03.png" alt='Float UI logo' width={550} height={550} />
+            <Image src="/logos/logo-03.png" alt='Float UI logo' width={550} height={550} />
         </Stack>
     </Grid>)
 }
