@@ -19,7 +19,7 @@ export default function MiniCart() {
       setQuantity(products.length);
       setOpenMiniCart(true);
     }
-  }, [products])
+  }, [products, quantity])
 
   return (
     <>

@@ -162,7 +162,7 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
                         <th className='text-center'>Precio</th>
                     </tr>
                 {selected&&selected.orderLines.map((orderLine: any) => {
-                    return<tr className='border'>
+                    return<tr key={`order-line-${orderLine.id}`} className='border'>
                         <td className='border w-20 h-20 text-center p-2'>
                             <Image src={orderLine.item.images?.[0]} className='rounded w-16 h-16 object-cover max-w-none' width={64} height={64} alt={''} />
                         </td>

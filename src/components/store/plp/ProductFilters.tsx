@@ -24,7 +24,6 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
     const priceMaxParams = searchParams.get('priceMax');
 
     // Filter State
-
     const variationList = varationsDTO.map((variation: any) => {
         return {
             key: variation.name,
@@ -48,54 +47,52 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
         }
     });
 
-    console.log('filters', filters);
     
     useEffect(() => {
-        setStateToUrl(filters)
-    }, [filters])
-
-    // Function to set URL
-    const setStateToUrl = ({
-        selectedCategories,
-        selectedPrice,
-        ...variationStates
-    }: any) => {
-        const paramsToAdd: any = [];
-
-        const addParam = (name: string, value: string[]) => {
-            if (value.length > 0) {
-                paramsToAdd.push({
-                    name,
-                    value: value.join(',')
-                });
+        // Function to set URL
+        const setStateToUrl = ({
+            selectedCategories,
+            selectedPrice,
+            ...variationStates
+        }: any) => {
+            const paramsToAdd: any = [];
+    
+            const addParam = (name: string, value: string[]) => {
+                if (value.length > 0) {
+                    paramsToAdd.push({
+                        name,
+                        value: value.join(',')
+                    });
+                }
+            };
+    
+    
+            addParam('category', selectedCategories);
+            if (selectedPrice.from !== '' || selectedPrice.to !== '') {
+                if (selectedPrice.from !== '') {
+                    addParam('priceMin', [selectedPrice.from]);
+                }
+                if (selectedPrice.to !== '') {
+                    addParam('priceMax', [selectedPrice.to]);
+                }
             }
+    
+            Object.entries(variationStates).forEach((variationStates: any) => {
+                const variationName = variationStates[0];
+                const variationValues = variationStates[1];
+                if (variationValues.length > 0) {
+                    addParam(variationName , variationValues);
+                }
+            });
+    
+            const queryParams = new URLSearchParams(
+                paramsToAdd.map((param: any) => [param.name, param.value])
+            );
+    
+            router.push(`${pathname}?${queryParams.toString()}`);
         };
-
-
-        addParam('category', selectedCategories);
-        if (selectedPrice.from !== '' || selectedPrice.to !== '') {
-            if (selectedPrice.from !== '') {
-                addParam('priceMin', [selectedPrice.from]);
-            }
-            if (selectedPrice.to !== '') {
-                addParam('priceMax', [selectedPrice.to]);
-            }
-        }
-
-        Object.entries(variationStates).forEach((variationStates: any) => {
-            const variationName = variationStates[0];
-            const variationValues = variationStates[1];
-            if (variationValues.length > 0) {
-                addParam(variationName , variationValues);
-            }
-        });
-
-        const queryParams = new URLSearchParams(
-            paramsToAdd.map((param: any) => [param.name, param.value])
-        );
-
-        router.push(`${pathname}?${queryParams.toString()}`);
-    };
+        setStateToUrl(filters)
+    }, [filters,pathname, router])
 
     return (
         <div className="space-y-2">

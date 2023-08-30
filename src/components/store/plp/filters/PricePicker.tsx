@@ -29,7 +29,7 @@ export default function PricePicker(props: { filters: any, setFilters: any }) {
       selectedPrice:
         { from: debouncedPriceFrom, to: debouncedPriceTo, }
     })
-  }, [debouncedPriceFrom, debouncedPriceTo])
+  }, [debouncedPriceFrom, debouncedPriceTo, filters, setFilters])
 
   useEffect(() => {
     if (refFrom.current != null) {

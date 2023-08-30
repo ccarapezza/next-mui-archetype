@@ -54,7 +54,20 @@ export default function ColorPicker({ initialColor, name, onChange, inputProps, 
         }
     }, [variationOptions])
 
+    
     useEffect(() => {
+        const getVariantIdByColor = (color: string) => {
+            let variantId: number = 0;
+            variationOptions?.forEach((variationOption: VariationOptionDto) => {
+                const castedValue = parseInt(variationOption.value.replace("#",""), 16);
+                const castedColorValue = parseInt(color.replace("#",""), 16);
+                if (castedValue === castedColorValue) {
+                    variantId = variationOption.id;
+                }
+            })
+            console.log("Selected", variantId?variantId:null);
+            return variantId?variantId:null;
+        }
         if(variationOptions?.length!>0){
             const variantOptionId = color?getVariantIdByColor(color):variationOptions?.[0].id;
             if(onChange){
@@ -64,20 +77,7 @@ export default function ColorPicker({ initialColor, name, onChange, inputProps, 
                 hiddenInputRef.current.value = variantOptionId?variantOptionId.toString():"";
             }
         }
-    }, [color,variationOptions])
-
-    const getVariantIdByColor = (color: string) => {
-        let variantId: number = 0;
-        variationOptions?.forEach((variationOption: VariationOptionDto) => {
-            const castedValue = parseInt(variationOption.value.replace("#",""), 16);
-            const castedColorValue = parseInt(color.replace("#",""), 16);
-            if (castedValue === castedColorValue) {
-                variantId = variationOption.id;
-            }
-        })
-        console.log("Selected", variantId?variantId:null);
-        return variantId?variantId:null;
-    }
+    }, [color,variationOptions,onChange])
 
     const handleClick = () => {
         setDisplayColorPicker(true);

@@ -2,6 +2,7 @@ import ImageCropEditor from '@/components/client/ImageCropEditor';
 import { faClose, faImage, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Tooltip, Typography } from '@mui/material';
+import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
 
 const uploadFile = async (file: File) => {
@@ -76,7 +77,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
                 deleteFile(file.key);
             });
         }
-    }, []);
+    }, [files]);
 
     useEffect(() => {
         if (fileToUpload) {
@@ -88,7 +89,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
 
     useEffect(() => {
         onChange(files.map((file) => file.key));
-    }, [files]);
+    }, [files, onChange]);
 
     return (<>
         <Dialog open={!!fileToUpload} onClose={() => setFileToUpload(null)}>
@@ -129,7 +130,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
         />
         <div className='grid grid-cols-6 gap-2 items-center'>
             {files.map((file, index) => (<div className='grid-col-1 border rounded p-2' key={name+"-"+index}>
-                <img id="blah" src={URL.createObjectURL(file.file as Blob)} alt="your image" />
+                <Image id={`image-${index}`} width={150} height={150} src={URL.createObjectURL(file.file as Blob)} alt="preview image" />
                 <FontAwesomeIcon className='text-red-500 cursor-pointer mt-2' icon={faTrash} onClick={() => removeFile(index)} />
             </div>))}
             <div>
