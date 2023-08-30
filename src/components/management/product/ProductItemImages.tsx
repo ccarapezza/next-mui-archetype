@@ -70,15 +70,6 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
         });
     }
 
-    //delete files on unmount
-    useEffect(() => {
-        return () => {
-            files.forEach((file) => {
-                deleteFile(file.key);
-            });
-        }
-    }, [files]);
-
     useEffect(() => {
         if (fileToUpload) {
             setPreview(fileToUpload);
