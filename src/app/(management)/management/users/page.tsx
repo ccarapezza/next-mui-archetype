@@ -1,10 +1,8 @@
-import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
 import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import {  userService } from "@/services/UserService";
+import { userService } from "@/services/UserService";
 import UserDataGrid from "./dataGrid";
-import { faAtom } from "@fortawesome/free-solid-svg-icons";
 
 const USER_ROLE = "user";
 
@@ -35,3 +33,4 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
         </MuiBox>
     </>)
 }
+export const dynamic = 'force-dynamic'
