@@ -1,3 +1,4 @@
+'use client';
 import ImageCropEditor from '@/components/client/ImageCropEditor';
 import { faClose, faImage, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +8,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const uploadFile = async (file: File) => {
     //get presigner url from server
-    const presignedUrlResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/product/upload-temp-image-product/jpg`, {
+    const presignedUrlResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/content-manager/main-slider/upload-image-slider/jpg`, {
         method: 'GET',
     });
     if (!presignedUrlResponse.ok) {
@@ -27,16 +28,16 @@ const uploadFile = async (file: File) => {
 
 const deleteFile = async (key: string) => {
     //get presigner url from server
-    const presignedUrlResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/product/delete-temp-image-product/${key}`, {
+    const presignedUrlResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/content-manager/main-slider/delete-image-slider/${key}`, {
         method: 'DELETE',
     });
     if (!presignedUrlResponse.ok) {
-        throw new Error("Error al obtener la url de subida");
+        throw new Error("Error al eliminar la imagen");
     }
     return await presignedUrlResponse.json();
 }
 
-export default function ProductItemImages({defaultFiles = [], onChange, name}: {defaultFiles?: ProductImageFile[], onChange: Function, name: string}) {
+export default function SliderImagesControl({defaultFiles = [], onChange, name}: {defaultFiles?: ProductImageFile[], onChange: Function, name: string}) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [fileToUpload, setFileToUpload] = useState<File|null>(null);
     const [preview, setPreview] = useState<File|null>(null);
@@ -100,6 +101,9 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
             <DialogContent className="flex flex-col items-center justify-center">
                 {preview&&
                     <ImageCropEditor
+                        compressedWidth={1920}
+                        compressedHeight={450}
+                        compressedSizeOnKb={150}
                         file={preview}
                         setFormatedFile={
                             (file: File) => {
@@ -121,7 +125,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
         />
         <div className='grid grid-cols-6 gap-2 items-center mb-4'>
             {files.map((file, index) => (<div className='grid-col-1 border rounded p-2' key={name+"-"+index}>
-                <Image id={`image-${index}`} width={150} height={150} src={URL.createObjectURL(file.file as Blob)} alt="preview image" />
+                <Image id={`image-${index}`} width={1920} height={450} src={URL.createObjectURL(file.file as Blob)} alt="preview image" />
                 <FontAwesomeIcon className='text-red-500 cursor-pointer mt-2' icon={faTrash} onClick={() => removeFile(index)} />
             </div>))}
             <div>

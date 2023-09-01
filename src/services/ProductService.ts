@@ -48,7 +48,7 @@ export class ProductService extends GenericService<Product> {
                     //obtain images url from s3 bucket
                     const images = []
                     for (const image of imagesKeys) {
-                        images.push(await S3BucketUtil.getSignedUrlByKey({key: "temp/"+image}))
+                        images.push(await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.TEMP}))
                     }
                     item.images = images;
                     delete item.image;
@@ -247,7 +247,7 @@ export class ProductService extends GenericService<Product> {
             for (const item of product.items) {
                 if (item.images.length > 0) {
                     item.images = await Promise.all(item.images.map(async (image) => {
-                        return await S3BucketUtil.getSignedUrlByKey({key: "temp/"+image});
+                        return await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.TEMP});
                     }));
                 } else {
                     item.images = [];
