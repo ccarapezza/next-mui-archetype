@@ -133,13 +133,15 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
         console.log("categories", categories)
     }, [categories]);
 
-    const findIdOnTree = (id: number): ProductCategoryDto | null => {
+    const findIdOnTree = (id: number, categories: ProductCategoryDto[]): ProductCategoryDto | null => {
         let result: ProductCategoryDto | null = null;
         categories?.forEach((category) => {
+            console.log("category", category);
+            console.log("id", id);
             if (category.id === id) {
                 result = category;
-            } else if (category.childrens) {
-                result = findIdOnTree(id);
+            } else if (category.childrens && category.childrens.length > 0) {
+                result = findIdOnTree(id, category.childrens);
             }
         });
         return result;
@@ -155,8 +157,7 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
                 selected={[selectedCategory?.id.toString() || '']}
                 onNodeSelect={(event: React.ChangeEvent<{}>, nodeIds: string[]) => {
                     if (!nodeIds.includes(selectedCategory?.id?.toString()!)) {
-                        const categoryFinded = findIdOnTree(selectedCategory?.id!);
-                        console.log("categoryFinded", categoryFinded);
+                        const categoryFinded = findIdOnTree(parseInt(nodeIds as unknown as string), categories || []);
                         setSelectedCategory(categoryFinded);
                         setCreateSubCategory(true)
                     } else {
@@ -168,7 +169,7 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
                 {recursiveTree(categories || [])}
             </TreeView>
             <div className="mt-4">
-                <CategoryForm onSaveComplete={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }) }} categoryData={createSubCategory ? { name: "", parentId: selectedCategory?.id } : selectedCategory} title={createSubCategory ? "Create Sub Category of " + selectedCategory?.name : (selectedCategory?.id) ? "Edit Category" : "Create Root Category"} />
+                <CategoryForm onSaveComplete={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }) }} categoryData={createSubCategory ? { name: "", parentId: selectedCategory?.id } : selectedCategory} title={createSubCategory ? "Crear Sub Categoria de " + selectedCategory?.name : (selectedCategory?.id) ? "Editar Categoría" : "Crear Categoria Principal"} />
             </div>
         </div>
     );

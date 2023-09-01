@@ -86,11 +86,6 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
             flex: 1
         },
         {
-            field: 'description',
-            headerName: 'Descripción',
-            flex: 1
-        },
-        {
             field: 'category',
             headerName: 'Caregoría',
             flex: 1,
@@ -120,10 +115,10 @@ function ProductDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?
                                         </Stack>
                                     }>
                                         <Box className="grid grid-cols-2">
-                                            <Box className="m-0 p-0">
+                                            <Box className="m-0 p-0 flex">
                                                 <span>#{item.id}</span>
                                                 <FontAwesomeIcon icon={faChevronRight} className='px-2' />
-                                                <CurrencyDisplay className='cursor-pointer' value={item.price} />
+                                                <CurrencyDisplay className='cursor-pointer whitespace-nowrap' value={item.price} />
                                             </Box>
                                             <Typography className={'ml-2 font-bold' + (item.stock === 0 ? " text-red-500" : "")}>
                                                 Stock: <span className='mx-5'>{item.stock}</span>
