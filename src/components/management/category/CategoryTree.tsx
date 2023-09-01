@@ -20,7 +20,7 @@ const SquareXmarkIcon = () => {
 const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
     const [selectedCategory, setSelectedCategory] = useState<ProductCategoryDto | null>(null);
     const [createSubCategory, setCreateSubCategory] = useState(false);
-
+    
     const CustomContent = React.forwardRef(function CustomContent(
         props: TreeItemContentProps,
         ref,

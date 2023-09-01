@@ -39,6 +39,14 @@ export default function Footer(props: { categoryTree: any }) {
       label: "Nosotros",
       items: [
         {
+          href: '/nosotros',
+          name: 'Sobre Nosotros',
+        },
+        {
+          href: '/aliados',
+          name: 'Aliados',
+        },
+        {
           href: '/faq',
           name: 'Preguntas frecuentes',
           icon: null

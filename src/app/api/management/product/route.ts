@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
 
     if(images){
         for (const image of images) {
-            await S3BucketUtil.renameFile({oldKey: `temp/${image}`, newKey: image});
+            await S3BucketUtil.renameFile({oldKey: `${S3BucketUtil.FOLDERS.TEMP}/${image}`, newKey: `${S3BucketUtil.FOLDERS.PRODUCT_IMAGES}/${image}`});
         }
     }
     

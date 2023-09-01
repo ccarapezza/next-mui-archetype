@@ -6,11 +6,10 @@ export async function GET(request: NextRequest, {params}: {params: {ext: string}
     const {ext} = params;
     const key = crypto.randomBytes(32).toString('hex');
     const keyWithExt = `${key}.${ext}`;
-    
+
     const url = await S3BucketUtil.getPresignedUploadUrl({
-        key: keyWithExt,
+        key: `${S3BucketUtil.FOLDERS.MAIN_SLIDER}/${keyWithExt}`,
         contentType: `image/${ext}`,
-        folder: S3BucketUtil.FOLDERS.TEMP,
     });
 
     return NextResponse.json({

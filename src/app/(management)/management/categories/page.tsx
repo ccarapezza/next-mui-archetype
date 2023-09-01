@@ -19,3 +19,4 @@ export default async function CategoriesPage() {
         </MuiBox>
     </>)
 }
+export const dynamic = 'force-dynamic'

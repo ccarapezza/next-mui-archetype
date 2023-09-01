@@ -30,6 +30,10 @@ export async function canvasPreview(
   ctx.scale(pixelRatio, pixelRatio)
   ctx.imageSmoothingQuality = 'high'
 
+  // Fill the background with white in case the image has transparency
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   const cropX = crop.x * scaleX
   const cropY = crop.y * scaleY
 
@@ -49,6 +53,7 @@ export async function canvasPreview(
   ctx.scale(scale, scale)
   // 1) Move the center of the image to the origin (0,0)
   ctx.translate(-centerX, -centerY)
+
   ctx.drawImage(
     image,
     0,
