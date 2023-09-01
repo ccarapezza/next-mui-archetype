@@ -9,6 +9,7 @@ export default function CategorySelector(props: { categoryTree: ProductCategoryD
 
     // Subcategory List
     const [subCategories, setsubCategories] = useState<ProductCategoryDto[]>([]);
+    const [variatonCollapse, setVariatonCollapse] = useState(filters.selectedCategories.length?true:false);
 
     
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function CategorySelector(props: { categoryTree: ProductCategoryD
         subCategories?.length > 0 ?
             <details
                 className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
-                open={filters.selectedCategories.length > 0}
+                open={variatonCollapse}
             >
                 <summary
                     className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"

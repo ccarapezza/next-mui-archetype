@@ -40,7 +40,7 @@ const ProductCard = (props: { product: ProductDto }) => {
                 />
 
                 <Image
-                    src={getImage(1)}
+                    src={images.length > 1 ? getImage(1) : getImage(0)}
                     alt={`Image of ${product?.name ? product?.name : ""}`}
                     className="absolute inset-0 h-full w-full object-cover opacity-0 group-hover:opacity-100"
                     width={500}
