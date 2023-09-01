@@ -35,8 +35,8 @@ function centerAspectCrop(
 export default function ImageCropEditor({
     file,
     setFormatedFile,
-    minWidth = 97,
-    minHeight = 150,
+    minWidth = 10,
+    minHeight = 10,
     compressedWidth = 548,
     compressedHeight = 850,
     compressedSizeOnKb = 60,
@@ -48,8 +48,10 @@ export default function ImageCropEditor({
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
+    const [selectedFileAspect, setSelectedFileAspect] = useState<number>(0);
 
     const calculatedAspect = compressedWidth / compressedHeight;
+    const imageSizeRenderer = Math.max(compressedWidth, compressedHeight);
 
     useEffect(() => {
         if (file) {
@@ -60,9 +62,21 @@ export default function ImageCropEditor({
     function onSelectFile(file: File) {
         setCrop(undefined) // Makes crop preview update between images.
         const reader = new FileReader()
-        reader.addEventListener('load', () =>
-            setImgSrc(reader.result?.toString() || ''),
-        )
+        reader.addEventListener('load', () =>{
+            setImgSrc(reader.result?.toString() || '');
+
+            const img = document.createElement("img");
+            img.onload = () => {
+                // Natural size is the actual image size regardless of rendering.
+                // The 'normal' `width`/`height` are for the **rendered** size.
+                const width  = img.naturalWidth;
+                const height = img.naturalHeight; 
+                setSelectedFileAspect(width / height);
+    
+                console.log(`Image size: ${width}x${height}`);
+            };
+            img.src = reader.result?.toString() || '';
+        })
         reader.readAsDataURL(file)
     }
 
@@ -106,6 +120,10 @@ export default function ImageCropEditor({
         setScale(newValue as number);
     };
 
+    if(selectedFileAspect==0){
+        return <div className="App">Cargando...</div>
+    }
+
     return (
         <div className="App">
             {!!imgSrc && (
@@ -117,11 +135,11 @@ export default function ImageCropEditor({
                     aspect={calculatedAspect}
                     minWidth={minWidth}
                     minHeight={minHeight}
-                >
+                    >
                     <Image
-                        width={840}
-                        height={840}
-                        className='w-full h-full'
+                        className={selectedFileAspect > 1 ? 'h-auto w-[520px]':'h-[420px] w-auto' }
+                        width={imageSizeRenderer}
+                        height={imageSizeRenderer}
                         ref={imgRef}
                         alt="Crop me"
                         src={imgSrc}

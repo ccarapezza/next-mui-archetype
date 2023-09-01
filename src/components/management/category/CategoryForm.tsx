@@ -84,11 +84,12 @@ export default function CategoryForm({ categoryData, title, onSaveComplete }: { 
                 }
                 <Grid item xs={12}>
                     <TextField
+                        InputLabelProps={{ shrink: true }}  
                         {...register("name")}
                         inputProps={{defaultValue: categoryData?.name}}
                         id="name"
                         name='name'
-                        label={"Category Name"}
+                        label={"Nombre de la categoría"}
                         type="text"
                         fullWidth
                         error={!!errors.name}/>

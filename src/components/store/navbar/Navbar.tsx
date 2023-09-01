@@ -19,6 +19,37 @@ export default function Navbar(props: {categoryTree: any}) {
         return urlCategory;
     }
 
+    const staticMenu = [
+        {
+            title: "Turnos Reprocann",
+            path: "/"
+        },
+        {
+            title: "Tienda",
+            path: "/category/grow"
+        },
+        {
+            title: "Nosotros",
+            path: "/nosotros"
+        },
+        {
+            title: "Alianzas",
+            path: "/aliados"
+        },
+        {
+            title: "Novedades",
+            path: "/blog"
+        },
+        {
+            title: "Contacto",
+            path: "/"
+        },
+        {
+            title: "Preguntas Frecuentes",
+            path: "/faq"
+        }
+    ]
+
     const navigation = categoryTree.map((category: any) => {
         return {
             title: category.name,
@@ -38,7 +69,7 @@ export default function Navbar(props: {categoryTree: any}) {
             <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-1 md:block">
                     <Link href="/">
-                        <Image src="/logos/CMD-Logo-Navbar.png" alt='Float UI logo' width={200} height={200} />
+                        <Image src="/logos/CMD-Logo-Navbar.png" alt='Float UI logo' className='min-h-64' width={200} height={200} />
                     </Link>
                     <div className="flex items-center gap-2.5 md:hidden">
                         {/* <AuthSection /> */}
@@ -65,6 +96,19 @@ export default function Navbar(props: {categoryTree: any}) {
                     <div className="bg-white  p-4 rounded-lg flex-1 text-tertiary-800 gap-6 items-center justify-between md:flex md:mt-0 md:p-0 md:bg-transparent">
                         <ul className="flex content-center justify-center flex-col gap-6 space-y-4 pb-4 text-lg text-tertiary-800 md:flex md:space-y-0 md:flex-row md:pb-0 font-semibold">
                             {
+                                staticMenu.map((item: any, idx: number) => {
+                                    return (
+                                        <Link
+                                            className='hover:text-primary whitespace-nowrap'
+                                            href={item.path}
+                                            key={idx}
+                                        >
+                                            {item.title}
+                                        </Link>
+                                    )
+                                })
+                            }
+                            {/*
                                 navigation.map((item: any, idx: number) => {
                                     return (
                                         <Link
@@ -76,7 +120,7 @@ export default function Navbar(props: {categoryTree: any}) {
                                         </Link>
                                     )
                                 })
-                            }
+                            */}
                         </ul>
                     </div>
                     <div className="flex-1 gap-x-6 items-center justify-end hidden space-y-6 md:space-y-0 md:flex">
