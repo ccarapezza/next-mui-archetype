@@ -6,7 +6,7 @@ import { CartContext } from "../context/MiniCartContext"
 
 export default function MiniCartTotalizer(props: { quantity: number | null }) {
 
-    const { geTotalMinicart } = useContext(CartContext)
+    const { getTotalMiniCart: geTotalMinicart } = useContext(CartContext)
     const { quantity } = props
 
     return (

@@ -11,7 +11,7 @@ export const CartContext = createContext({
   addProduct: (product: ProductToCart) => { },
   deleteProduct: (product: ProductToCart) => { },
   updateProductQuantity: (product: ProductToCart, quantity: number) => { },
-  geTotalMinicart: () => {
+  getTotalMiniCart: () => {
     return { subtotal: 0, descuento: 0, total: 0 };
   },
   emptyMinicart: () => { }
@@ -53,7 +53,7 @@ export default function MiniCartProvider({ children }: Props) {
     setProducts([...listOfProducts])
   }
 
-  const geTotalMinicart = () => {
+  const getTotalMiniCart = () => {
     let total = 0;
     let subtotal = 0;
     let descuento = 0;
@@ -78,7 +78,7 @@ export default function MiniCartProvider({ children }: Props) {
     setStoredValue(products);
   }, [products, setStoredValue]);
 
-  return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, geTotalMinicart, emptyMinicart }}>
+  return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, getTotalMiniCart: getTotalMiniCart, emptyMinicart }}>
     {children}
   </CartContext.Provider>
 }
