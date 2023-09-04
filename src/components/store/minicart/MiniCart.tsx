@@ -8,19 +8,19 @@ import MiniCartTotalizer from './MiniCartTotalizer';
 
 export default function MiniCart() {
 
-    const [openMiniCart, setOpenMiniCart] = useState(false)
-    const { products, geTotalMinicart } = useContext(CartContext);
+    const [openMiniCart, setOpenMiniCart] = useState<boolean | null>(null)
+    const { products, getTotalMiniCart } = useContext(CartContext)
+    const [ quantityMiniCart, setQuantityMiniCart ] = useState<number>(0)
 
     useEffect(() => {
-        if (!openMiniCart && products.length > 0) {
-            setOpenMiniCart(true);
+        if(openMiniCart !== null){
+            setOpenMiniCart(true)
         }
-    }, [products.length, openMiniCart])
+    }, [getTotalMiniCart])
 
     useEffect(() => {
-        const totales = geTotalMinicart();
-        console.log("TOTALES",totales);
-    }, [geTotalMinicart]);
+        setQuantityMiniCart(products.length)
+    }, [products.length])
 
     return (
         <>
@@ -30,7 +30,7 @@ export default function MiniCart() {
                     setOpenMiniCart(true)
                 }}>
                 {
-                    products.length != null && products.length > 0 ?
+                    quantityMiniCart != null && quantityMiniCart > 0 ?
                         <span
                             className='text-tertiary bg-white rounded-full'
                             style={{
@@ -43,7 +43,7 @@ export default function MiniCart() {
                                 bottom: "18px",
                                 left: "17px",
                             }}>
-                            {products.length}
+                            {quantityMiniCart}
                         </span>
                         :
                         <span>
@@ -71,7 +71,7 @@ export default function MiniCart() {
                                             </button>
                                         </div>
                                         {
-                                            products.length != null && products.length > 0 ?
+                                            quantityMiniCart != null && quantityMiniCart > 0 ?
                                                 <div className="space-y-2 p-4 mt-3 text-[15.5px] leading-relaxed text-gray-500">
                                                     <MiniCartList products={products} />
                                                 </div>
@@ -81,7 +81,7 @@ export default function MiniCart() {
                                                 </div>
                                         }
                                     </div>
-                                    <MiniCartTotalizer quantity={products.length} />
+                                    <MiniCartTotalizer quantity={quantityMiniCart} />
                                 </div>
                             </div>
                         </div>
