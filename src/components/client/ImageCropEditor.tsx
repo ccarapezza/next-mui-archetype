@@ -7,8 +7,7 @@ import ReactCrop, { centerCrop, makeAspectCrop, Crop, PixelCrop } from 'react-im
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from './crop/canvasPreview';
 import Image from 'next/image';
-import { compressAccurately } from 'image-conversion';
-import { EImageType } from 'lib-image-conversion';
+import { compressAccurately, EImageType } from 'image-conversion';
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.

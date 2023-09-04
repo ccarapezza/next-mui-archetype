@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react';
+import React, { use, useContext, useEffect, useState } from 'react';
 import { CartContext } from '../context/MiniCartContext';
 import MiniCartList from './MiniCartList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,12 +9,18 @@ import MiniCartTotalizer from './MiniCartTotalizer';
 export default function MiniCart() {
 
     const [openMiniCart, setOpenMiniCart] = useState(false)
-    const { products } = useContext(CartContext)
+    const { products, geTotalMinicart } = useContext(CartContext);
+
     useEffect(() => {
         if (!openMiniCart && products.length > 0) {
             setOpenMiniCart(true);
         }
     }, [products.length, openMiniCart])
+
+    useEffect(() => {
+        const totales = geTotalMinicart();
+        console.log("TOTALES",totales);
+    }, [geTotalMinicart]);
 
     return (
         <>

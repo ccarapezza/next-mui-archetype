@@ -1,5 +1,5 @@
 //Service object for SliderImage Sequelize Model
-import SliderImage from "@/db/models/SliderImage";
+import { SliderImage } from "@/db";
 import { GenericService } from "./GenericService";
 import { SliderImageDto } from "@/schemas/sliderImage";
 import S3BucketUtil from "@/utils/S3BucketUtil";

@@ -37,16 +37,8 @@ export default function Navbar(props: {categoryTree: any}) {
             path: "/aliados"
         },
         {
-            title: "Novedades",
-            path: "/blog"
-        },
-        {
             title: "Contacto",
             path: "/"
-        },
-        {
-            title: "Preguntas Frecuentes",
-            path: "/faq"
         }
     ]
 

@@ -36,11 +36,11 @@ const deleteFile = async (key: string) => {
     return await presignedUrlResponse.json();
 }
 
-export default function ProductItemImages({defaultFiles = [], onChange, name}: {defaultFiles?: ProductImageFile[], onChange: Function, name: string}) {
+export default function ProductItemImages({defaultFiles = [], onChange, name}: {defaultFiles?: ImageFile[], onChange: Function, name: string}) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [fileToUpload, setFileToUpload] = useState<File|null>(null);
     const [preview, setPreview] = useState<File|null>(null);
-    const [files, setFiles] = useState<ProductImageFile[]>(defaultFiles);
+    const [files, setFiles] = useState<ImageFile[]>(defaultFiles);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const addFile = (file: File, itemId: number) => {

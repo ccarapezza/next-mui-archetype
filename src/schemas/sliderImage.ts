@@ -3,4 +3,5 @@ export type SliderImageDto = {
     key: string;
     image: string;
     visible: boolean;
+    link: string;
 }
