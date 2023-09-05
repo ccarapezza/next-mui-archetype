@@ -117,7 +117,7 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
         }).catch((error) => {
             console.log("error", error);
         });
-    }, [code]);
+    }, [code, reset]);
 
     const { register, handleSubmit, reset, formState: { errors, isDirty } } = useForm<{
         title: string;

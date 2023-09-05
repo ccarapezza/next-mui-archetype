@@ -16,7 +16,7 @@ export default function MiniCart() {
         if(openMiniCart !== null){
             setOpenMiniCart(true)
         }
-    }, [getTotalMiniCart])
+    }, [getTotalMiniCart, openMiniCart])
 
     useEffect(() => {
         setQuantityMiniCart(products.length)
