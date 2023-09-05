@@ -88,6 +88,7 @@ export default function SliderImagesControl({defaultFiles = [], onChange, name}:
                 ...sliderImage
             }]);
             setFileToUpload(null);
+            router.refresh();
             enqueueSnackbar('Imagen agregada', { variant: 'success' });
         }).catch((error) => {
             console.log("error", error);
@@ -101,7 +102,10 @@ export default function SliderImagesControl({defaultFiles = [], onChange, name}:
         setIsLoading(true);
         deleteFile(files[fileIndex].key).then((response) => {
             setFiles(files!.filter((file, index) => index !== fileIndex));
+            router.refresh();
+            enqueueSnackbar('Imagen eliminada', { variant: 'success' });
         }).catch((error) => {
+            enqueueSnackbar('Error al eliminar la imagen', { variant: 'error' });
             console.log("error", error);
         }).finally(() => {
             setIsLoading(false);

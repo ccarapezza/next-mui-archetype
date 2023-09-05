@@ -28,3 +28,5 @@ export default async function NewProductPage() {
         </MuiBox>
     </>)
 }
+
+export const dynamic = 'force-dynamic'
