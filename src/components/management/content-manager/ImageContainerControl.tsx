@@ -97,6 +97,18 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
         }
     }, [fileToUpload]);
 
+    const { register, handleSubmit, reset, formState: { errors, isDirty } } = useForm<{
+        title: string;
+        buttonLabel: string;
+        link: string;
+    }>({
+        defaultValues: {
+            title: file?.title,
+            buttonLabel: file?.buttonLabel,
+            link: file?.link,
+        }
+    });
+
     useEffect(() => {
         getImageContainer(code).then((imageContainer: ImageContainerDto) => {
             setFile(imageContainer);
@@ -118,19 +130,7 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
             console.log("error", error);
         });
     }, [code, reset]);
-
-    const { register, handleSubmit, reset, formState: { errors, isDirty } } = useForm<{
-        title: string;
-        buttonLabel: string;
-        link: string;
-    }>({
-        defaultValues: {
-            title: file?.title,
-            buttonLabel: file?.buttonLabel,
-            link: file?.link,
-        }
-    });
-
+    
     const onSubmit = async (data: { title: string, buttonLabel: string, link: string }) => {
         setIsLoading(true);
         const { title, buttonLabel, link } = data;
