@@ -1,5 +1,7 @@
-import { IMAGE_CONTAINER_CODES } from '@/app/api/management/content-manager/image-container/upload-image-container/route';
+
 import { imageContainerService } from '@/services/ImageContainerService';
+import { IMAGE_CONTAINER_CODES } from '@/utils/Constants';
+
 import Image from 'next/image'
 import React from 'react'
 

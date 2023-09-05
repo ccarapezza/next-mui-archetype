@@ -1,4 +1,4 @@
-import { IMAGE_CONTAINER_CODES } from '@/app/api/management/content-manager/image-container/upload-image-container/route'
+import { IMAGE_CONTAINER_CODES } from '@/utils/Constants';
 import HomeImageBlock from '@/components/main-ui/HomeImageBlock'
 import ImageContainerControl from '@/components/management/content-manager/ImageContainerControl'
 import PageHeader from '@/components/management/paperbase/PageHeader'

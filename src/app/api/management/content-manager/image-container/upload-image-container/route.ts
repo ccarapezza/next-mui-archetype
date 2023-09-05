@@ -3,12 +3,7 @@ import { ImageContainerDto } from '@/schemas/imageContainer';
 import { imageContainerService } from '@/services/ImageContainerService';
 import S3BucketUtil from '@/utils/S3BucketUtil';
 import { NextRequest, NextResponse } from 'next/server'
-//
-export const IMAGE_CONTAINER_CODES = {
-    HOME_IMAGE_1: 'home-image-1',
-    HOME_IMAGE_2: 'home-image-2',
-    HOME_IMAGE_3: 'home-image-3'
-};
+import { IMAGE_CONTAINER_CODES } from '@/utils/Constants';
 
 export async function POST(request: NextRequest) {
     const {
