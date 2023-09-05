@@ -18,7 +18,7 @@ export default async function HomeImageBlock() {
     const imageHome2 = imageContainers.find((imageContainer) => imageContainer.code === IMAGE_CONTAINER_CODES.HOME_IMAGE_2);
     const imageHome3 = imageContainers.find((imageContainer) => imageContainer.code === IMAGE_CONTAINER_CODES.HOME_IMAGE_3);
 
-    return (<ul className="grid grid-cols-1 gap-4 mt-8 lg:grid-cols-3">
+    return (<ul className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <li>
             <a href={imageHome1?.link || "#"} className="relative block group">
                 <Image
@@ -44,11 +44,11 @@ export default async function HomeImageBlock() {
         <li>
             <a href={imageHome2?.link || "#"} className="relative block group">
                 <Image
-                    src={imageHome2?.image || "https://dummyimage.com/774x1161/322F30/EFE6D9.png"}
+                    src={imageHome2?.image || "https://dummyimage.com/800x800/322F30/EFE6D9.png"}
                     alt=""
                     className="object-cover w-full transition duration-500 aspect-square group-hover:opacity-90"
-                    width={774}
-                    height={1161}
+                    width={800}
+                    height={800}
                 />
                 <div className="absolute inset-0 flex flex-col items-start justify-end p-6">
                     {imageHome2?.title &&
@@ -66,11 +66,11 @@ export default async function HomeImageBlock() {
         <li className="lg:col-span-2 lg:col-start-2 lg:row-span-2 lg:row-start-1">
             <a href={imageHome3?.link || "#"} className="relative block group">
                 <Image
-                    src={imageHome3?.image || "https://dummyimage.com/774x1161/322F30/EFE6D9.png"}
+                    src={imageHome3?.image || "https://dummyimage.com/800x800/322F30/EFE6D9.png"}
                     alt=""
                     className="object-cover w-full transition duration-500 aspect-square group-hover:opacity-90"
-                    width={774}
-                    height={1161}
+                    width={800}
+                    height={800}
                 />
 
                 <div className="absolute inset-0 flex flex-col items-start justify-end p-6">

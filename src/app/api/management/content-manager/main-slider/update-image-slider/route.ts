@@ -1,8 +1,8 @@
 import { SliderImageService, sliderImageService } from '@/services/SliderImageService';
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function PUT(request: NextRequest, {params}: {params: {key: string, link: string, visible: boolean}}) {
-    const { key, link, visible } = params;
+export async function PUT(request: NextRequest) {
+    const { key, link, visible } = await request.json();
 
     const sliderImageUpdated = sliderImageService.updateByKey(
         key,

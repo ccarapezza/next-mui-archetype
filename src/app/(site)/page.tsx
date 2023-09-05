@@ -3,11 +3,11 @@ import HomeImageBlock from '@/components/main-ui/HomeImageBlock';
 import PopUpNewsletter from '@/components/main-ui/PopUpNewsletter';
 import CarouselHome from '@/components/store/carousels/CarouselHome';
 import CarrouselProductServer from '@/components/store/carousels/CarrouselProductServer';
-import { mainSliderService } from '@/services/MainSliderService';
+import { sliderImageService } from '@/services/SliderImageService';
 
 //get main getSignedUrlsByFolder
 const fetchCarrouselImages = async () => {
-    return await mainSliderService.getListOfMainSliderImages();
+    return await sliderImageService.getVisibleImages();
 };
 
 export default async function Home() {

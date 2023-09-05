@@ -1,7 +1,7 @@
 'use client';
 import Carousel from 'react-material-ui-carousel';
 import Image from 'next/image';
-import { Paper } from '@mui/material';
+import { Link, Paper } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { SliderImageDto } from '@/schemas/sliderImage';
@@ -75,22 +75,22 @@ function Item(props: { item: Item }) {
     return (
         <>
             <Paper>
-                <a href="/" className='hidden md:flex items-center justify-center'>
+                <Link href={props.item.bannerCta} className='hidden md:flex items-center justify-center'>
                     <Image
                         src={props.item.urlImageDesktop}
                         alt={`Image of ${props.item.key}`}
                         width={1920}
                         height={450}
                     />
-                </a>
-                <a href="/" className='flex items-center justify-center md:hidden'>
+                </Link>
+                <Link href={props.item.bannerCta} className='flex items-center justify-center md:hidden'>
                     <Image
                         src={props.item.urlImageMobile}
                         alt={`Image of ${props.item.key}`}
                         width={750}
                         height={900}
                     />
-                </a>
+                </Link>
             </Paper>
         </>
     )
