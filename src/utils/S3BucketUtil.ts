@@ -1,5 +1,9 @@
 import { S3Client, GetObjectCommand, PutObjectCommand, CopyObjectCommand, DeleteObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { compressAccurately, EImageType } from "image-conversion";
+
+const thumbnailSizeOnKb = 50;
+const thumbnailWidth = 200;
 
 const client = new S3Client({
     region: process.env.AWS_REGION,
@@ -12,8 +16,41 @@ const client = new S3Client({
 const FOLDERS = {
     MAIN_SLIDER: 'main-slider',
     PRODUCT_IMAGES: 'product-images',
+    IMAGE_CONTAINER: 'images',
     TEMP: 'temp',
 };
+
+async function createThumbnail({ key, folder = '' }: { key: string; folder?: string; }) {
+    if(folder){
+        folder = `${folder}/`;
+    }
+    const input = { // GetObjectRequest
+        Bucket: process.env.AWS_S3_BUCKET_NAME, // required
+        Key: `${folder}${key}`, // required
+    };
+    const command = new GetObjectCommand(input);
+    const result = await client.send(command);
+    //creating thumbnail with image-conversion library
+    const res = await result.Body?.transformToByteArray();
+    if(res){
+        const blob = new Blob([res], { type: result.ContentType });
+        const compressBlob = await compressAccurately(blob, {
+            size: thumbnailSizeOnKb,
+            accuracy: 0.9,
+            type: EImageType.JPEG,
+            width: thumbnailWidth
+        })
+        const thumbnailKey = `thumbnail-${key}`;
+        const thumbnailInput = { // PutObjectRequest
+            Bucket: process.env.AWS_S3_BUCKET_NAME, // required
+            Key: `${folder}${thumbnailKey}`, // required
+            Body: compressBlob, // required
+        };
+        const thumbnailCommand = new PutObjectCommand(thumbnailInput);
+        const thumbnailResult = await client.send(thumbnailCommand);
+        return thumbnailResult;
+    }
+}
 
 async function getSignedUrlsByFolder({ folder }: { folder: string; }) {
     const input = { // ListObjectsV2Request

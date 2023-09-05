@@ -4,7 +4,7 @@ import { CartContext } from "../../context/MiniCartContext";
 import PriceFormatting from "@/components/management/product/PriceFormatting";
 
 export default function TotalToPay() {
-  const { geTotalMinicart } = useContext(CartContext)
+  const { getTotalMiniCart: geTotalMinicart } = useContext(CartContext)
 
   return (
     <div className="pt-8">

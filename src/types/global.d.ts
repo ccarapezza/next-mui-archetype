@@ -15,7 +15,7 @@ declare global {
         show: (row: any) => boolean
     }
 
-    interface ProductImageFile {
+    interface ImageFile {
         itemIndex: number,
         file: File,
         key: string

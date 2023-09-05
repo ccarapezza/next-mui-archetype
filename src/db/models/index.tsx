@@ -15,6 +15,8 @@ import ShopOrder from '@/db/models/ShopOrder'
 import OrderLine from '@/db/models/OrderLine'
 import OrderStatus from '@/db/models/OrderStatus'
 import ContactForm from '@/db/models/ContactForm'
+import SliderImage from '@/db/models/SliderImage'
+import ImageContainer from '@/db/models/ImageContainer'
 
 export {
     Account,
@@ -33,5 +35,7 @@ export {
     ShopOrder,
     OrderLine,
     OrderStatus,
-    ContactForm
+    ContactForm,
+    SliderImage,
+    ImageContainer
 }

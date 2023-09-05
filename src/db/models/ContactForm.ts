@@ -1,13 +1,13 @@
 import {
-  Table,
-  Column,
-  DataType,
-  Model
+    Table,
+    Column,
+    DataType,
+    Model
 } from "sequelize-typescript";
 
 @Table({
-  tableName: "contact_form",
-  timestamps: true,
+    tableName: "contact_form",
+    timestamps: true,
 })
 export default class ContactForm extends Model {
     @Column({ type: DataType.STRING, allowNull: false })

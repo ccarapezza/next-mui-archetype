@@ -16,7 +16,6 @@ import { VariationOptionDto } from '@/schemas/variationOption';
 import ProductItemImages from './ProductItemImages';
 import LoadingBlocker from '@/components/client/LoadingBlocker';
 import { useSnackbar } from 'notistack';
-import { faProductHunt } from '@fortawesome/free-brands-svg-icons';
 
 const COLOR_VARIANT_ID = 2;
 
