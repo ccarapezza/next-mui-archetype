@@ -10,6 +10,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import MiniCartProvider from '@/components/store/context/MiniCartContext';
 import NavBarServer from '@/components/store/navbar/NavBarServer';
 import FooterServer from '@/components/store/footer/FooterServer';
+import NotistackProviderWrapper from '@/components/providers/NotistackProvider';
 config.autoAddCss = false;
 
 export const metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className="relative min-h-screen pt-[97px] md:pb-[380px] pb-[1100px]">
+        <NotistackProviderWrapper>
         <SessionProviderWrapper>
           <MiniCartProvider>
             <NavBarServer />
@@ -30,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <FooterServer />
           </MiniCartProvider>
         </SessionProviderWrapper>
+        </NotistackProviderWrapper>
       </body>
     </html>
   );
