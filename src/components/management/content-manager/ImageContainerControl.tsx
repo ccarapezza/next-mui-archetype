@@ -65,7 +65,7 @@ const getImageContainer = async (code: string) => {
     return await response.json();
 }
 
-export default function ImageContainerControl({code, size:{ width = 774, height = 1161}, compressedSizeOnKb=150, name}: {code:string, size: {width: number, height: number}, name: string, compressedSizeOnKb?: number}) {
+export default function ImageContainerControl({code, size:{ width = 774, height = 1161}, compressedSizeOnKb=150, name, title}: {code:string, size: {width: number, height: number}, name: string, compressedSizeOnKb?: number, title?: string}) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [fileToUpload, setFileToUpload] = useState<File|null>(null);
     const [preview, setPreview] = useState<File|null>(null);
@@ -197,7 +197,9 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
             onChange={(e) => e.target.files?.length! > 0 && setFileToUpload(e.target.files![0])}
         />
         <div className='grid-col-1 border rounded p-2 max-w-sm'>
-            <Typography className='uppercase font-bold'><FontAwesomeIcon icon={faImage} className='mr-1'/>{code}</Typography>
+            {title&&
+                <Typography className='uppercase font-bold'><FontAwesomeIcon icon={faImage} className='mr-1'/>{title}</Typography>
+            }
             {file ?
                 <Image id={`image-${file.key}`} width={width} height={height} src={file.image} alt="preview image" />
             :
@@ -216,39 +218,41 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
                     </Button>
                 </Tooltip>
             </Box>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Box className="flex flex-col items-start">
-                    <OutlinedInput 
-                        className='mt-2'
-                        size='small'
-                        fullWidth
-                        placeholder='Titulo...'
-                        {...register("title")}
-                        error={!!errors.title}
-                    />
-                    <OutlinedInput 
-                        className='mt-2'
-                        size='small'
-                        fullWidth
-                        startAdornment={<InputAdornment position="start"><FontAwesomeIcon icon={faLink} /></InputAdornment>} placeholder='Enlace...'
-                        {...register("link")}
-                        error={!!errors.link}
-                    />
-                    <OutlinedInput 
-                        className='mt-2'
-                        size='small'
-                        fullWidth
-                        startAdornment={<InputAdornment position="start"><FontAwesomeIcon icon={faSquare} /></InputAdornment>} placeholder='Texto del botón...'
-                        {...register("buttonLabel")}
-                        error={!!errors.buttonLabel}
-                    />
-                    <Box className='flex justify-end'>
-                        <Button type="submit" disabled={!isDirty} className='mt-2' variant='outlined' startIcon={<FontAwesomeIcon icon={faSave} />} size='small'>
-                            <Typography variant='caption' className='mt-0.5'>Guardar</Typography>
-                        </Button>
+            {file?.key &&
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <Box className="flex flex-col items-start">
+                        <OutlinedInput 
+                            className='mt-2'
+                            size='small'
+                            fullWidth
+                            placeholder='Titulo...'
+                            {...register("title")}
+                            error={!!errors.title}
+                        />
+                        <OutlinedInput 
+                            className='mt-2'
+                            size='small'
+                            fullWidth
+                            startAdornment={<InputAdornment position="start"><FontAwesomeIcon icon={faLink} /></InputAdornment>} placeholder='Enlace...'
+                            {...register("link")}
+                            error={!!errors.link}
+                        />
+                        <OutlinedInput 
+                            className='mt-2'
+                            size='small'
+                            fullWidth
+                            startAdornment={<InputAdornment position="start"><FontAwesomeIcon icon={faSquare} /></InputAdornment>} placeholder='Texto del botón...'
+                            {...register("buttonLabel")}
+                            error={!!errors.buttonLabel}
+                        />
+                        <Box className='flex justify-end'>
+                            <Button type="submit" disabled={!isDirty} className='mt-2' variant='outlined' startIcon={<FontAwesomeIcon icon={faSave} />} size='small'>
+                                <Typography variant='caption' className='mt-0.5'>Guardar</Typography>
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
-            </form>
+                </form>
+            }
         </div>
     </>)
 }

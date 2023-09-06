@@ -6,7 +6,7 @@ function HomeHeader() {
             NOVEDADES
         </h2>
 
-        <p className="max-w-md mx-auto mt-4 text-tertiary">
+        <p className="max-w-md mx-auto my-4 text-tertiary">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
             praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit
             natus?

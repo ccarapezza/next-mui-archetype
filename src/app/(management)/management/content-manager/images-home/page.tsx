@@ -2,19 +2,19 @@ import { IMAGE_CONTAINER_CODES } from '@/utils/Constants';
 import HomeImageBlock from '@/components/main-ui/HomeImageBlock'
 import ImageContainerControl from '@/components/management/content-manager/ImageContainerControl'
 import PageHeader from '@/components/management/paperbase/PageHeader'
-import { faEye, faImage, faUpload } from '@fortawesome/free-solid-svg-icons'
+import { faEye, faImage, faPhotoFilm, faUpload } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Alert, Box, Card, CardContent, CardHeader, Chip, Divider, Typography } from '@mui/material'
+import { Alert, Box, Chip, Divider, Typography } from '@mui/material'
 import React from 'react'
 
 export default function ImagesHomePage() {
   return (<>
-    <PageHeader title="Images Home" />
+    <PageHeader title="Imágenes Portada" icon={faPhotoFilm}/>
     <Box className="p-4 border rounded">
         <Alert severity="info">Asigne las imagenes que se mostrarán en el Home. La resolución para Desktop y dispositivos móviles es de <span className='font-bold'>800x800</span></Alert>
         <Divider className='mt-4'>
             <Chip label={
-                <Typography variant="h6" className='m-6'><FontAwesomeIcon icon={faEye} className='mr-2' />Vista previa del Home</Typography>
+                <Typography className='text-sm uppercase'><FontAwesomeIcon icon={faEye} className='mr-2' />Vista previa del Home</Typography>
             } variant="outlined" />
         </Divider>
         <Box className="max-w-screen-xl m-auto mt-4">
@@ -22,7 +22,7 @@ export default function ImagesHomePage() {
         </Box>
         <Divider className='mt-4 mb-4'>
             <Chip label={
-                <Typography variant="h6" className='m-6'><FontAwesomeIcon icon={faUpload} className='mr-2'/><FontAwesomeIcon icon={faImage} className='mr-2'/>Carga de imagenes</Typography>
+                <Typography className='text-sm uppercase'><FontAwesomeIcon icon={faUpload} className='mr-2'/><FontAwesomeIcon icon={faImage} className='mr-2'/>Carga de imagenes</Typography>
             } variant="outlined" />
         </Divider>
         <Box className="flex gap-2 justify-center">

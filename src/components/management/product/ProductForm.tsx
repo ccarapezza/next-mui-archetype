@@ -1,21 +1,26 @@
 "use client"
-import { useState } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Alert, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography, IconButton, Dialog, DialogContent, DialogTitle, CircularProgress, Stack, Tooltip, DialogActions } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBoxesPacking, faBoxesStacked, faClose, faPlus, faPlusCircle, faSave, faSquareRootVariable, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
-import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { useRouter } from 'next/navigation';
-import { yupResolver } from '@hookform/resolvers/yup';
 import CurrencyInput from './CurrencyInput';
 import CategoryTreeSelector from '../category/CategoryTreeSelector';
 import ColorPicker from '../../client/ColorPicker';
+import ProductItemImages from './ProductItemImages';
+import LoadingBlocker from '@/components/client/LoadingBlocker';
+import { useState } from 'react';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Alert, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography, IconButton, Dialog, DialogContent, DialogTitle, CircularProgress, Stack, Tooltip, DialogActions } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBold, faBoxesPacking, faBoxesStacked, faClose, faFont, faPlus, faPlusCircle, faSave, faSquareRootVariable, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useRouter } from 'next/navigation';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { ProductInput, productInputSchema } from '../../../schemas/product';
 import { ProductCategoryDto } from '@/schemas/category';
 import { VariationDto } from '@/schemas/variation';
 import { VariationOptionDto } from '@/schemas/variationOption';
-import ProductItemImages from './ProductItemImages';
-import LoadingBlocker from '@/components/client/LoadingBlocker';
 import { useSnackbar } from 'notistack';
+import { EditorState } from 'draft-js';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import Editor from '@/components/client/Editor';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 const COLOR_VARIANT_ID = 2;
 
@@ -64,7 +69,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [variations, setVariations] = useState<VariationDto[]>(initialVariations);
 
-    const [variationSelected, setVariationSelected] = useState<VariationItemSelected|null>(null);
+    const [variationSelected, setVariationSelected] = useState<VariationItemSelected | null>(null);
 
     const onSubmit = async (data: any) => {
         setIsLoading(true);
@@ -106,6 +111,8 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
             name: ''
         }
     });
+
+    const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
 
     const { register, control, handleSubmit, reset, formState: { errors }, setValue, watch } = useForm<ProductInput>({
         resolver: yupResolver(productInputSchema),
@@ -168,7 +175,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
 
     return (<>
         {isLoading &&
-            <LoadingBlocker/>
+            <LoadingBlocker />
         }
         <div className="max-w-screen-xl mx-auto bg-white p-4 rounded-md shadow-lg">
             <h1 className="text-xl font-semibold mb-4">Crear nuevo producto</h1>
@@ -180,13 +187,13 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
             {/*
                 Add variant popup
             */}
-            <Dialog open={variationSelected?true:false} onClose={() => { setVariationSelected(null)}}>
+            <Dialog open={variationSelected ? true : false} onClose={() => { setVariationSelected(null) }}>
                 <form onSubmit={handleSubmitVariant(onSubmitVariant)} >
                     <DialogTitle className='flex justify-between'>
                         <Typography variant="h6" component="div">
                             Agregar {variationSelected?.variation.name}
                         </Typography>
-                        <IconButton onClick={()=>{setVariationSelected(null)}} className='text-gray-500'>
+                        <IconButton onClick={() => { setVariationSelected(null) }} className='text-gray-500'>
                             <FontAwesomeIcon icon={faClose} />
                         </IconButton>
                     </DialogTitle>
@@ -198,7 +205,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                             label="Nombre de la variante"
                             variant="outlined"
                             fullWidth
-                            className="mb-3"/>
+                            className="mb-3" />
                     </DialogContent>
                     <DialogActions>
                         <Button type='submit' startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" size='small'>
@@ -218,6 +225,34 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                     fullWidth
                     name="productName"
                     className="mb-3"
+                />
+                <Editor
+                    editorState={editorState}
+                    wrapperClassName="mb-3"
+                    editorClassName="px-4 border-gray-300 border-l border-r border-b rounded-b-md"
+                    toolbarClassName='border-gray-300 border-rounded m-0 rounded-t-md'
+                    placeholder='Descripción del producto'
+                    onEditorStateChange={(editorState) => {
+                        setEditorState(editorState);
+                        setValue("description", JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+                    }}
+                    toolbar={{
+                        options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'remove', 'history'],
+                        inline: {
+                            inDropdown: false,
+                            className: undefined,
+                            component: undefined,
+                            dropdownClassName: undefined,
+                            options: ['bold', 'italic', 'underline', 'strikethrough'],
+                        },
+                        blockType: {
+                            inDropdown: true,
+                            options: ['Normal', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'Blockquote'],
+                            className: undefined,
+                            component: undefined,
+                            dropdownClassName: undefined,
+                        }
+                    }}
                 />
                 <TextField
                     inputProps={{ ...register("description") }}
@@ -319,7 +354,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                 </>}
                 {hasVariants && variantsSelected.length > 0 && fields.map((variant, itemIndex) => (
                     <div key={itemIndex} className="mt-2">
-                        <Divider className='border border-t-green-500'><Chip size='small' variant='outlined' label={`Item #${itemIndex + 1}`}/></Divider>
+                        <Divider className='border border-t-green-500'><Chip size='small' variant='outlined' label={`Item #${itemIndex + 1}`} /></Divider>
                         {variations.filter((variation) => variantsSelected.find((variantSel) => variantSel === variation.id)).map((variant, variantTypeIndex) => (
                             <Box key={`${itemIndex}-${variant?.id}-${variant?.name}`} className="mt-1">
                                 {
@@ -349,7 +384,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                                                 <Select
                                                     defaultValue={""}
                                                     inputProps={{
-                                                        id:`items.${itemIndex}.variation.${variantTypeIndex}`,
+                                                        id: `items.${itemIndex}.variation.${variantTypeIndex}`,
                                                         ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)
                                                     }}
                                                     size='small'
@@ -419,17 +454,17 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                 ))}
                 {hasVariants && variantsSelected.length > 0 &&
                     <div className='flex justify-center mt-4'>
-                        <Button startIcon={<FontAwesomeIcon icon={faPlus}/>} variant="contained" color="primary" size='small' className='my-4 rounded-full bg-green-700' onClick={handleAddVariant}>
+                        <Button startIcon={<FontAwesomeIcon icon={faPlus} />} variant="contained" color="primary" size='small' className='my-4 rounded-full bg-green-700' onClick={handleAddVariant}>
                             Agregar variante
                         </Button>
                     </div>
                 }
                 <Divider />
                 <div className='flex justify-center mt-4'>
-                    <Button startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" type="submit" size='small' disabled={(hasVariants && variantsSelected.length <= 0)||isLoading}>
+                    <Button startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" type="submit" size='small' disabled={(hasVariants && variantsSelected.length <= 0) || isLoading}>
                         Crear Producto
                         {isLoading &&
-                            <CircularProgress size={14} color="inherit" className='absolute left-1/2 text-slate-900'/>
+                            <CircularProgress size={14} color="inherit" className='absolute left-1/2 text-slate-900' />
                         }
                     </Button>
                 </div>

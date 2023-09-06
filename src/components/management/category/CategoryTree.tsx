@@ -1,18 +1,18 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { IconButton, Box, Typography } from '@mui/material';
+import { IconButton, Box, Typography, Dialog, Button, Tooltip } from '@mui/material';
 import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSquare, faSquareMinus, faSquarePlus } from '@fortawesome/free-regular-svg-icons';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faCircleDot, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
 import CategoryForm from './CategoryForm';
 import { ProductCategoryDto } from '@/schemas/category';
 
 const SquareXmarkIcon = () => {
     return (
         <span className="fa-layers fa-fw">
-            <FontAwesomeIcon icon={faSquare} className='text-gray-400' />
-            <FontAwesomeIcon icon={faXmark} className='text-gray-400' transform={{ size: 10, x: .6 }} />
+            <FontAwesomeIcon icon={faSquare} className='text-gray-400' transform={{ size: 20 }}/>
+            <FontAwesomeIcon icon={faCircle} className='text-gray-400' transform={{ size: 3, x: -0.8 }} />
         </span>
     );
 }
@@ -101,22 +101,32 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
     }
     
     const recursiveTree = (categories: ProductCategoryDto[]) => {
-        return categories.map((category) => {
+        return categories.map((category, index) => {
             console.log("category", category);
             if (category.childrens) {
                 return (
-                    <CustomTreeItem nodeId={category.id?.toString()} label={<div className='flex items-center'>
-                        <Typography className=''>{category.name}</Typography>
-                        <IconButton size='small' className='mx-6 p-0' onClick={(e) => { e.stopPropagation(); setSelectedCategory(category); setCreateSubCategory(false) }}>
-                            <FontAwesomeIcon icon={faEdit} />
-                        </IconButton>
-                    </div>} key={category.id} >
+                    <CustomTreeItem
+                        nodeId={category.id?.toString()}
+                        label={<div className='flex items-center justify-between'>
+                            <Typography className=''>{category.name}</Typography>
+                            <Box className="py-2">
+                                <Tooltip title="Crear Sub Categoria" arrow>
+                                    <IconButton className='mx-2 drop-shadow-lg bg-gray-100 border-2' onClick={(e) => { e.stopPropagation(); setSelectedCategory(category); setCreateSubCategory(true) }}>
+                                        <FontAwesomeIcon icon={faPlus} />
+                                    </IconButton>
+                                </Tooltip>
+                                <IconButton className='mx-2 bg-gray-100 shadow-md border-2' onClick={(e) => { e.stopPropagation(); setSelectedCategory(category); setCreateSubCategory(false) }}>
+                                    <FontAwesomeIcon icon={faEdit} />
+                                </IconButton>
+                            </Box>
+                        </div>}
+                        key={category.id}
+                        className='rounded border bg-white' >
                         {category.childrens?.length > 0 &&
-                            <Box className="border-l-2 border-dotted border-gray-600 pl-4">
+                            <Box className={index%2===0?`border-l-2 shadow-md pt-2 pb-1 border-dotted border-gray-600 pl-4 [&>*:nth-child(even)]:bg-white-200 [&>*:nth-child(odd)]:bg-slate-200`:"border-l-2 border-dotted border-gray-600 pl-4 [&>*:nth-child(even)]:bg-slate-200 [&>*:nth-child(odd)]:bg-white-200"}>
                                 {recursiveTree(category.childrens)}
                             </Box>
                         }
-
                     </CustomTreeItem>
                 );
             }
@@ -148,29 +158,23 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
     }
 
     return (
-        <div className="p-4">
+        <div className="p-4 w-full max-w-2xl">
             <TreeView
                 defaultExpanded={['root']}
-                defaultCollapseIcon={<FontAwesomeIcon icon={faSquareMinus} className='ml-px fa-fw' />}
-                defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw' />}
+                defaultCollapseIcon={<FontAwesomeIcon icon={faSquareMinus} className='ml-px fa-fw' transform={{size:20}} />}
+                defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw' transform={{size:20}} />}
                 defaultEndIcon={<SquareXmarkIcon />}
+                className='[&>*:nth-child(odd)]:bg-white-200 [&>*:nth-child(even)]:bg-slate-200'
                 selected={[selectedCategory?.id.toString() || '']}
-                onNodeSelect={(event: React.ChangeEvent<{}>, nodeIds: string[]) => {
-                    if (!nodeIds.includes(selectedCategory?.id?.toString()!)) {
-                        const categoryFinded = findIdOnTree(parseInt(nodeIds as unknown as string), categories || []);
-                        setSelectedCategory(categoryFinded);
-                        setCreateSubCategory(true)
-                    } else {
-                        setSelectedCategory(null);
-                        setCreateSubCategory(false)
-                    }
-                }}
             >
                 {recursiveTree(categories || [])}
             </TreeView>
-            <div className="mt-4">
-                <CategoryForm onSaveComplete={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }) }} categoryData={createSubCategory ? { name: "", parentId: selectedCategory?.id } : selectedCategory} title={createSubCategory ? "Crear Sub Categoria de " + selectedCategory?.name : (selectedCategory?.id) ? "Editar Categoría" : "Crear Categoria Principal"} />
+            <div className="mt-8">
+                <Button variant="contained" color="primary" fullWidth startIcon={<FontAwesomeIcon icon={faPlus} />} onClick={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }); setCreateSubCategory(false) }}>Crear Categoría Principal</Button>
             </div>
+            <Dialog open={selectedCategory !== null} onClose={() => { setSelectedCategory(null) }}>
+                <CategoryForm onSaveComplete={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }) }} categoryData={createSubCategory ? { name: "", parentId: selectedCategory?.id } : selectedCategory} title={createSubCategory ? "Crear Sub Categoria de " + selectedCategory?.name : (selectedCategory?.id) ? "Editar Categoría" : "Crear Categoria Principal"} />
+            </Dialog>
         </div>
     );
 };

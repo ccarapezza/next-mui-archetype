@@ -4,7 +4,7 @@ import { ProductItemDto, productItemInputSchema, productItemSchema } from './pro
 export const productSchema = object({
     id: number().integer().positive().required(),
     name: string().required().min(2).max(100),
-    description: string().required().min(2).max(100),
+    description: string().required(),
     category: object({
         id: number().integer().positive().required(),
         name: string().required().min(2).max(100),
@@ -14,7 +14,7 @@ export const productSchema = object({
 
 export const productInputSchema = object({
     name: string().required().min(2).max(100),
-    description: string().required().min(2).max(100),
+    description: string().required(),
     categoryId: number().integer().positive().required(),
     items: array(productItemInputSchema).required().min(1),
 }).required();

@@ -124,7 +124,6 @@ export default function SliderImagesControl({defaultFiles = [], onChange, name}:
         onChange(files.map((file) => file.key));
     }, [files, onChange]);
     
-
     const FormSliderImage = ({file, index}: {file: SliderImageDto, index: number}) => {
         const { control, register, handleSubmit, formState: { errors, isDirty } } = useForm<{
             link: string;
