@@ -16,7 +16,9 @@ export default function MiniCart() {
         if(openMiniCart !== null){
             setOpenMiniCart(true)
         }
-    }, [getTotalMiniCart, openMiniCart])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [getTotalMiniCart, quantityMiniCart])
+
 
     useEffect(() => {
         setQuantityMiniCart(products.length)

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import SkuComponent from "./SkuComponent";
 import { ProductItemDto } from "@/schemas/productItem";
+import { log } from "console";
 
 interface VariationObject {
     [key: string]: string;
@@ -11,6 +12,7 @@ interface VariationObject {
 export default function SkuSelector(props: { items: ProductItemDto[], setProductAvailable: (productAvailable: boolean) => void, setItemId: any }) {
     // Props
     const { items, setProductAvailable, setItemId } = props;
+
 
     // Function to find the index of the first object with stock greater than 0
     function findFirstPositiveStockIndex(data: any) {
@@ -47,13 +49,22 @@ export default function SkuSelector(props: { items: ProductItemDto[], setProduct
 
     // Status selected variations
     const initialVariationStates: { [key: string]: string } = {};
+    const thisProduct = items[firstItemWithStock];
+    console.log('First Product', thisProduct);
+    
     resultArray.forEach((option: any) => {
-        initialVariationStates[option.variationName] = option.values[firstItemWithStock];
+        console.log('option', option);
+        thisProduct?.variationOptions?.find((item: any) => {
+            if (item.variation.name === option.variationName) {
+                initialVariationStates[option.variationName] = item.value;
+            }
+        });
     });
 
     const [variationState, setVariationState] = useState<VariationObject>({
         ...initialVariationStates
     });
+
 
     // Check if the selected state matches any available variable and return the id of the same
     useEffect(() => {
