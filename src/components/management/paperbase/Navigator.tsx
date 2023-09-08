@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faAddressBook, faCartShopping, faTags, faUserTie, faUsers, faSliders, faSlidersH, faImages, faPortrait, faPhotoFilm, faPanorama } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faAddressBook, faCartShopping, faTags, faUserTie, faUsers, faSliders, faSlidersH, faImages, faPortrait, faPhotoFilm, faPanorama, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link';
 
@@ -32,6 +32,7 @@ const categories = [
     children: [
       { id: 'Slider Home', icon: faPanorama, href: '/management/content-manager/main-slider', active: false },
       { id: 'Imagenes Portada', icon: faPhotoFilm, href: '/management/content-manager/images-home', active: false },
+      { id: 'FAQ', icon: faQuestion, href: '/management/content-manager/faq', active: false },
     ],
   },
   {
