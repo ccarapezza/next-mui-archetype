@@ -7,7 +7,6 @@ import { GenericService } from "./GenericService";
 import { ProductDto } from "@/schemas/product";
 import { VariationDto } from "@/schemas/variation";
 import { VariationOptionDto } from "@/schemas/variationOption";
-import { ImageProductDto } from "@/schemas/productItem";
 
 import { FilterProduct } from "@/schemas/filterProduct";
 
@@ -221,12 +220,13 @@ export class ProductService extends GenericService<Product> {
         //Group by product
         const resultSetGrouped = resultSet.reduce((acc: ProductDto[], item: any) => {
             const product = acc.find((p: any) => p.id === item.id);
+
             if (product) {
                 product.items.push({
                     id: item.items.id,
                     sku: item.items.sku,
                     stock: item.items.stock,
-                    images: item.items.image?item.items.image.split(','):[],
+                    images: item.items.image?JSON.parse(item.items.image):[],
                     price: item.items.price,
                     createdAt: item.createdAt,
                     updatedAt: item.updatedAt,
@@ -246,7 +246,7 @@ export class ProductService extends GenericService<Product> {
                         id: item.items.id,
                         sku: item.items.sku,
                         stock: item.items.stock,
-                        images: item.items.image?item.items.image.split(','):[],
+                        images: item.items.image?JSON.parse(item.items.image):[],
                         price: item.items.price,
                         createdAt: item.createdAt,
                         updatedAt: item.updatedAt,
@@ -260,7 +260,8 @@ export class ProductService extends GenericService<Product> {
         for (const product of resultSetGrouped) {
             for (const item of product.items) {
                 if (item.images.length > 0) {
-                    item.images = await Promise.all(item.images.map(async (image) => {
+                    
+                    item.images = await Promise.all(item.images?.map(async (image) => {
                         return await S3BucketUtil.getSignedUrlByKey({key: image as string, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES});
                     }));
                 } else {

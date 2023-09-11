@@ -48,7 +48,7 @@ export class ShopOrderService extends GenericService<ShopOrder> {
         for (const shopOrder of data.rows) {
             let shopOrderDto = shopOrder as any;
             for(let i=0;i<shopOrderDto.orderLines.length;i++){
-                const images = shopOrderDto.orderLines[i].item.image?(shopOrderDto.orderLines[i].item.image?.split(",")):[];
+                const images = shopOrderDto.orderLines[i].item.image?(shopOrderDto.orderLines[i].item.image as string[]):[];
                 if(images && images?.length!>0){
                     for (let j = 0; j < images?.length!; j++) {
                         images[j] = await S3BucketUtil.getSignedUrlByKey({ key: images[j], folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES });
