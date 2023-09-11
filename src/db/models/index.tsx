@@ -17,6 +17,7 @@ import OrderStatus from '@/db/models/OrderStatus'
 import ContactForm from '@/db/models/ContactForm'
 import SliderImage from '@/db/models/SliderImage'
 import ImageContainer from '@/db/models/ImageContainer'
+import FaqEditor from '@/db/models/FaqEditor';
 
 export {
     Account,
@@ -37,5 +38,6 @@ export {
     OrderStatus,
     ContactForm,
     SliderImage,
-    ImageContainer
+    ImageContainer,
+    FaqEditor
 }
