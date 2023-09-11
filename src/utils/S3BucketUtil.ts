@@ -2,8 +2,8 @@ import { S3Client, GetObjectCommand, PutObjectCommand, CopyObjectCommand, Delete
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { compressAccurately, EImageType } from "image-conversion";
 
-const thumbnailSizeOnKb = 50;
-const thumbnailWidth = 200;
+const thumbnailSizeOnKb = 10;
+const thumbnailWidth = 192;
 
 const client = new S3Client({
     region: process.env.AWS_REGION,

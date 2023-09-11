@@ -51,7 +51,7 @@ export class ShopOrderService extends GenericService<ShopOrder> {
                 const images = shopOrderDto.orderLines[i].item.image?(shopOrderDto.orderLines[i].item.image?.split(",")):[];
                 if(images && images?.length!>0){
                     for (let j = 0; j < images?.length!; j++) {
-                        images[j] = await S3BucketUtil.getSignedUrlByKey({ key: images[j] });
+                        images[j] = await S3BucketUtil.getSignedUrlByKey({ key: images[j], folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES });
                     }
                     shopOrderDto.orderLines[i].item.images = images;
                     shopOrderDto.contactForm = shopOrderDto.contactForm;

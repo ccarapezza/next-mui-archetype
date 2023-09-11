@@ -1,9 +1,16 @@
 import ImageCropEditor from '@/components/client/ImageCropEditor';
+import LoadingBlocker from '@/components/client/LoadingBlocker';
+import { ImageProductDto } from '@/schemas/productItem';
 import { faClose, faImage, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
+
+const compressedSizes = {
+    width: 548,
+    height: 850
+}
 
 const uploadFile = async (file: File) => {
     //get presigner url from server
@@ -36,12 +43,41 @@ const deleteFile = async (key: string) => {
     return await presignedUrlResponse.json();
 }
 
-export default function ProductItemImages({defaultFiles = [], onChange, name}: {defaultFiles?: ImageFile[], onChange: Function, name: string}) {
+export default function ProductItemImages({defaultFiles = [], onChange, name, setLoading}: {defaultFiles?: ImageProductDto[], onChange: Function, name: string, setLoading?: Function}) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [fileToUpload, setFileToUpload] = useState<File|null>(null);
     const [preview, setPreview] = useState<File|null>(null);
-    const [files, setFiles] = useState<ImageFile[]>(defaultFiles);
+    const [files, setFiles] = useState<ImageFile[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(defaultFiles){
+            const processImages = async (images: ImageProductDto[]) => {
+                return await Promise.all(images.map(async (image, index) => {
+                    const response = await fetch(image.url);
+                    if (!response.ok) {
+                        throw new Error("Error al obtener la imagen");
+                    }
+                    const blob = await response.blob();
+                    const file = new File([blob], image.key, { type: blob.type });
+                    return {
+                        itemIndex: index,
+                        file: file,
+                        key: image.key
+                    }
+                }));
+            }
+
+            setIsLoading(true);
+            processImages(defaultFiles).then((files) => {
+                setFiles(files);
+            }).catch((error) => {
+                console.log("error", error);
+            }).finally(() => {
+                setIsLoading(false);
+            });
+        }
+    }, []);
 
     const addFile = (file: File, itemId: number) => {
         setIsLoading(true);
@@ -82,13 +118,17 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
         onChange(files.map((file) => file.key));
     }, [files, onChange]);
 
+    useEffect(() => {
+        if(setLoading){
+            setLoading(isLoading);
+        }
+    }, [isLoading, setLoading]);
+
     return (<>
+        {!setLoading && isLoading &&
+            <LoadingBlocker />
+        }
         <Dialog open={!!fileToUpload} onClose={() => setFileToUpload(null)}>
-            {isLoading &&
-                <div className='absolute top-0 left-0 w-full h-full bg-gray-700 bg-opacity-50 flex items-center justify-center z-50'>
-                    <CircularProgress />
-                </div>
-            }
             <DialogTitle className='flex justify-between'>
                 <Typography variant="h6" component="div">
                     Vista previa
@@ -100,6 +140,8 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
             <DialogContent className="flex flex-col items-center justify-center">
                 {preview&&
                     <ImageCropEditor
+                        compressedWidth={compressedSizes.width}
+                        compressedHeight={compressedSizes.height}
                         file={preview}
                         setFormatedFile={
                             (file: File) => {
@@ -121,7 +163,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name}: {
         />
         <div className='grid grid-cols-6 gap-2 items-center mb-4'>
             {files.map((file, index) => (<div className='grid-col-1 border rounded p-2' key={name+"-"+index}>
-                <Image id={`image-${index}`} width={150} height={150} src={URL.createObjectURL(file.file as Blob)} alt="preview image" />
+                <Image id={`image-${index}`} width={compressedSizes.width} height={compressedSizes.height} src={URL.createObjectURL(file.file as Blob)} alt="preview image" />
                 <FontAwesomeIcon className='text-red-500 cursor-pointer mt-2' icon={faTrash} onClick={() => removeFile(index)} />
             </div>))}
             <div>

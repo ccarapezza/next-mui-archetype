@@ -16,7 +16,7 @@ const SquareXmarkIcon = () => {
     );
 }
 
-const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...props }: { categories: ProductCategoryDto[], fullWidth?: boolean, size?: 'small' | 'medium', small?: boolean, className: string, inputProps?: InputBaseComponentProps, onChange: (event: string | React.ChangeEvent<Element>) => void }) => {
+const CategoryTree = ({ categories: initialCategories, inputProps, onChange, defaultValue, ...props }: { categories: ProductCategoryDto[], fullWidth?: boolean, size?: 'small' | 'medium', small?: boolean, className: string, inputProps?: InputBaseComponentProps, onChange: (event: string | React.ChangeEvent<Element>) => void, defaultValue?: string }) => {
     const [categories, setCategories] = useState<ProductCategoryDto[]>(initialCategories);
     const [expandedIds, setExpandedIds] = useState<string[]>(['root']);
     const [selectedCategory, setSelectedCategory] = useState<ProductCategoryDto | null>(null);
@@ -189,6 +189,14 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
         }
     }, [searchValue, initialCategories]);
 
+    useEffect(() => {
+        if (defaultValue) {
+            const categoryFinded = findIdOnTree(parseInt(defaultValue));
+            setSelectedCategory(categoryFinded);
+            console.log("categoryFinded", categoryFinded);
+        }
+    }, [defaultValue]);
+
     return (
         <FormControl {...props}>
             <InputLabel id="demo-multiple-chip-label">Categoría</InputLabel>
@@ -199,6 +207,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                 labelId="demo-multiple-chip-label"
                 id="demo-multiple-chip"
                 multiple={false}
+                defaultValue={defaultValue?parseInt(defaultValue!):0}
                 value={selectedCategory?.id || ""}
                 input={<OutlinedInput id="select-multiple-chip" label="Categoría" />}
                 renderValue={(value) => (

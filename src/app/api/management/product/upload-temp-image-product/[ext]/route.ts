@@ -4,7 +4,7 @@ import crypto from 'crypto';
 
 export async function GET(request: NextRequest, {params}: {params: {ext: string}}) {
     const {ext} = params;
-    const key = crypto.randomBytes(32).toString('hex');
+    const key = crypto.randomBytes(10).toString('hex');
     const keyWithExt = `${key}.${ext}`;
     
     const url = await S3BucketUtil.getPresignedUploadUrl({

@@ -25,9 +25,15 @@ export type ProductItemDto = {
     id: number;
     variationOptions?: VariationOptionDto[] | undefined;
     images: string[];
+    imagesDetail?: ImageProductDto[] | undefined;
     price: number;
     sku: string;
     stock: number;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export type ImageProductDto = {
+    key: string,
+    url: string,
 }

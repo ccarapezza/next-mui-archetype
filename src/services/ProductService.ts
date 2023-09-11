@@ -7,6 +7,8 @@ import { GenericService } from "./GenericService";
 import { ProductDto } from "@/schemas/product";
 import { VariationDto } from "@/schemas/variation";
 import { VariationOptionDto } from "@/schemas/variationOption";
+import { ImageProductDto } from "@/schemas/productItem";
+
 import { FilterProduct } from "@/schemas/filterProduct";
 
 //ProductService extends GenericService
@@ -14,7 +16,7 @@ export class ProductService extends GenericService<Product> {
     constructor() {
         super(Product);
     }
-    getDtoById = async (id: number | string): Promise<ProductDto|null> => {
+    getDtoById = async (id: number | string, imageDetail: boolean = false): Promise<ProductDto|null> => {
         const product: Product | null = await Product.findOne({
             where: { id },
             attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
@@ -43,14 +45,24 @@ export class ProductService extends GenericService<Product> {
             productDto = product.toJSON();
             for (let i = 0; i < productDto.items.length; i++) {
                 const item = productDto.items[i];
-                if (product.dataValues.items[i].dataValues.image) {
-                    const imagesKeys = product.dataValues.items[i].dataValues.image.split(',');
-                    //obtain images url from s3 bucket
+                if (item.image) {
+                    const imagesKeys = item.image;
                     const images = []
+                    const imagesDetail = []
                     for (const image of imagesKeys) {
-                        images.push(await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.TEMP}))
+                        const urlImage = await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES});
+                        images.push(urlImage)
+                        if(imageDetail){
+                            imagesDetail.push({
+                                key: image,
+                                url: urlImage
+                            });
+                        }
                     }
                     item.images = images;
+                    if(imageDetail){
+                        item.imagesDetail = imagesDetail;
+                    }
                     delete item.image;
                 }
             }
@@ -121,7 +133,9 @@ export class ProductService extends GenericService<Product> {
             for (const item of productModel.items) {
                 const itemModel = item as ProductItem;
                 if (itemModel.image) {
-                    itemModel.image = await S3BucketUtil.getSignedUrlByKey({ key: itemModel.image! });
+                    for (let i = 0; i < itemModel.image.length; i++) {
+                        itemModel.image[i] = await S3BucketUtil.getSignedUrlByKey({ key: itemModel.image[i], folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES });
+                    }
                 }
             }
         }
@@ -247,17 +261,13 @@ export class ProductService extends GenericService<Product> {
             for (const item of product.items) {
                 if (item.images.length > 0) {
                     item.images = await Promise.all(item.images.map(async (image) => {
-                        return await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.TEMP});
+                        return await S3BucketUtil.getSignedUrlByKey({key: image as string, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES});
                     }));
                 } else {
                     item.images = [];
                 }
             }
         }
-
-        resultSetGrouped.forEach((product: ProductDto) => {
-            console.log("··#################",product.items);
-        });
         
         return resultSetGrouped;
     }

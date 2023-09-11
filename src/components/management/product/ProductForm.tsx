@@ -4,23 +4,22 @@ import CategoryTreeSelector from '../category/CategoryTreeSelector';
 import ColorPicker from '../../client/ColorPicker';
 import ProductItemImages from './ProductItemImages';
 import LoadingBlocker from '@/components/client/LoadingBlocker';
-import { useState } from 'react';
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Alert, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography, IconButton, Dialog, DialogContent, DialogTitle, CircularProgress, Stack, Tooltip, DialogActions } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { TextField, Button, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, Divider, Chip, OutlinedInput, Box, Checkbox, ListItemText, Typography, IconButton, Dialog, DialogContent, DialogTitle, CircularProgress, Stack, Tooltip, DialogActions, Alert } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBold, faBoxesPacking, faBoxesStacked, faClose, faFont, faPlus, faPlusCircle, faSave, faSquareRootVariable, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
+import { faBoxesPacking, faClose, faPlus, faPlusCircle, faSave, faTrash, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useRouter } from 'next/navigation';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ProductInput, productInputSchema } from '../../../schemas/product';
+import { ProductDto, ProductInput, productInputSchema } from '../../../schemas/product';
 import { ProductCategoryDto } from '@/schemas/category';
 import { VariationDto } from '@/schemas/variation';
-import { VariationOptionDto } from '@/schemas/variationOption';
+import { ItemVariationOptionDto, VariationOptionDto } from '@/schemas/variationOption';
 import { useSnackbar } from 'notistack';
 import { EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import Editor from '@/components/client/Editor';
-import { convertToRaw } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import { convertToRaw, convertFromRaw } from 'draft-js';
 
 const COLOR_VARIANT_ID = 2;
 
@@ -49,6 +48,14 @@ const saveProductData = async (productData: any) => {
     return res.json();
 };
 
+const updateProductData = async (id: number, productData: any) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/product/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(productData),
+    });
+    return res.json();
+};
+
 const saveVariantOption = async (variantData: any) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/variationOption`, {
         method: 'POST',
@@ -62,23 +69,27 @@ const getAllVariations = async () => {
     return res.json();
 }
 
-const ProductForm = ({ categories, variations: initialVariations }: { categories: ProductCategoryDto[], variations: VariationDto[] }) => {
+const ProductForm = ({ categories, variations: initialVariations, editProduct }: { categories: ProductCategoryDto[], variations: VariationDto[], editProduct?: ProductDto }) => {
     const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();
     const [hasVariants, setHasVariants] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [variations, setVariations] = useState<VariationDto[]>(initialVariations);
-
-    const [variationSelected, setVariationSelected] = useState<VariationItemSelected | null>(null);
+    const [variationSelected, setVariationSelected] = useState<VariationItemSelected|null>(null);
 
     const onSubmit = async (data: any) => {
         setIsLoading(true);
-        saveProductData(data).then((response) => {
+        const savePromise = editProduct?updateProductData(editProduct.id, data):saveProductData(data);
+        savePromise.then((response) => {
             router.push('/management/products');
             router.refresh();//Need to refresh the page to get the updated data
         }).catch((error) => {
             console.log("error", error);
-            enqueueSnackbar('Error al crear el producto', { variant: 'error' });
+            if(editProduct){
+                enqueueSnackbar('Error al editar el producto', { variant: 'error' });
+            }else{
+                enqueueSnackbar('Error al crear el producto', { variant: 'error' });
+            }
         }).finally(() => {
             setIsLoading(false);
         });
@@ -173,12 +184,52 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
         }
     };
 
+    useEffect(() => {
+        if(editProduct){
+            setIsLoading(true);
+            const variantsFinded = editProduct.items[0].variationOptions?.map((variationOption) => variationOption.id);
+
+            const variants = variations.filter((variation) => {
+                const finded = variation.variationOptions?.find((variationOption) => {
+                    return variantsFinded?.find((variantId) => variantId === variationOption.id);
+                });
+                return finded;
+            });
+
+            const variantsIds = variants?.map((v) => v.id);
+            if(editProduct.items.length>1){
+                setVariantsSelected(variantsIds!);
+                setHasVariants(true);
+            }
+            //set values to form
+            reset({
+                name: editProduct.name,
+                description: editProduct.description,
+                categoryId: editProduct.category.id,
+                items: editProduct.items.map((item) => {
+                    return {
+                        id: item.id,
+                        images: item.images?item.images:[],
+                        variation: variantsFinded?variantsFinded.map((variantId, index) => {
+                            return item.variationOptions?.find((variationOption) => {
+                                return (variationOption as ItemVariationOptionDto).variation.id === variantId;
+                            })?.id;
+                        }):[],
+                        price: item.price?item.price:0
+                    }
+                })
+            });
+            console.log(editProduct.items[0].variationOptions);
+            setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(JSON.parse(editProduct.description)))));
+            setIsLoading(false);
+        }
+    }, [editProduct]);
+
     return (<>
         {isLoading &&
             <LoadingBlocker />
         }
         <div className="max-w-screen-xl mx-auto bg-white p-4 rounded-md shadow-lg">
-            <h1 className="text-xl font-semibold mb-4">Crear nuevo producto</h1>
             <Box>
                 {/*
                     <pre>{JSON.stringify(variations, null, 2)}</pre>
@@ -228,7 +279,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                 />
                 <Editor
                     editorState={editorState}
-                    wrapperClassName="mb-3"
+                    wrapperClassName={`mb-3 ${!!errors.description&&'border border-red-500 rounded-md'}`}
                     editorClassName="px-4 border-gray-300 border-l border-r border-b rounded-b-md"
                     toolbarClassName='border-gray-300 border-rounded m-0 rounded-t-md'
                     placeholder='Descripción del producto'
@@ -254,23 +305,12 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                         }
                     }}
                 />
-                <TextField
-                    inputProps={{ ...register("description") }}
-                    error={!!errors.description}
-                    size='small'
-                    label="Descripción del producto"
-                    variant="outlined"
-                    fullWidth
-                    multiline
-                    rows={4}
-                    name="productDescription"
-                    className="mb-3"
-                />
+                <textarea { ...register("description") } className='hidden' />
                 <Controller
                     name={"categoryId"}
                     control={control}
                     render={({ field: { ref, onChange, ...rest } }) => (
-                        <CategoryTreeSelector onChange={(value) => {
+                        <CategoryTreeSelector defaultValue={rest.value.toString()} onChange={(value) => {
                             if (typeof value === 'string' || typeof value === 'number') {
                                 const valueInt = parseInt(value);
                                 onChange(valueInt);
@@ -289,7 +329,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                             control={control}
                             render={({ field: { name, onChange, value } }) => (<>
                                 <Typography className='text-xs font-bold mb-2'>Imagenes del producto</Typography>
-                                <ProductItemImages name={name} onChange={onChange} />
+                                <ProductItemImages name={name} onChange={onChange} defaultFiles={editProduct&&editProduct.items[0].imagesDetail} setLoading={setIsLoading}/>
                             </>)}
                         />
                         <CurrencyInput
@@ -303,7 +343,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                         />
                     </>
                 }
-                {!hasVariants &&
+                {!hasVariants && !editProduct &&
                     <Box className="flex">
                         <Button size='small' className='my-4' startIcon={<FontAwesomeIcon icon={faBoxesPacking} />} variant="contained" color="primary" onClick={() => setHasVariants(true)}>
                             {'Incluir variantes'}
@@ -313,7 +353,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                 {hasVariants && <>
                     <Box className="flex">
                         <h1 className="text-xl font-semibold mt-4 mb-1">Variantes</h1>
-                        {hasVariants &&
+                        {hasVariants && !editProduct &&
                             <Button className='my-4 ml-auto' size='small' startIcon={<FontAwesomeIcon icon={faTrash} />} variant="outlined" color="primary" onClick={() => clearItems()}>
                                 {'Eliminar variantes'}
                             </Button>
@@ -327,14 +367,20 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                             multiple
                             value={variantsSelected || []}
                             onChange={handleMultipleVariantsChange}
+                            disabled={!!editProduct}
+                            classes={{
+                                disabled: 'bg-gray-200 cursor-not-allowed'
+                            }}
                             input={<OutlinedInput id="select-multiple-chip" label="Tipos de variantes" />}
                             renderValue={(value) => (
                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                    {value.map((value) => {
-                                        const variant = variations.find((variation) => variation.id === value);
-                                        return (
+                                    {value.map((idValue) => {
+                                        const variant = variations.find((variation) => {
+                                            return variation.id === idValue;
+                                        });
+                                        return (<>
                                             <Chip variant='outlined' size='small' key={`${variant?.id}-${variant?.name}-selected-variants`} label={variant?.name} />
-                                        )
+                                        </>)
                                     })}
                                 </Box>
                             )}
@@ -354,78 +400,129 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                 </>}
                 {hasVariants && variantsSelected.length > 0 && fields.map((variant, itemIndex) => (
                     <div key={itemIndex} className="mt-2">
-                        <Divider className='border border-t-green-500'><Chip size='small' variant='outlined' label={`Item #${itemIndex + 1}`} /></Divider>
-                        {variations.filter((variation) => variantsSelected.find((variantSel) => variantSel === variation.id)).map((variant, variantTypeIndex) => (
-                            <Box key={`${itemIndex}-${variant?.id}-${variant?.name}`} className="mt-1">
-                                {
-                                    variant?.id === COLOR_VARIANT_ID ?
-                                        <Box className="flex items-center mb-4">
-                                            <Typography className='pl-1 pr-4'>{variant?.name}{!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]! && <FontAwesomeIcon className='text-red-500' icon={faWarning} />}</Typography>
-                                            <ColorPicker
-                                                key={variantTypeIndex}
-                                                name={`items.${itemIndex}.variation.${variantTypeIndex}`}
-                                                inputProps={register(`items.${itemIndex}.variation.${variantTypeIndex}`)}
-                                                error={!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]}
-                                                onChange={(colorId) => {
-                                                    setValue(`items.${itemIndex}.variation.${variantTypeIndex}`, colorId);
-                                                }}
-                                                variationOptions={getValuesByVariantId(variant?.id) || []}
-                                                reloadVariations={() => {
-                                                    getAllVariations().then((variations) => {
-                                                        setVariations(variations);
-                                                    });
-                                                }}
-                                            />
-                                        </Box>
-                                        :
-                                        <Stack direction={'row'} className="mb-3">
-                                            <FormControl variant="outlined" fullWidth size='small'>
-                                                <InputLabel htmlFor={"variant-" + variantTypeIndex} className="font-bold text-black">{variant?.name}</InputLabel>
-                                                <Select
-                                                    defaultValue={""}
-                                                    inputProps={{
-                                                        id: `items.${itemIndex}.variation.${variantTypeIndex}`,
-                                                        ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)
-                                                    }}
-                                                    size='small'
-                                                    name="type"
-                                                    label={variant?.name}
+                        {!editProduct?
+                            <Divider className='border border-t-green-500'><Chip variant='filled' color='primary' label={`Item #${itemIndex + 1}`} className='font-bold' /></Divider>
+                        :
+                        <>
+                            {editProduct.items[itemIndex]?
+                                <Divider className='border border-t-green-500'><Chip variant='filled' color='primary' label={`Item ID: ${editProduct.items[itemIndex].id}`} className='font-bold' /></Divider>
+                            :
+                                <Divider className='border border-t-green-500'><Chip variant='filled' color='primary' label={`New Item #${itemIndex + 1}`} className='font-bold' /></Divider>
+                            }
+                        </>
+                        }
+                        {editProduct&&<>
+                            <Chip className={`text-sm mb-4 ${!editProduct.items[itemIndex]&&'bg-green-600 text-white'}`} label={
+                                <Box className="flex">
+                                    {editProduct.items[itemIndex]?
+                                        <>
+                                            <Typography className='text-sm font-bold mr-1'>SKU:</Typography>
+                                            {`${editProduct.items[itemIndex].sku}`}
+                                        </>
+                                    :
+                                        <>
+                                            {`New Item !`}
+                                        </>
+                                    }
+                                </Box>
+                            } />
+                        </>
+                        }
+                        <Box className={editProduct&&editProduct.items[itemIndex]&&"bg-gray-200 px-2 py-0.5 mb-4 rounded-md cursor-not-allowed"}>
+                            {editProduct&&editProduct.items[itemIndex]&&
+                                <Alert severity="warning" className='mt-2 mb-4 p-0 pl-2 pr-3 w-fit flex items-center'>
+                                    <Typography className='text-xs font-bold'>Solo se puede editar los precios de items existentes</Typography>
+                                </Alert>
+                            }
+                            {variations.filter((variation) => variantsSelected.find((idValue) => {
+                                    const variant = variations.find((variation) => {
+                                        return variation.id === idValue;
+                                    });
+                                    return variant?.id === variation.id;
+                                })).map((variant, variantTypeIndex) => (
+                                <Box key={`${itemIndex}-${variant?.id}-${variant?.name}`} className={`mt-1`}>
+                                    {
+                                        variant?.id === COLOR_VARIANT_ID ?
+                                            <Box className="flex items-center mb-2 pb-2">
+                                                <Typography className='pl-1 pr-4'>{variant?.name}{!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]! && <FontAwesomeIcon className='text-red-500' icon={faWarning} />}</Typography>
+                                                <ColorPicker
+                                                    key={variantTypeIndex}
+                                                    name={`items.${itemIndex}.variation.${variantTypeIndex}`}
+                                                    inputProps={register(`items.${itemIndex}.variation.${variantTypeIndex}`)}
                                                     error={!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]}
-                                                >
-                                                    <MenuItem value="">
-                                                        <em>None</em>
-                                                    </MenuItem>
-                                                    {getValuesByVariantId(variant?.id).map(item => (
-                                                        <MenuItem key={`${item.id}-${item.value}-variant-value`} value={item.id}>
-                                                            {item.value}
+                                                    onChange={(colorId) => {
+                                                        setValue(`items.${itemIndex}.variation.${variantTypeIndex}`, colorId);
+                                                    }}
+                                                    variationOptions={getValuesByVariantId(variant?.id) || []}
+                                                    reloadVariations={() => {
+                                                        getAllVariations().then((variations) => {
+                                                            setVariations(variations);
+                                                        });
+                                                    }}
+                                                    disabled={editProduct&&editProduct.items[itemIndex]?true:false}
+                                                    initialColor={editProduct&&editProduct.items[itemIndex]?.variationOptions?.find((variationOption) => {
+                                                        return (variationOption as ItemVariationOptionDto).variation.id === variant?.id;
+                                                    })?.value}
+                                                />
+                                            </Box>
+                                            :
+                                            <Stack direction={'row'} className="mb-3">
+                                                <FormControl variant="outlined" fullWidth size='small'>
+                                                    <InputLabel htmlFor={"variant-" + variantTypeIndex} className="font-bold text-black">{variant?.name}</InputLabel>
+                                                    <Select
+                                                        defaultValue={(editProduct&&editProduct?.items[itemIndex])?editProduct?.items[itemIndex].variationOptions?.find((variationOption) =>{
+                                                            return (variationOption as ItemVariationOptionDto).variation.id === variant?.id;
+                                                        })?.id:''}
+                                                        classes={{
+                                                            disabled: 'bg-gray-200 cursor-not-allowed'
+                                                        }}
+                                                        inputProps={{
+                                                            id: `items.${itemIndex}.variation.${variantTypeIndex}`,
+                                                            ...register(`items.${itemIndex}.variation.${variantTypeIndex}`)
+                                                        }}
+                                                        disabled={!!editProduct?.items[itemIndex]}
+                                                        size='small'
+                                                        name="type"
+                                                        label={variant?.name}
+                                                        error={!!errors.items?.[itemIndex]?.variation?.[variantTypeIndex]}
+                                                    >
+                                                        <MenuItem value="">
+                                                            <em>None</em>
                                                         </MenuItem>
-                                                    ))}
-                                                    {/*getValuesByVariantId(variantType).map((value, valueIndex) => (
-                                                    <MenuItem key={valueIndex} value={value}>
-                                                        {value}
-                                                    </MenuItem>
-                                                ))*/}
-                                                </Select>
-                                            </FormControl>
-                                            {/*
-                                            Add variation
-                                            */}
-                                            <Tooltip title="Agregar variante">
-                                                <IconButton size='small' onClick={() => {
-                                                    setVariationSelected({
-                                                        itemIndex,
-                                                        variantTypeIndex,
-                                                        variation: variant
-                                                    });
-                                                    resetVariant();
-                                                }}>
-                                                    <FontAwesomeIcon icon={faPlusCircle} className='text-green-600' />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </Stack>
-                                }
-                            </Box>
-                        ))}
+                                                        {getValuesByVariantId(variant?.id).map(item => (
+                                                            <MenuItem key={`${item.id}-${item.value}-variant-value`} value={item.id}>
+                                                                {item.value}
+                                                            </MenuItem>
+                                                        ))}
+                                                        {/*getValuesByVariantId(variantType).map((value, valueIndex) => (
+                                                        <MenuItem key={valueIndex} value={value}>
+                                                            {value}
+                                                        </MenuItem>
+                                                    ))*/}
+                                                    </Select>
+                                                </FormControl>
+                                                {/*
+                                                Add variation
+                                                */}
+                                                <Tooltip title="Agregar variante">
+                                                    <>
+                                                        <IconButton size='small' disabled={!!editProduct?.items[itemIndex]} onClick={() => {
+                                                            setVariationSelected({
+                                                                itemIndex,
+                                                                variantTypeIndex,
+                                                                variation: variant
+                                                            });
+                                                            resetVariant();
+                                                        }}>
+                                                            <FontAwesomeIcon icon={faPlusCircle} className={!!editProduct?.items[itemIndex]?'text-gray-400':'text-green-500'} />
+                                                        </IconButton>
+                                                    </>
+                                                </Tooltip>
+                                            </Stack>
+                                    }
+                                </Box>
+                            ))}
+                        </Box>
                         <CurrencyInput
                             label="Precio"
                             fullWidth
@@ -439,10 +536,10 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                             control={control}
                             render={({ field: { name, onChange, value } }) => (<>
                                 <Typography className='text-xs font-bold my-2'>Imagenes del producto</Typography>
-                                <ProductItemImages name={name} onChange={onChange} />
+                                <ProductItemImages name={name} onChange={onChange} defaultFiles={editProduct&&editProduct.items[itemIndex]&&editProduct.items[itemIndex].imagesDetail} setLoading={setIsLoading}/>
                             </>)}
                         />
-                        {fields.length > 1 && (
+                        {fields.length > 1 && !editProduct && (
                             <div className='flex justify-end align-center mb-1'>
                                 <Button variant="outlined" color="error" size='small' onClick={() => remove(itemIndex)} className='my-2'>
                                     <FontAwesomeIcon icon={faTrash} className='mr-2' />
@@ -462,7 +559,7 @@ const ProductForm = ({ categories, variations: initialVariations }: { categories
                 <Divider />
                 <div className='flex justify-center mt-4'>
                     <Button startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" type="submit" size='small' disabled={(hasVariants && variantsSelected.length <= 0) || isLoading}>
-                        Crear Producto
+                        Guardar Producto
                         {isLoading &&
                             <CircularProgress size={14} color="inherit" className='absolute left-1/2 text-slate-900' />
                         }

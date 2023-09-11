@@ -19,7 +19,8 @@ interface ColorPickerProps {
     className?: string,
     variationOptions?: VariationOptionDto[],
     error?: boolean,
-    reloadVariations?: Function
+    reloadVariations?: Function,
+    disabled?: boolean
 }
 
 const saveVariantOption = async (value: string) => {
@@ -36,7 +37,7 @@ const saveVariantOption = async (value: string) => {
     return res.json();
 };
 
-export default function ColorPicker({ initialColor, name, onChange, inputProps, className, variationOptions, error, reloadVariations }: ColorPickerProps) {
+export default function ColorPicker({ initialColor, name, onChange, inputProps, className, variationOptions, error, reloadVariations, disabled }: ColorPickerProps) {
     const [advanceMode, setAdvanceMode] = useState<any>(false)
     const [displayColorPicker, setDisplayColorPicker] = useState<boolean>(false)
     const [color, setColor] = useState<any>(initialColor?initialColor:variationOptions?.[0]?.value?variationOptions?.[0]?.value:"#ffffff");
@@ -121,10 +122,9 @@ export default function ColorPicker({ initialColor, name, onChange, inputProps, 
             {loading &&
                 <LoadingBlocker/>
             }
-            <Box className="rounded-full shadow-md w-fit bg-white border cursor-pointer" onClick={handleClick}>
+            <Box className={`rounded-full shadow-md w-fit bg-white border ${disabled?'cursor-not-allowed':'cursor-pointer'}`} onClick={disabled?undefined:handleClick}>
                 <Box className="w-10 h-10 rounded-full" style={{ backgroundColor: color }}/>
             </Box>
-            
             {displayColorPicker ?
                 <Box className="absolute mt-2 ml-2 mb-10 z-10 bg-white border border-grey-500 rounded-md box-content shadow-lg">
                     <div className='fixed top-0 right-0 bottom-0 left-0' onClick={handleClose} />
