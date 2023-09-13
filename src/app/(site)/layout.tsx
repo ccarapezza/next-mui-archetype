@@ -14,8 +14,8 @@ import NotistackProviderWrapper from '@/components/providers/NotistackProvider';
 config.autoAddCss = false;
 
 export const metadata = {
-    title: 'Cultivo Mis Derechos',
-    description: 'Sitio Oficial de Cultivo Mis Derechos',
+  title: 'Cultivo Mis Derechos',
+  description: 'Sitio Oficial de Cultivo Mis Derechos',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,15 +23,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="relative min-h-screen pt-[97px] md:pb-[380px] pb-[1100px]">
         <NotistackProviderWrapper>
-        <SessionProviderWrapper>
-          <MiniCartProvider>
-            <NavBarServer />
-            <main>
-              {children}
-            </main>
-            <FooterServer />
-          </MiniCartProvider>
-        </SessionProviderWrapper>
+          <SessionProviderWrapper>
+            <MiniCartProvider>
+              <NavBarServer />
+              <main>
+                {children}
+              </main>
+              <FooterServer />
+            </MiniCartProvider>
+          </SessionProviderWrapper>
         </NotistackProviderWrapper>
       </body>
     </html>

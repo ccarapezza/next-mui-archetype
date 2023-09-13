@@ -10,15 +10,16 @@ export default function MiniCart() {
 
     const [openMiniCart, setOpenMiniCart] = useState<boolean | null>(null)
     const { products, getTotalMiniCart } = useContext(CartContext)
-    const [ quantityMiniCart, setQuantityMiniCart ] = useState<number>(0)
+    const [quantityMiniCart, setQuantityMiniCart] = useState<number>(0)
 
     useEffect(() => {
-        if(openMiniCart !== null){
+        console.log('openMiniCart', openMiniCart);
+        
+        if (openMiniCart !== null) {
             setOpenMiniCart(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getTotalMiniCart, quantityMiniCart])
-
 
     useEffect(() => {
         setQuantityMiniCart(products.length)
