@@ -2,7 +2,7 @@
 import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Card, Divider, Grid, TextField } from '@mui/material'
+import { Alert, Button, Card, Divider, Grid, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack';
@@ -62,10 +62,15 @@ export default function ChangePasswordForm() {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container padding={2} paddingTop={0} gap={2}>
                 <Grid item xs={12}>
+                    <Alert severity="warning">
+                        <strong>Atención:</strong> Si cambias tu contraseña, la sesión actual se cerrará y deberás iniciar sesión nuevamente.
+                    </Alert>
+                </Grid>
+                <Grid item xs={12}>
                     <TextField
                         {...register("currentPassword")}
                         className='my-2'
-                        label="Password Actual"
+                        label="Contraseña actual"
                         variant="outlined"
                         fullWidth
                         required
@@ -76,7 +81,7 @@ export default function ChangePasswordForm() {
                     <TextField
                         {...register("newPassword")}
                         className='my-2'
-                        label="Nuevo Password"
+                        label="Nueva contraseña"
                         variant="outlined"
                         fullWidth
                         required
@@ -86,7 +91,7 @@ export default function ChangePasswordForm() {
                     <TextField
                         {...register("confirmPassword")}
                         className='my-2'
-                        label="Confirmar Password"
+                        label="Confirmar contraseña"
                         variant="outlined"
                         fullWidth
                         required

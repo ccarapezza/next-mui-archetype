@@ -10,20 +10,24 @@ export class MyProfileService {
     getMyProfile = async () => {
         const nextUserSession = await getServerSession(authOptions);
         const userLogged = nextUserSession?.user?.email?await userService.getByEmail(nextUserSession.user.email):null;
-        const user = await User.findOne({
-            where: {
-                id: userLogged?.id
-            },
-            include: ["roles"]
-        });
-        const userJson = user?.toJSON();
-        if(userJson?.image){
-            userJson.image = await S3BucketUtil.getSignedUrlByKey({
-                folder: S3BucketUtil.FOLDERS.AVATARS,
-                key: userJson.image,
+        if(userLogged){
+            const user = await User.findOne({
+                where: {
+                    id: userLogged?.id
+                },
+                include: ["roles"]
             });
+            const userJson = user?.toJSON();
+            if(userJson?.image){
+                userJson.image = await S3BucketUtil.getSignedUrlByKey({
+                    folder: S3BucketUtil.FOLDERS.AVATARS,
+                    key: userJson.image,
+                });
+            }
+            return userJson;
+        }else{
+            return null;
         }
-        return userJson;
     }
 };
 

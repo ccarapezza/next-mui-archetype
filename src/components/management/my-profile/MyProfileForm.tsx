@@ -3,11 +3,11 @@ import { faClose, faEnvelope, faRefresh, faSave, faUser } from '@fortawesome/fre
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Alert, Box, Button, Card, CardHeader, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Stack, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack';
 import * as yup from "yup";
-import AvatarUploadModal from '@/components/client/AvatarUploadModal'
+import { signOut } from 'next-auth/react';
 import MyProfileAvatarControl from './MyProfileAvatarControl'
 import { getRoleDataByName } from '@/utils/RoleDataUtil'
 
@@ -50,15 +50,21 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
         });
     };
 
+    useEffect(() => {
+        if(myProfileData===null){
+            signOut()
+        }
+    }, [myProfileData])
+
     return (<Box className="flex w-full flex-col items-center">
         <Card variant='outlined' className='max-w-full w-full lg:max-w-2xl pt-2'>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container padding={2} marginTop={2} paddingTop={0} gap={2}>
                     <Grid item xs={12} className='flex flex-row justify-center items-center gap-2'>
                         <Stack className='flex flex-col justify-center items-center gap-2'>
-                            <MyProfileAvatarControl avatarImage={myProfileData.image} size={{ width: 200, height: 200 }} compressedSizeOnKb={150} name='avatar' title='Avatar' />
-                            <Chip variant='outlined' classes={{label: "leading-none"}} icon={<FontAwesomeIcon icon={faUser}  className='pl-2'/>} label={myProfileData.name} className='font-bold uppercase' />
-                            <Typography><FontAwesomeIcon icon={faEnvelope}  className='pr-2'/>{myProfileData.email}</Typography>
+                            <MyProfileAvatarControl avatarImage={myProfileData?.image} size={{ width: 200, height: 200 }} compressedSizeOnKb={150} name='avatar' title='Avatar' />
+                            <Chip variant='outlined' classes={{label: "leading-none"}} icon={<FontAwesomeIcon icon={faUser}  className='pl-2'/>} label={myProfileData?.name} className='font-bold uppercase' />
+                            <Typography><FontAwesomeIcon icon={faEnvelope}  className='pr-2'/>{myProfileData?.email}</Typography>
                         </Stack>
                     </Grid>
                     <Divider className='w-full'/>
@@ -66,7 +72,7 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
                         <Typography component="small" className='font-bold '>
                             Roles
                         </Typography>
-                        {myProfileData.roles.filter((role: { name: string; })=>role.name!=="user").map((role: any) => {
+                        {myProfileData?.roles.filter((role: { name: string; })=>role.name!=="user").map((role: any) => {
                             return (<Chip variant='outlined' key={"roles-"+role.id} icon={<FontAwesomeIcon className='pl-2' icon={getRoleDataByName(role.name).icon}/>} label={getRoleDataByName(role.name).label} className='font-bold ml-2' />)
                         })}
                     </Grid>
@@ -81,7 +87,7 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
                             label="Nombre"
                             type="text"
                             fullWidth
-                            defaultValue={myProfileData.name}
+                            defaultValue={myProfileData?.name}
                             error={!!errors.name}/>
                     </Grid>
                     <Grid item xs={12} className='flex flex-row justify-end items-center gap-2'>
@@ -122,7 +128,7 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
                         className='w-full mt-4'
                         size='small'
                         label="Email"
-                        defaultValue={myProfileData.email}
+                        defaultValue={myProfileData?.email}
                         InputProps={{
                             startAdornment: (
                                 <FontAwesomeIcon icon={faEnvelope} className='m-0 pr-2 text-gray-600'/>

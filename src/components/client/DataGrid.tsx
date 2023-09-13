@@ -104,7 +104,7 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
 
     return (
         <Box>
-            {rows.length === 0 ? <div className="flex justify-center items-center h-40">No data to display</div>
+            {rows.length === 0 ? <div className="flex justify-center items-center h-40">No hay datos disponibles</div>
                 :
                 <DataGrid
                     loading={loading}
