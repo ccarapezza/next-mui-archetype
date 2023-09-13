@@ -9,6 +9,7 @@ import { useSnackbar } from 'notistack';
 import * as yup from "yup";
 import AvatarUploadModal from '@/components/client/AvatarUploadModal'
 import MyProfileAvatarControl from './MyProfileAvatarControl'
+import { getRoleDataByName } from '@/utils/RoleDataUtil'
 
 interface IMyProfileForm {
     name: string
@@ -65,8 +66,8 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
                         <Typography component="small" className='font-bold '>
                             Roles
                         </Typography>
-                        {myProfileData.roles.map((role: any) => {
-                            return (<Chip size='small' variant='outlined' key={role.id} label={role.name} className='font-bold uppercase ml-2'/>)
+                        {myProfileData.roles.filter((role: { name: string; })=>role.name!=="user").map((role: any) => {
+                            return (<Chip variant='outlined' key={"roles-"+role.id} icon={<FontAwesomeIcon className='pl-2' icon={getRoleDataByName(role.name).icon}/>} label={getRoleDataByName(role.name).label} className='font-bold ml-2' />)
                         })}
                     </Grid>
                     <Divider className='w-full'/>

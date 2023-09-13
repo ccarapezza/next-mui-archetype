@@ -152,7 +152,7 @@ export default function MyProfileAvatarControl({avatarImage, size:{ width = 774,
                 {file ?
                     <Image id={`image-${file}`} width={width} height={height} src={avatarImage} alt="preview image" />
                 :
-                    <Image id={`image-dummy`} width={width} height={height} src={`http://dummyimage.com/${width}x${height}/322F30/EFE6D9.jpg`} alt="preview image" />
+                    <FontAwesomeIcon icon={faUser} size="2x"/>
                 }
             </Avatar>
             <Tooltip title={"Cambiar avatar"}>

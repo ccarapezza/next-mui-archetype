@@ -5,7 +5,7 @@ import React from 'react'
 
 export default function ChangePasswordPage() {
     return (<>
-        <PageHeader title="Cambiar Password" />
+        <PageHeader title="Cambiar Contraseña" />
         <MuiBox className="p-10 flex justify-center">
             <ChangePasswordForm />
         </MuiBox>

@@ -7,28 +7,27 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faAddressBook, faCartShopping, faTags, faUserTie, faUsers, faSliders, faSlidersH, faImages, faPortrait, faPhotoFilm, faPanorama, faQuestion } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserPen, faKey, faCompass, faUserTag, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faAddressBook, faCartShopping, faTags, faUserTie, faUsers, faSliders, faSlidersH, faImages, faPortrait, faPhotoFilm, faPanorama, faQuestion, faComment } from '@fortawesome/free-solid-svg-icons'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link';
 
 const categories = [
   {
-    id: 'Menu',
+    id: 'Cuenta',
     children: [
-      { id: 'My Profile', icon: faUserPen, href: '/management/my-profile', active: false },
-      { id: 'Change Password', icon: faKey, href: '/management/change-password', active: false  },
+      { id: 'Mi Perfil', icon: faUserPen, href: '/management/my-profile', active: false },
+      { id: 'Cambiar Contraseña', icon: faKey, href: '/management/change-password', active: false  },
     ],
   },
   {
-    id: 'User Management',
+    id: 'Cuentas de Usuario',
     children: [
-      { id: 'Users', icon: faUserTie, href: '/management/users', active: false },
-      { id: 'Clients', icon: faUsers, href: '/management/clients', active: false },
-      { id: 'Roles', icon: faUserTag, href: '/management/roles', active: false },
+      { id: 'Usuarios', icon: faUserTie, href: '/management/users', active: false },
+      { id: 'Clientes', icon: faUsers, href: '/management/clients', active: false },
     ],
   },
   {
-    id: 'Content Manager',
+    id: 'Contenido Web',
     children: [
       { id: 'Slider Home', icon: faPanorama, href: '/management/content-manager/main-slider', active: false },
       { id: 'Imagenes Portada', icon: faPhotoFilm, href: '/management/content-manager/images-home', active: false },
@@ -36,25 +35,24 @@ const categories = [
     ],
   },
   {
-    id: 'eCommerce',
+    id: 'Tienda',
     children: [
-      { id: 'Products', icon: faBoxesStacked, href: '/management/products', active: false },
-      { id: 'Categories', icon: faTags, href: '/management/categories', active: false },
-      { id: 'Orders', icon: faCartShopping, href: '/management/orders', active: false }
+      { id: 'Productos', icon: faBoxesStacked, href: '/management/products', active: false },
+      { id: 'Categorias', icon: faTags, href: '/management/categories', active: false },
+      { id: 'Ordenes de compra', icon: faCartShopping, href: '/management/orders', active: false }
     ],
   },
   {
-    id: 'Customers',
+    id: 'Clientes',
     children: [
-      { id: 'Chat', icon: faAddressBook, href: '/management/customers', active: false },
-      { id: 'Contacto', icon: faAddressBook, href: '/management/contacto', active: false }
+      { id: 'Mensajes de Contacto', icon: faComment, href: '/management/contacto', active: false }
     ],
   },
   {
     id: 'Email Marketing',
     children: [
-      { id: 'Subscribers', icon: faUserFriends, href: '/management/subscriber', active: false },
-      { id: 'Send Email', icon: faPaperPlane, href: '/management/send-emails', active: false },
+      { id: 'Suscriptores', icon: faUserFriends, href: '/management/subscriber', active: false },
+      { id: 'Enviar Emails', icon: faPaperPlane, href: '/management/send-emails', active: false },
       { id: 'Templates', icon: faPalette, href: '/management/email-templates', active: false }
     ],
   }

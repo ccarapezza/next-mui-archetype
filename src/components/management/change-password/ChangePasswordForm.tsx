@@ -96,7 +96,7 @@ export default function ChangePasswordForm() {
                 </Grid>
                 <Grid item xs={12} className='flex flex-row justify-end items-center gap-2'>
                     <Button type='submit' startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" disabled={loading}>
-                        Change Password
+                        Cambiar contraseña
                     </Button>
                 </Grid>
             </Grid>

@@ -1,5 +1,5 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faPaintBrush, faScrewdriverWrench, faUser, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelopesBulk, faPaintBrush, faScrewdriverWrench, faUser, faUserTie } from "@fortawesome/free-solid-svg-icons";
 
 const getRoleDataByName = (name: string) => {
     descriptionMap[name] = descriptionMap[name] || {
@@ -26,7 +26,7 @@ const descriptionMap: DescriptionMap = {
     "marketing": {
         label: "Marketing",
         description: "Permite manejar las campañas de marketing, ver los suscriptores y enviar correos masivos",
-        icon: faUserTie
+        icon: faEnvelopesBulk
     },
     "sales": {
         label: "Ventas",
