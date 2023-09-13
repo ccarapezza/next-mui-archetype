@@ -20,7 +20,9 @@ import {
   ContactForm,
   SliderImage,
   ImageContainer,
-  FaqEditor
+  FaqEditor,
+  CustomerContactStatus,
+  CustomerContact
 } from "@/db/models";
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
 
@@ -49,7 +51,9 @@ sequelizeInstace.addModels([
   ContactForm,
   SliderImage,
   ImageContainer,
-  FaqEditor
+  FaqEditor,
+  CustomerContactStatus,
+  CustomerContact
 ]);
 
 const adapter = SequelizeAdapter(sequelizeInstace!, {
@@ -82,7 +86,9 @@ export {
   ContactForm,
   SliderImage,
   ImageContainer,
-  FaqEditor
+  FaqEditor,
+  CustomerContactStatus,
+  CustomerContact
 }
 
 export { sequelizeInstace, adapter }

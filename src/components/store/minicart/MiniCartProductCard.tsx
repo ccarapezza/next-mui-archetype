@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash, faClose } from '@fortawesome/free-solid-svg-icons';
 import PriceFormatting from '@/components/management/product/PriceFormatting';
 import { ProductToCart } from '@/schemas/product';
+import { enqueueSnackbar } from 'notistack';
 
 export default function MiniCartProductCard(props: { product: ProductToCart }) {
 
@@ -13,6 +14,13 @@ export default function MiniCartProductCard(props: { product: ProductToCart }) {
   const { name, quantity, price, image, variations } = product;
 
   const { deleteProduct, updateProductQuantity } = useContext(CartContext)
+
+  const handleDeleteProduct = (product: ProductToCart) => {
+    deleteProduct(product)
+    enqueueSnackbar('Producto eliminado del carrito', {
+      variant: 'error',
+    });
+  }
 
   return (
     <li className="flex items-center justify-between gap-4 px-2 py-1">
@@ -28,7 +36,7 @@ export default function MiniCartProductCard(props: { product: ProductToCart }) {
         <div className="flex flex-col justify-around ml-4 w-full">
           <div className='flex justify-between'>
             <h3 className="text-sm text-tertiary font-bold">{name}</h3>
-            <button className="text-gray-600 transition hover:text-red-600" onClick={() => deleteProduct(product)}>
+            <button className="text-gray-600 transition hover:text-red-600" onClick={() => handleDeleteProduct(product)}>
               <FontAwesomeIcon icon={faClose} />
             </button>
           </div>
@@ -37,7 +45,7 @@ export default function MiniCartProductCard(props: { product: ProductToCart }) {
               <button
                 type="button"
                 className="flex items-center justify-center w-8 h-8 leading-10 text-gray-600 transition hover:opacity-75"
-                onClick={() => quantity === 1 ? deleteProduct(product) : updateProductQuantity(product, quantity - 1)}
+                onClick={() => quantity === 1 ? handleDeleteProduct(product) : updateProductQuantity(product, quantity - 1)}
               >
                 <FontAwesomeIcon icon={faMinus} />
               </button>

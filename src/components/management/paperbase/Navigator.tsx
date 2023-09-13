@@ -36,23 +36,28 @@ const categories = [
     ],
   },
   {
-    id: 'Email Marketing',
-    children: [
-      { id: 'Subscribers', icon: faUserFriends, href: '/management/subscriber', active: false },
-      { id: 'Send Email', icon: faPaperPlane, href: '/management/send-emails', active: false },
-      { id: 'Templates', icon: faPalette, href: '/management/email-templates', active: false },
-      //{ id: 'Campaigns', icon: faUserGroup, href: '/management/campaigns', active: false },
-    ],
-  },
-  {
     id: 'eCommerce',
     children: [
       { id: 'Products', icon: faBoxesStacked, href: '/management/products', active: false },
       { id: 'Categories', icon: faTags, href: '/management/categories', active: false },
-      { id: 'Orders', icon: faCartShopping, href: '/management/orders', active: false },
-      { id: 'Customers', icon: faAddressBook, href: '/management/customers', active: false },
+      { id: 'Orders', icon: faCartShopping, href: '/management/orders', active: false }
     ],
   },
+  {
+    id: 'Customers',
+    children: [
+      { id: 'Chat', icon: faAddressBook, href: '/management/customers', active: false },
+      { id: 'Contacto', icon: faAddressBook, href: '/management/contacto', active: false }
+    ],
+  },
+  {
+    id: 'Email Marketing',
+    children: [
+      { id: 'Subscribers', icon: faUserFriends, href: '/management/subscriber', active: false },
+      { id: 'Send Email', icon: faPaperPlane, href: '/management/send-emails', active: false },
+      { id: 'Templates', icon: faPalette, href: '/management/email-templates', active: false }
+    ],
+  }
 ];
 
 export default function Navigator(props: DrawerProps) {

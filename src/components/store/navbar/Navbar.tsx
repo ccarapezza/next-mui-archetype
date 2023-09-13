@@ -38,7 +38,7 @@ export default function Navbar(props: {categoryTree: any}) {
         },
         {
             title: "Contacto",
-            path: "/"
+            path: "/contacto"
         }
     ]
 

@@ -2,6 +2,7 @@
 import React, { useState, createContext, useEffect } from 'react'
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { ProductToCart } from '@/schemas/product';
+import { enqueueSnackbar } from 'notistack';
 interface Props {
   children?: React.ReactNode
 }
@@ -31,9 +32,15 @@ export default function MiniCartProvider({ children }: Props) {
         }
         return prod
       })
+      enqueueSnackbar('Producto agregado al carrito', {
+        variant: 'success',
+      });
       return setProducts([...listOfProducts])
     }
     setProducts([...products, product])
+    enqueueSnackbar('Producto agregado al carrito', {
+      variant: 'success',
+    });
   }
 
   // Delete product from cart
