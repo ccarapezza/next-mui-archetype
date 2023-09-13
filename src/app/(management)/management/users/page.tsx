@@ -23,7 +23,7 @@ export default async function UsersPage({ searchParams }: { searchParams: { page
     return (<>
         <PageHeader title="Users" />
         <MuiBox className="p-10">
-            <EntityTableToolbar newButtonLabel="Create new User" newEntityPath="/management/users/new"/>
+            <EntityTableToolbar newButtonLabel="Crear nuevo usuario" newEntityPath="/management/users/new"/>
             <UserDataGrid
                 rows={data.rows}
                 rowCount={data.totalItems}

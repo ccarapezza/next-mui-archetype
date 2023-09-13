@@ -1,5 +1,5 @@
 'use client'
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { Box, Chip, FormControl, InputAdornment, InputBaseComponentProps, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -128,7 +128,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, def
         setSelectedCategory(null);
     }, [initialCategories]);
 
-    const findIdOnTree = (id: number, categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto | null => {
+    const findIdOnTree = useCallback((id: number, categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto | null => {
         let result: ProductCategoryDto | null = null;
         categories?.forEach((category) => {
             if (category.id === id) {
@@ -141,7 +141,8 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, def
             }
         });
         return result;
-    }
+    }, [initialCategories]);
+    
 
     const treeToList = (categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto[] => {
         let result: ProductCategoryDto[] = [];
@@ -195,7 +196,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, def
             setSelectedCategory(categoryFinded);
             console.log("categoryFinded", categoryFinded);
         }
-    }, [defaultValue]);
+    }, [defaultValue, findIdOnTree]);
 
     return (
         <FormControl {...props}>

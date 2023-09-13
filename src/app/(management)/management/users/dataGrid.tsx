@@ -1,6 +1,8 @@
 "use client"
 import MuiDataGrid from '@/components/client/DataGrid'
+import { getRoleDataByName } from '@/utils/RoleDataUtil';
 import { faAtom, faPaperPlane, faUnlockKeyhole } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Chip, Stack, Tooltip } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useSnackbar } from 'notistack';
@@ -41,8 +43,8 @@ function UserDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?: a
             flex: 2,
             renderCell: (params: GridRenderCellParams) => {
                 return (<Stack direction={'row'} gap={1}>
-                    {params?.value?.map((item: any, index: number) =>
-                        <Chip variant='outlined' key={item.id} label={item.name?.toUpperCase()} className='text-xs' />
+                    {params?.value?.filter((item: { name: string; })=>item.name!=="user").map((item: any, index: number) =>
+                        <Chip variant='outlined' key={"roles-"+item.id} icon={<FontAwesomeIcon className='pl-2' icon={getRoleDataByName(item.name).icon}/>} label={getRoleDataByName(item.name).label} className='text-xs' />
                     )}
                 </Stack>)
             }

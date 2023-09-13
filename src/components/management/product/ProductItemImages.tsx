@@ -77,7 +77,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name, se
                 setIsLoading(false);
             });
         }
-    }, []);
+    }, [defaultFiles]);
 
     const addFile = (file: File, itemId: number) => {
         setIsLoading(true);

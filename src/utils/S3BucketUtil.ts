@@ -17,12 +17,18 @@ const FOLDERS = {
     MAIN_SLIDER: 'main-slider',
     PRODUCT_IMAGES: 'product-images',
     IMAGE_CONTAINER: 'images',
+    AVATARS: 'avatars',
     TEMP: 'temp',
+    AVATARS_THUMBNAILS: 'avatars-thumbnails',
+    PRODUCT_IMAGES_THUMBNAILS: 'product-images-thumbnails',
 };
 
-async function createThumbnail({ key, folder = '' }: { key: string; folder?: string; }) {
+async function createThumbnail({ key, folder = '', targetFolder = '' }: { key: string; folder?: string; targetFolder?: string; }) {
     if(folder){
         folder = `${folder}/`;
+    }
+    if(targetFolder){
+        targetFolder = `${targetFolder}/`;
     }
     const input = { // GetObjectRequest
         Bucket: process.env.AWS_S3_BUCKET_NAME, // required
@@ -43,7 +49,7 @@ async function createThumbnail({ key, folder = '' }: { key: string; folder?: str
         const thumbnailKey = `thumbnail-${key}`;
         const thumbnailInput = { // PutObjectRequest
             Bucket: process.env.AWS_S3_BUCKET_NAME, // required
-            Key: `${folder}${thumbnailKey}`, // required
+            Key: `${targetFolder}${thumbnailKey}`, // required
             Body: compressBlob, // required
         };
         const thumbnailCommand = new PutObjectCommand(thumbnailInput);
@@ -132,6 +138,7 @@ async function deleteFile({key, folder='' }: {key: string; folder?: string;}) {
 }
 
 const S3BucketUtil = {
+    createThumbnail,
     getSignedUrlsByFolder,
     getSignedUrlByKey,
     uploadFile,

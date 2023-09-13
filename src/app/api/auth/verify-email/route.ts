@@ -39,9 +39,8 @@ export async function POST(request: NextRequest) {
 
         //create temporal password
         const temporalPassword = Math.random().toString(36).slice(-8)
+        console.log(`New Temporal Password for user ${user.name} (${user.email}): ${temporalPassword}`);
         user.password = bcrypt.hashSync(temporalPassword, 10);
-
-        console.log(`Temporal Password for ${user.email}: `, temporalPassword);
 
         const userUpdated = await user.save();
 
@@ -61,7 +60,7 @@ export async function POST(request: NextRequest) {
 
         await verificationToken.destroy();
 
-        return NextResponse.json(userUpdated, { status: 200 });
+        return NextResponse.json(userUpdated.toJSON(), { status: 200 });
     } catch (error: any) {
         console.log("error", error);
         //return a generic error

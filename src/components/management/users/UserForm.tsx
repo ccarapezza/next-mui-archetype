@@ -2,7 +2,9 @@
 import AvatarUploadModal from '@/components/client/AvatarUploadModal'
 import MuiBox from '@/components/client/MuiBox'
 import { RoleDto } from '@/schemas/role'
-import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { getRoleDataByName } from '@/utils/RoleDataUtil'
+import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import { faP, faPaintBrush, faSave, faScrewdriverWrench, faUser, faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Card, Checkbox, Chip, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material'
@@ -96,6 +98,8 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
         });
     };
 
+    
+
     return (<Card variant='outlined' className='max-w-full lg:max-w-2xl'>
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container padding={2} gap={2}>
@@ -112,9 +116,10 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                 <Grid item xs={12}>
                     <TextField
                         {...register("name")}
-                        label="Username"
+                        label="Nombre de Usuario"
                         type="text"
                         fullWidth
+                        autoComplete='off'
                         error={!!errors.name}
                         defaultValue={userData.name} />
                 </Grid>
@@ -124,6 +129,7 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                         label="Email"
                         type="email"
                         fullWidth
+                        autoComplete='off'
                         error={!!errors.email}
                         defaultValue={userData.email} />
                 </Grid>
@@ -137,7 +143,7 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                                     <ListItem
                                         key={"role-" + role.id}
                                         disablePadding
-                                        className='m-0 p-0'
+                                        className='m-0 p-0 pl-4'
                                     >
                                         <ListItemButton disabled dense>
                                             <ListItemIcon>
@@ -150,7 +156,7 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />
                                             </ListItemIcon>
-                                            <ListItemText className='uppercase' id={labelId} primary={role.name} />
+                                            <ListItemText  id={labelId} primary={<Chip icon={<FontAwesomeIcon className='pl-2' icon={getRoleDataByName(role.name).icon}/>} variant='outlined' label={getRoleDataByName(role.name).label} className='uppercase drop-shadow-md'/>} secondary={<span className='ml-4'>{getRoleDataByName(role.name).description}</span>}/>
                                         </ListItemButton>
                                     </ListItem>
                                 );
@@ -161,9 +167,9 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                                     <ListItem
                                         key={"role-" + role.id}
                                         disablePadding
-                                        className='m-0 p-0'
+                                        className='m-0 p-0 my-2 pl-4'
                                     >
-                                        <ListItemButton onClick={() => { console.log("aksjdjkashd", role); handleToggle(role); }} dense>
+                                        <ListItemButton onClick={() => { handleToggle(role); }} dense>
                                             <ListItemIcon>
                                                 <Checkbox
                                                     edge="start"
@@ -174,7 +180,7 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                                                     inputProps={{ 'aria-labelledby': labelId }}
                                                 />
                                             </ListItemIcon>
-                                            <ListItemText className='uppercase' id={labelId} primary={role.name} />
+                                            <ListItemText  id={labelId} primary={<Chip icon={<FontAwesomeIcon className='pl-2' icon={getRoleDataByName(role.name).icon}/>} variant='outlined' label={getRoleDataByName(role.name).label} className='uppercase'/>} secondary={<p className='ml-2'>{getRoleDataByName(role.name).description}</p>}/>
                                         </ListItemButton>
                                     </ListItem>
                                 );
@@ -184,7 +190,7 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
                 </Grid>
                 <Grid item xs={12} className='flex flex-row justify-end items-center gap-2'>
                     <Button type='submit' disabled={loading} startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary">
-                        Save
+                        Guardar
                     </Button>
                 </Grid>
             </Grid>

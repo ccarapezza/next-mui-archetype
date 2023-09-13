@@ -7,6 +7,8 @@ import { User, VerificationToken } from "@/db";
 import EmailUtil from "@/utils/EmailUtil";
 import { Op } from "sequelize";
 
+const ROLE_NAME_ALLOWED_MANAGEMENT = "user";
+
 export const authOptions: NextAuthOptions = {
     adapter,
     // https://next-auth.js.org/configuration/providers
@@ -71,8 +73,8 @@ export const authOptions: NextAuthOptions = {
                         return null;
                     }
     
-                    const adminRol = user.roles?.find((role: any) => role.name === "admin");
-                    if(!adminRol){
+                    const allowedRol = user.roles?.find((role: any) => role.name === ROLE_NAME_ALLOWED_MANAGEMENT);
+                    if(!allowedRol){
                         return null;
                     }
 

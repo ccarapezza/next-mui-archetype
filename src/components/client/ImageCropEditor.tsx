@@ -51,6 +51,7 @@ export default function ImageCropEditor({
 
     const calculatedAspect = compressedWidth / compressedHeight;
     const imageSizeRenderer = Math.max(compressedWidth, compressedHeight);
+    console.log("imageSizeRenderer", imageSizeRenderer);
 
     useEffect(() => {
         if (file) {

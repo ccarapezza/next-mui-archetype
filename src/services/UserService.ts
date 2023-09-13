@@ -4,8 +4,6 @@ import { Role, User } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
 import { Op, WhereOptions } from "sequelize";
 import { GenericService } from "./GenericService";
-import { AdapterUser } from "next-auth/adapters";
-import { Model } from "sequelize-typescript";
 
 //UserService extends GenericService
 export class UserService extends GenericService<User> {

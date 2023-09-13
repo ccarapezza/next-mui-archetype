@@ -24,7 +24,6 @@ const categories = [
     children: [
       { id: 'Users', icon: faUserTie, href: '/management/users', active: false },
       { id: 'Clients', icon: faUsers, href: '/management/clients', active: false },
-      { id: 'Roles', icon: faUserTag, href: '/management/roles', active: false },
     ],
   },
   {
@@ -41,7 +40,6 @@ const categories = [
       { id: 'Subscribers', icon: faUserFriends, href: '/management/subscriber', active: false },
       { id: 'Send Email', icon: faPaperPlane, href: '/management/send-emails', active: false },
       { id: 'Templates', icon: faPalette, href: '/management/email-templates', active: false },
-      //{ id: 'Campaigns', icon: faUserGroup, href: '/management/campaigns', active: false },
     ],
   },
   {

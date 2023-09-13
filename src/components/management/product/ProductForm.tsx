@@ -223,7 +223,7 @@ const ProductForm = ({ categories, variations: initialVariations, editProduct }:
             setEditorState(EditorState.createWithContent(convertFromRaw(JSON.parse(JSON.parse(editProduct.description)))));
             setIsLoading(false);
         }
-    }, [editProduct]);
+    }, [editProduct, reset, variations]);
 
     return (<>
         {isLoading &&

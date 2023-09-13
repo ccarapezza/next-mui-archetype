@@ -2,19 +2,27 @@
 import { withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server";
 
+/*
+{ id: 1, name: 'admin' },
+{ id: 2, name: 'user' },
+{ id: 3, name: 'client' },
+{ id: 4, name: 'marketing' },
+{ id: 5, name: 'sales' },
+{ id: 6, name: 'designer' }
+*/
+
 const urlAccess: { [key: string]: string[] } = {
     "/management": ["admin", "user"],
-    "/management/categories": ["admin", "user"],
+    "/management/categories": ["admin", "sales"],
     "/management/change-password": ["admin", "user"],
-    "/management/customers": ["admin", "user"],
-    "/management/email-templates": ["admin", "user"],
+    "/management/customers": ["admin", "sales", "marketing"],
+    "/management/email-templates": ["admin", "marketing"],
     "/management/my-profile": ["admin", "user"],
-    "/management/orders": ["admin", "user"],
-    "/management/products": ["admin", "user"],
-    "/management/send-emails": ["admin", "user"],
-    "/management/subscriber": ["admin", "user"],
+    "/management/orders": ["admin", "sales"],
+    "/management/products": ["admin", "sales"],
+    "/management/send-emails": ["admin", "marketing"],
+    "/management/subscriber": ["admin", "marketing"],
     "/management/users": ["admin"],
-    "/management/roles": ["admin"],
 }
 
 export default withAuth(

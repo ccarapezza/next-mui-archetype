@@ -3,11 +3,6 @@ import { Product, ProductItem, VariationOption } from '../../../../db';
 import { Op } from 'sequelize';
 import S3BucketUtil from '@/utils/S3BucketUtil';
 
-interface FormDataField {
-    name: string;
-    value: string;
-}
-
 export async function POST(request: NextRequest) {
     const requestJSON = await request.json();
     console.log("Request JSON", requestJSON);
@@ -18,22 +13,13 @@ export async function POST(request: NextRequest) {
         categoryId: requestJSON.categoryId,
     });
 
-    //move temp images to product folder
-    /*
-    const images: string[] | undefined = requestJSON.items.map((item: { images: string[]; }) => item.images).reduce((acc: string[], val: string[]) =>{
-        if(val&&val.length>0){
-            acc?.concat(val);
-        }
-        return acc;
-    }, [] as string[]);
-    */
-
     const productImages = requestJSON.items.map((item: { images: string[]; }) => item.images);
     productImages.forEach((image: string[]) => {
         if (image && image.length > 0) {
             image.forEach(async (i) => {
                 try {
                     await S3BucketUtil.renameFile({ oldKey: `${S3BucketUtil.FOLDERS.TEMP}/${i}`, newKey: `${S3BucketUtil.FOLDERS.PRODUCT_IMAGES}/${i}` });
+                    await S3BucketUtil.createThumbnail({ key: i, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES });
                 } catch (error) {
                     console.log("Error rename file", error);
                 }
