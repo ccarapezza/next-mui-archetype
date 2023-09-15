@@ -10,10 +10,7 @@ import { ContentState } from "react-draft-wysiwyg";
 export default function ProductHeader(props: { product: ProductDto | null, selectedItem: ProductItemDto }) {
   const { product, selectedItem } = props;
   let jsonObj = JSON.parse(product?.description?product?.description:"");
-  if(typeof jsonObj === "string"){
-    jsonObj = JSON.parse(jsonObj);
-  }
- 
+  
   const html = draftToHtml(convertToRaw(EditorState.createWithContent(convertFromRaw(jsonObj)).getCurrentContent()));
   const DescriptionDisplay = () => {
     return (<div className="text-tertiary reactWysiwygContainer" dangerouslySetInnerHTML={{ __html: html}}></div>)
