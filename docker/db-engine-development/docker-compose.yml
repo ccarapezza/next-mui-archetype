@@ -1,16 +1,16 @@
 version: "3.9"
 services:
   db-engine-development:
-    image: mariadb
+    image: mysql
     ports:
       - "${DOCKER_MYSQL_PORT}:3306"
     expose:
       - ${DOCKER_MYSQL_PORT}
     environment:
-      - MARIADB_ROOT_PASSWORD=${DOCKER_MYSQL_ROOT_PASSWORD}
-      - MARIADB_DATABASE=${DOCKER_MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DOCKER_MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DOCKER_MYSQL_DATABASE}
     volumes:
-      - mariadb-data-development:/var/lib/mysql
+      - mysql-data-development:/var/lib/mysql
 
 volumes:
-  mariadb-data-development:
+  mysql-data-development:
