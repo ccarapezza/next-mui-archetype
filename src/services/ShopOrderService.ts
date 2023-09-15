@@ -9,7 +9,7 @@ export class ShopOrderService extends GenericService<ShopOrder> {
     constructor() {
         super(ShopOrder);
     }
-    getPendingOrders = async (page: number = 1, size: number = 10) => {
+    getOrdersByStatus = async (statusId: number, page: number = 1, size: number = 10) => {
         const data = await findAllSequelizePagination(
             {
                 model: ShopOrder,
@@ -37,7 +37,7 @@ export class ShopOrderService extends GenericService<ShopOrder> {
                     }
                 ],
                 where: {
-                    statusId: 1
+                    statusId: statusId
                 },
                 order: [["createdAt", "DESC"]],
             }

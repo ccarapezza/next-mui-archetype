@@ -14,7 +14,7 @@ function UserDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?: a
     const columns: GridColDef[] = [
         {
             field: 'name',
-            headerName: 'Name',
+            headerName: 'Nombre de usuario',
             flex: 1
         },
         {
@@ -29,12 +29,12 @@ function UserDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?: a
         },
         {
             field: 'emailVerified',
-            headerName: 'Email Verified',
+            headerName: 'Cuenta verificada',
             headerAlign: 'center',
             flex: 1,
             cellClassName: 'flex justify-center',
             renderCell: (params: GridRenderCellParams) => {
-                return (<Chip className={`${params?.value ? "bg-green-500" : "bg-red-500"}  text-xs text-white`} label={params?.value ? 'Verified' : 'No'} />)
+                return (<Chip className={`${params?.value ? "bg-green-500" : "bg-red-500"}  text-xs text-white`} label={params?.value ? 'Verificado' : 'No verificado'} />)
             }
         },
         {

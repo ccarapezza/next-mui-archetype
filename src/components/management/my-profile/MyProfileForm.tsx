@@ -1,22 +1,33 @@
 "use client"
-import { faClose, faEnvelope, faRefresh, faSave, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faClose, faEnvelope, faKey, faRefresh, faSave, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Alert, Box, Button, Card, CardHeader, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Grid, IconButton, Stack, TextField, Typography } from '@mui/material'
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack';
 import * as yup from "yup";
 import { signOut } from 'next-auth/react';
 import MyProfileAvatarControl from './MyProfileAvatarControl'
 import { getRoleDataByName } from '@/utils/RoleDataUtil'
+import { DialogContext } from '../context/DialogContext'
 
 interface IMyProfileForm {
     name: string
 }
 
+interface IChangeEmailForm {
+    password: string,
+    email: string
+}
+
 const schema = yup.object({
     name: yup.string().min(3).max(20).required()
+}).required();
+
+const schemaChangeEmail = yup.object({
+    password: yup.string().min(3).max(20).required(),
+    email: yup.string().email().required()
 }).required();
 
 const saveProfile = async (profileData: any) => {
@@ -30,12 +41,35 @@ const saveProfile = async (profileData: any) => {
     return res.json();
 };
 
+const changeEmail = async (changeEmailData: any) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/my-profile/change-email`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(changeEmailData)
+    });
+    if(!res.ok){
+        if(res.status===401){
+            throw new Error("La contraseña actual no es correcta", { cause: "currentPassword" });
+        }
+        throw new Error("Error cambiando el email");
+    }
+    return res.json();
+}
+
 export default function MyProfileForm({ myProfileData }: { myProfileData: any }) {
     const [loading, setLoading] = useState(false);
+    const [openChangeEmailDialog, setOpenChangeEmailDialog] = useState<boolean>(false);
     const { enqueueSnackbar } = useSnackbar();
+    const { showConfirm } = useContext(DialogContext);
 
     const { register, handleSubmit, formState: { errors } } = useForm<IMyProfileForm>({
         resolver: yupResolver(schema)
+    });
+
+    const { register: registerChangeEmail, handleSubmit: handleSubmitChangeEmail, formState: { errors: errorsChangeEmail }, setError } = useForm<IChangeEmailForm>({
+        resolver: yupResolver(schemaChangeEmail)
     });
 
     const onSubmit = async (data: IMyProfileForm) => {
@@ -48,6 +82,24 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
         }).finally(() => {
             setLoading(false);
         });
+    };
+
+    const onSubmitHandleChangeEmail = async (data: IChangeEmailForm) => {
+        showConfirm("Confirmar cambio de email", "¿Estás seguro que deseas cambiar tu email?", () => {
+            setLoading(true);
+            changeEmail(data).then((response) => {
+                enqueueSnackbar("Email actualizado correctamente", { variant: 'success' });
+                signOut();
+            }).catch((err: any) => {
+                if(err.cause==="currentPassword"){
+                    setError("password", { message: err.message });
+                }
+                enqueueSnackbar(err.message, { variant: 'error' });
+                console.log("err", err);
+            }).finally(() => {
+                setLoading(false);
+            });
+        },() => { });
     };
 
     useEffect(() => {
@@ -92,7 +144,7 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
                     </Grid>
                     <Grid item xs={12} className='flex flex-row justify-end items-center gap-2'>
                         <Button type='submit' startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" disabled={loading}>
-                            Save
+                            Guardar
                         </Button>
                     </Grid>
                 </Grid>
@@ -104,31 +156,52 @@ export default function MyProfileForm({ myProfileData }: { myProfileData: any })
                 <Typography variant='body2'>
                     Si necesitas cambiar tu email deberas volver a verificar tu cuenta. La sesión actual se cerrará.
                     <Box className="w-full flex justify-center">
-                        <Button variant="contained" color="inherit" className='mr-4 mt-4' startIcon={<><FontAwesomeIcon icon={faRefresh} /></>} disabled={loading}>
+                        <Button variant="contained" color="inherit" className='mr-4 mt-4' startIcon={<><FontAwesomeIcon icon={faRefresh} /></>} disabled={loading} onClick={() => { setOpenChangeEmailDialog(true) }}>
                             Cambiar email
                         </Button>
                     </Box>
                 </Typography>
             </Alert>
         </Card>
-        <Dialog open={false} onClose={() => {}}>
-            <form onSubmit={() => {}} >
+        <Dialog open={openChangeEmailDialog} onClose={() => { setOpenChangeEmailDialog(false) }} maxWidth='xs' fullWidth>
+            <form onSubmit={handleSubmitChangeEmail(onSubmitHandleChangeEmail)}>
                 <DialogTitle className='flex justify-between items-center my-0 py-1'>
                     <Typography component="small">
                         Cambiar email
                     </Typography>
-                    <IconButton onClick={() => {  }} className='text-gray-500'>
+                    <IconButton onClick={() => {setOpenChangeEmailDialog(false) }}>
                         <FontAwesomeIcon icon={faClose} />
                     </IconButton>
                 </DialogTitle>
                 <Divider />
                 <DialogContent className="flex flex-col items-center justify-center">
+                    <Alert severity="warning" className='w-full'>
+                        <Typography variant='body2'>
+                            Si necesitas cambiar tu email deberas volver a verificar tu cuenta. La sesión actual se cerrará.
+                        </Typography>
+                    </Alert>
+                    <Alert severity="info" className='w-full mt-4'>
+                        <Typography variant='body2'>
+                            Ingresa tu contraseña actual y el nuevo email.
+                        </Typography>
+                    </Alert>
                     <TextField
+                        {...registerChangeEmail("password")}
+                        type='password'
+                        className='w-full mt-4'
+                        size='small'
+                        label="Contraseña actual"
+                        InputProps={{
+                            startAdornment: (
+                                <FontAwesomeIcon icon={faKey} className='m-0 pr-2 text-gray-600'/>
+                            ),
+                        }} />
+                    <TextField
+                        {...registerChangeEmail("email")}
                         type='email'
                         className='w-full mt-4'
                         size='small'
                         label="Email"
-                        defaultValue={myProfileData?.email}
                         InputProps={{
                             startAdornment: (
                                 <FontAwesomeIcon icon={faEnvelope} className='m-0 pr-2 text-gray-600'/>

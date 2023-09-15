@@ -7,7 +7,7 @@ import OrderDialog from '@/components/management/orders/OrderDialog';
 import CurrencyDisplay from '@/components/management/product/CurrencyDisplay';
 import { OrderStatus } from '@/schemas/orderStatus';
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRightFromFile, faCheckToSlot, faClose, faCopy, faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromFile, faCheckToSlot, faClose, faCopy, faEnvelope, faMagnifyingGlass, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Button, Chip, Dialog, DialogContent, DialogTitle, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { GridColDef, GridRenderCellParams, GridValueFormatterParams } from '@mui/x-data-grid';
@@ -41,39 +41,21 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
     const router = useRouter();
     const { showConfirm } = useContext(DialogContext);
 
-    
-
-    const handleMoveToPaymentAcceptedStatus = async (shopOrderId: any) => {
-
-        showConfirm("Confirmar Pago", "Estás seguro que deseas confirmar el pago?", () => {
-            setLoading(true)
-            moveToPaymentAcceptedStatus(shopOrderId).then(()=>{
-                enqueueSnackbar('Pedido actualizado correctamente', {variant: 'success'})
-                router.refresh();
-                setSelected(null)
-            }).catch(()=>{
-                enqueueSnackbar('Error al actualizar el pedido', {variant: 'error'})
-            }).finally(()=>{
-                setLoading(false)
-            });
-        },() => {
-
-        });
-    }
-
     //SELECTED ROWS
     const [selected, setSelected] = useState<any>(null);
     const columns: GridColDef[] = [
         ...DefaultOrderDataGridColumns.columns,
         {
             field: "actions",
-            headerName: "Actions",
+            headerName: "Acciones",
+            align: 'center',
+            headerAlign: 'center',
             flex: 1,
             renderCell: (params: GridRenderCellParams) => {
                 return <>
-                    <Tooltip title="Procesar pedido" placement='top'>
+                    <Tooltip title="Ver detalles del pedido" placement='top'>
                         <IconButton size='small' onClick={(e) => {setSelected(params.row)}}>
-                            <FontAwesomeIcon fixedWidth icon={faArrowRightFromFile} />
+                            <FontAwesomeIcon fixedWidth icon={faMagnifyingGlass} />
                         </IconButton>
                     </Tooltip>
                 </>
@@ -86,7 +68,7 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
             <LoadingBlocker />
         }
         <OrderDialog open={selected?true:false} order={selected} onClose={()=>{setSelected(null)}} actionsButtons={[
-            {label: 'Confirmar Pago', icon: faCheckToSlot, onAction: (order: any)=>{handleMoveToPaymentAcceptedStatus(order.id)}},
+            {label: 'Cerrar', icon: faClose, onAction: (order: any)=>{setSelected(null)}, className: 'bg-red-500 hover:bg-red-600 text-white'},
         ]}/>
         <MuiDataGrid loading={loading} columns={columns} rows={rows} rowCount={rowCount} />
     </>)

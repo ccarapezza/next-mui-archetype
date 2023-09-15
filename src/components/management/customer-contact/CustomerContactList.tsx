@@ -34,7 +34,7 @@ export default function CustomerContactLit({ columns, rows }: { columns: GridCol
 
     return (
         <Box>
-            {rows.length === 0 ? <div className="flex justify-center items-center h-40 max-w-screen-xl">No tienes preguntas frecuentes</div>
+            {rows.length === 0 ? <div className="flex justify-center items-center">No tienes mensajes de clientes</div>
                 :
                 <DataGrid
                     rows={rows}

@@ -11,7 +11,7 @@ interface FilterState {
     selectedPrice: { from: string; to: string };
 }
 
-export default function ProductFilters(props: { categoryTree: any, categoryTitle: string, varationsDTO: any }) {
+export default function ProductFilters(props: { categoryTree: any, categoryTitle: string | null, varationsDTO: any }) {
     // Porps
     const { categoryTree, categoryTitle, varationsDTO } = props;
 

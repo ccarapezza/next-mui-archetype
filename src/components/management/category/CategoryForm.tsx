@@ -37,7 +37,10 @@ const saveCategoryData = async (categoryData: any) => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(categoryData)
+        body: JSON.stringify({
+            name: categoryData.name,
+            parentId: categoryData.parentId?categoryData.parentId:null
+        })
     });
     return res.json();
 };
@@ -68,6 +71,7 @@ export default function CategoryForm({ categoryData, title, onSaveComplete }: { 
             router.push('/management/categories');
             router.refresh();//Need to refresh the page to get the updated data
         }).catch((err: any) => {
+            enqueueSnackbar(categoryData?.id ? 'Update error!' : 'Create error!', { variant: 'error' });
             console.log("err", err);
         }).finally(() => {
             setLoading(false);
@@ -96,7 +100,7 @@ export default function CategoryForm({ categoryData, title, onSaveComplete }: { 
                 </Grid>
                 <Grid item xs={12} className='flex flex-row justify-end items-center gap-2'>
                     <Button type='submit' startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" disabled={loading}>
-                        Save
+                        Guardar
                     </Button>
                 </Grid>
             </Grid>

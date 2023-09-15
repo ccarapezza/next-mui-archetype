@@ -7,10 +7,10 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { faP, faPaintBrush, faSave, faScrewdriverWrench, faUser, faUserTie } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Card, Checkbox, Chip, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material'
+import { Avatar, Button, Card, Checkbox, Chip, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
-import React, { use, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from "yup";
 
@@ -76,6 +76,12 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
         setUserRoles(newChecked);
     }
 
+    useEffect(() => {
+        if(userData?.roles){
+            setUserRoles(userData.roles);
+        }
+    }, [userData]);
+
     console.log("data", userData);
     const onSubmit = async (data: IUserForm) => {
         setLoading(true);
@@ -97,16 +103,14 @@ export default function UserForm({ userData, roles, preSelectedRoles }: { userDa
             setLoading(false);
         });
     };
-
     
-
     return (<Card variant='outlined' className='max-w-full lg:max-w-2xl'>
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container padding={2} gap={2}>
                 {userData.id &&
                     <>
                         <Grid item xs={12} className='flex flex-row justify-center items-center'>
-                            <AvatarUploadModal src={userData.image} />
+                            <Avatar alt={userData.name} src={userData.image} className='w-32 h-32' />
                         </Grid>
                         <Grid item xs={12} className='flex flex-row items-center gap-2'>
                             <Typography className='font-bold'>ID</Typography><Chip label={userData.id} />

@@ -2,7 +2,7 @@
 import ProductFilters from '@/components/store/plp/ProductFilters';
 import ProductGridList from '@/components/store/plp/ProductGridList';
 import ProductPageHeader from '@/components/store/plp/ProductPageHeader';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams, useParams } from 'next/navigation';
 
 
 
@@ -12,21 +12,19 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
   
   // Rutas
   const pathname = usePathname();
+  const params = useParams()
 
-  const segments = pathname.split('/');
-  const categoryUrlName = segments[segments.length - 1];
-
+  const categoriesParams = params.name;
   // Props
   const { categoryTree, listProducts, varations } = props;
-
 
   return (
     <section>
       <div className="max-w-screen-2xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-        <ProductPageHeader categoryTitle={categoryUrlName}/>
+        <ProductPageHeader categoryTitle={categoriesParams?.length?categoriesParams[categoriesParams?.length-1]:null}/>
         <div className='flex flex-col mt-8 lg:flex-row'>
           <div className='w-full lg:w-1/5 px-2'>
-            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryUrlName} varationsDTO={varations}/>
+            <ProductFilters categoryTree={categoryTree} categoryTitle={categoriesParams?.length?categoriesParams[categoriesParams?.length-1]:null} varationsDTO={varations}/>
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
             {

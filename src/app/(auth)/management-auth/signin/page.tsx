@@ -5,7 +5,6 @@ import ManagementSingInHeader from '@/components/auth/providers/ManagementSingIn
 export default async function SignInPage() {
 
     return (<Suspense>
-        <ManagementSingInHeader />
         <ManagementSignIn />
     </Suspense>)
 }

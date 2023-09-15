@@ -1,12 +1,16 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { IconButton, Box, Typography, Dialog, Button, Tooltip } from '@mui/material';
 import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSquare, faSquareMinus, faSquarePlus } from '@fortawesome/free-regular-svg-icons';
-import { faCircle, faCircleDot, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faCircleDot, faPlus, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
 import CategoryForm from './CategoryForm';
 import { ProductCategoryDto } from '@/schemas/category';
+import { DialogContext } from '../context/DialogContext';
+import { enqueueSnackbar } from 'notistack';
+import LoadingBlocker from '@/components/client/LoadingBlocker';
+import { useRouter } from 'next/navigation';
 
 const SquareXmarkIcon = () => {
     return (
@@ -17,9 +21,22 @@ const SquareXmarkIcon = () => {
     );
 }
 
+const deleteCategory = async (id: number) => {
+    const deteleResponse = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/category/${id}`, {
+        method: 'DELETE',
+    });
+    if (!deteleResponse.ok) {
+        throw new Error("Error al obtener la url de subida");
+    }
+    return await deteleResponse.json();
+}
+
 const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
     const [selectedCategory, setSelectedCategory] = useState<ProductCategoryDto | null>(null);
     const [createSubCategory, setCreateSubCategory] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const { showConfirm } = useContext(DialogContext);
+    const router = useRouter();
     
     const CustomContent = React.forwardRef(function CustomContent(
         props: TreeItemContentProps,
@@ -99,10 +116,28 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
     function CustomTreeItem(props: TreeItemProps) {
         return <TreeItem ContentComponent={CustomContent} {...props} />;
     }
+
+    const deleteCategoryAction = async (id: number) => {
+        showConfirm(
+            "Eliminar Categoría",
+            "¿Desea eliminar la categoría?",
+            () => {
+                setLoading(true);
+                deleteCategory(id).then((data) => {
+                    enqueueSnackbar('Categoría eliminada con éxito!', { variant: 'success' });
+                    router.refresh();
+                }).catch((error) => {
+                    enqueueSnackbar('No se pudo eliminar la categoría!', { variant: 'error' });
+                }).finally(() => {
+                    setLoading(false);
+                });
+            },
+            () => { }
+        );
+    }
     
     const recursiveTree = (categories: ProductCategoryDto[]) => {
         return categories.map((category, index) => {
-            console.log("category", category);
             if (category.childrens) {
                 return (
                     <CustomTreeItem
@@ -112,12 +147,17 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
                             <Box className="py-2">
                                 <Tooltip title="Crear Sub Categoria" arrow>
                                     <IconButton className='mx-2 drop-shadow-lg bg-gray-100 border-2' onClick={(e) => { e.stopPropagation(); setSelectedCategory(category); setCreateSubCategory(true) }}>
-                                        <FontAwesomeIcon icon={faPlus} />
+                                        <FontAwesomeIcon icon={faPlus} fixedWidth/>
                                     </IconButton>
                                 </Tooltip>
                                 <IconButton className='mx-2 bg-gray-100 shadow-md border-2' onClick={(e) => { e.stopPropagation(); setSelectedCategory(category); setCreateSubCategory(false) }}>
-                                    <FontAwesomeIcon icon={faEdit} />
+                                    <FontAwesomeIcon icon={faEdit} fixedWidth/>
                                 </IconButton>
+                                {!category.childrens.length &&
+                                    <IconButton className='mx-2 bg-gray-100 shadow-md border-2' onClick={(e) => { e.stopPropagation(); deleteCategoryAction(category.id) }}>
+                                        <FontAwesomeIcon icon={faTrash} className='text-red-600' fixedWidth/>
+                                    </IconButton>
+                                }
                             </Box>
                         </div>}
                         key={category.id}
@@ -157,7 +197,10 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
         return result;
     }
 
-    return (
+    return (<>
+        {loading &&
+            <LoadingBlocker />
+        }
         <div className="p-4 w-full max-w-2xl">
             <TreeView
                 defaultExpanded={['root']}
@@ -173,10 +216,10 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
                 <Button variant="contained" color="primary" fullWidth startIcon={<FontAwesomeIcon icon={faPlus} />} onClick={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }); setCreateSubCategory(false) }}>Crear Categoría Principal</Button>
             </div>
             <Dialog open={selectedCategory !== null} onClose={() => { setSelectedCategory(null) }}>
-                <CategoryForm onSaveComplete={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }) }} categoryData={createSubCategory ? { name: "", parentId: selectedCategory?.id } : selectedCategory} title={createSubCategory ? "Crear Sub Categoria de " + selectedCategory?.name : (selectedCategory?.id) ? "Editar Categoría" : "Crear Categoria Principal"} />
+                <CategoryForm onSaveComplete={() => { setSelectedCategory({ id: 0, name: "", parentId: 0, parent: null }) }} categoryData={createSubCategory ? { name: "", parentId: selectedCategory?.id } : selectedCategory} title={createSubCategory&&selectedCategory ? "Crear Sub Categoria de " + selectedCategory?.name : (selectedCategory?.id) ? "Editar Categoría" : "Crear Categoria Principal"} />
             </Dialog>
         </div>
-    );
+    </>);
 };
 
 export default CategoryTree;

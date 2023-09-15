@@ -378,9 +378,7 @@ const ProductForm = ({ categories, variations: initialVariations, editProduct }:
                                         const variant = variations.find((variation) => {
                                             return variation.id === idValue;
                                         });
-                                        return (<>
-                                            <Chip variant='outlined' size='small' key={`${variant?.id}-${variant?.name}-selected-variants`} label={variant?.name} />
-                                        </>)
+                                        return (<Chip variant='outlined' size='small' key={`${variant?.id}-${variant?.name}-selected-variants`} label={variant?.name} />)
                                     })}
                                 </Box>
                             )}
@@ -399,7 +397,7 @@ const ProductForm = ({ categories, variations: initialVariations, editProduct }:
                     </FormControl>
                 </>}
                 {hasVariants && variantsSelected.length > 0 && fields.map((variant, itemIndex) => (
-                    <div key={itemIndex} className="mt-2">
+                    <div key={"has-variant-"+variant.id+""+itemIndex} className="mt-2">
                         {!editProduct?
                             <Divider className='border border-t-green-500'><Chip variant='filled' color='primary' label={`Item #${itemIndex + 1}`} className='font-bold' /></Divider>
                         :

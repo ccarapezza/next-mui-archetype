@@ -10,6 +10,14 @@ export class UserService extends GenericService<User> {
     constructor() {
         super(User);
     }
+    getByIdWithInclude = async (id: string, include: any[]) => {
+        return await User.findOne({
+            where: {
+                id
+            },
+            include
+        });
+    }
     getByEmail = async (email: string) => {
         return await User.findOne({
             where: {

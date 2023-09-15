@@ -51,7 +51,7 @@ export default function ProductItemImages({defaultFiles = [], onChange, name, se
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if(defaultFiles){
+        if(defaultFiles&&defaultFiles.length>0){
             const processImages = async (images: ImageProductDto[]) => {
                 return await Promise.all(images.map(async (image, index) => {
                     const response = await fetch(image.url);

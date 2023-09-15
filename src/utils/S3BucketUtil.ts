@@ -40,6 +40,7 @@ async function createThumbnail({ key, folder = '', targetFolder = '' }: { key: s
     const res = await result.Body?.transformToByteArray();
     if(res){
         const blob = new Blob([res], { type: result.ContentType });
+        const fileReader = new FileReader();
         const compressBlob = await compressAccurately(blob, {
             size: thumbnailSizeOnKb,
             accuracy: 0.9,

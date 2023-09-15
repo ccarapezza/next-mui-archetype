@@ -22,7 +22,7 @@ export default async function NewProductPage() {
     });
     
     return (<>
-        <PageHeader title="New Product" />
+        <PageHeader title="Nuevo producto" />
         <MuiBox className="px-4 pt-8 flex justify-center">
             <ProductForm categories={categories} variations={variations}/>
         </MuiBox>

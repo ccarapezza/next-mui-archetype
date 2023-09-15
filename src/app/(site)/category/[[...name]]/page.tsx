@@ -49,14 +49,17 @@ export default async function SiteCategoryPage(props: { params: any, searchParam
             }
         }
     }
-    console.log('FILTROS API', filters);
-
-
+    
+    
     const categoryTree = await fetchCategoryData();
     const listProducts = await fetchProductData(filters);
     const varations = await fetchVariationData();
+    console.log('params', props.params);
+    console.log('searchParams', props.searchParams);
 
-    return (
+    return (<>
+
         <ProductListMain categoryTree={categoryTree} listProducts={listProducts.rows} varations={varations} />
+    </>
     )
 }

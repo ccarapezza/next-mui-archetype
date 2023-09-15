@@ -7,6 +7,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSnackbar } from 'notistack';
 import * as yup from "yup";
+import { signOut } from 'next-auth/react';
 
 interface IChangePasswordForm {
     currentPassword: string,
@@ -22,13 +23,23 @@ const schema = yup.object({
 
 const updateChangePasswordData = async (changePasswordData: any) => {
     console.log("changePasswordData", changePasswordData);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/changePassword/${changePasswordData.id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/my-profile/change-password`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(changePasswordData)
+        body: JSON.stringify({
+            currentPassword: changePasswordData.currentPassword,
+            newPassword: changePasswordData.newPassword
+        })
     });
+    if(!res.ok){
+        if(res.status===401){
+            throw new Error("La contraseña actual no es correcta", { cause: "currentPassword" });
+        }
+
+        throw new Error("Error cambiando la contraseña");
+    }
     return res.json();
 };
 
@@ -36,22 +47,29 @@ export default function ChangePasswordForm() {
     const [loading, setLoading] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<IChangePasswordForm>({
+    const { register, handleSubmit, formState: { errors }, setError } = useForm<IChangePasswordForm>({
         resolver: yupResolver(schema)
     });
 
     const onSubmit = async (data: IChangePasswordForm) => {
-        setLoading(true);
         if (data.newPassword !== data.confirmPassword) {
             enqueueSnackbar("Las contraseñas no coinciden", { variant: 'error' });
+            setError("confirmPassword", { });
+            setError("newPassword", { });
             return;
         }
+        setLoading(true);
         updateChangePasswordData({
             currentPassword: data.currentPassword,
             newPassword: data.newPassword
         }).then((response) => {
-            enqueueSnackbar("Password changed successfully", { variant: 'success' });
+            enqueueSnackbar("La contraseña se cambió correctamente", { variant: 'success' });
+            signOut();
         }).catch((err: any) => {
+            if(err.cause==="currentPassword"){
+                setError("currentPassword", { message: err.message });
+            }
+            enqueueSnackbar(err.message, { variant: 'error' });
             console.log("err", err);
         }).finally(() => {
             setLoading(false);
