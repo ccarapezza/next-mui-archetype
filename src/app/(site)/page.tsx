@@ -27,3 +27,5 @@ export default async function Home() {
         </>)
         ;
 }
+//5 minutes
+export const revalidate = 300;

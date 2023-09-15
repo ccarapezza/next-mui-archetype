@@ -13,3 +13,5 @@ export default async function FaqManagment() {
     <FaqMain faqListDto={faqListDto} />
   </>)
 }
+
+export const dynamic = 'force-dynamic';

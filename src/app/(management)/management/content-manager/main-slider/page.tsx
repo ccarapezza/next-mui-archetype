@@ -40,3 +40,5 @@ export default async function MainSliderPage() {
         </Box>
     </>)
 }
+
+export const dynamic = 'force-dynamic';

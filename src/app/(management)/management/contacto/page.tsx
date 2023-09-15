@@ -54,3 +54,5 @@ export default async function CustomerContactPage() {
         </MuiBox>
     </>)
 }
+
+export const dynamic = 'force-dynamic';

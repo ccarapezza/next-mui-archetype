@@ -10,3 +10,5 @@ export default function CustomersPage() {
         </MuiBox>
     </>)
 }
+
+export const dynamic = 'force-dynamic';

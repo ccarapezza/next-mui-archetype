@@ -33,3 +33,5 @@ export default function ImagesHomePage() {
     </Box>
   </>)
 }
+
+export const dynamic = 'force-dynamic';
