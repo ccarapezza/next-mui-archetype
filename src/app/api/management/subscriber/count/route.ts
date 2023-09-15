@@ -5,3 +5,5 @@ export async function GET(request: NextRequest) {
     const subscribers = await Subscriber.count();
     return NextResponse.json(subscribers);
 }
+
+export const dynamic = 'force-dynamic'

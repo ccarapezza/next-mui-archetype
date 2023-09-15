@@ -8,6 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react"
 import { Alert } from '@mui/material'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faScrewdriverWrench } from '@fortawesome/free-solid-svg-icons'
+import LoadingBlocker from '../client/LoadingBlocker'
 
 interface ISignInManagementForm {
     username: string,
@@ -22,6 +25,7 @@ const schema = yup.object({
 }).required();
 
 export default function ManagementSignIn() {
+    const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter();
     
     const [errorParam, setErrorParam] = useState("");
@@ -32,8 +36,10 @@ export default function ManagementSignIn() {
     });
 
     const onSubmit = async (data: ISignInManagementForm) => {
+        setLoading(true);
         setErrorParam("");
         const res = await signIn("credentials", { username: data.username, password: data.password, management: true, redirect: false })
+        setLoading(false);
         console.log(res);
         if(res?.error){
             setErrorParam(res.error);
@@ -73,16 +79,19 @@ export default function ManagementSignIn() {
                     {getMessageByErrorKey(errorParam)}
                 </Alert>
             }
-            <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
+            {loading &&
+                <LoadingBlocker />
+            }
+            <div className="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700 drop-shadow-lg">
                 <div className="p-4 sm:p-7">
-                    <h1 className="text-xl text-center font-semibold mb-4">Iniciar sesión</h1>
+                    <h1 className="text-xl text-center font-semibold mb-4"><FontAwesomeIcon icon={faScrewdriverWrench} /> Iniciar sesión</h1>
                     <div className="mt-5">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input hidden value={"true"} {...register("management")} />
                         <div className="grid gap-y-4">
 
                             <div>
-                                <label htmlFor="username" className="block text-sm mb-2 text-tertiary">Email</label>
+                                <label htmlFor="username" className="block text-sm mb-2 text-tertiary">Usuario</label>
                                 <div className="relative">
                                     <input {...register("username")} type="text" id="username" name="username" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="email-error" />
                                     <div className="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">

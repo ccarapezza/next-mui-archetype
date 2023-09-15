@@ -6,6 +6,11 @@ import bcrypt from 'bcryptjs';
 import { User, VerificationToken } from "@/db";
 import EmailUtil from "@/utils/EmailUtil";
 import { Op } from "sequelize";
+import S3BucketUtil from "@/utils/S3BucketUtil";
+
+const ROLE_NAME_ALLOWED_MANAGEMENT = "user";
+const ROLE_NAME_ADMIN = "admin";
+const ROLE_CLIENT = "client";
 
 export const authOptions: NextAuthOptions = {
     adapter,
@@ -31,10 +36,10 @@ export const authOptions: NextAuthOptions = {
                 console.log("Authorizing...", credentials);
 
                 //Management login
-                if(credentials?.management==="true"){
+                if (credentials?.management === "true") {
 
                     //is dev environment and user "admin" not exists, create it
-                    if(process.env.NODE_APP_ADMIN_USER){
+                    if (process.env.NODE_APP_ADMIN_USER) {
                         const existingUser = await User.findOne({
                             where: {
                                 name: process.env.NODE_APP_ADMIN_USER
@@ -51,45 +56,63 @@ export const authOptions: NextAuthOptions = {
                             });
                             const adminRole = await Role.findOne({
                                 where: {
-                                    name: "admin"
+                                    name: ROLE_NAME_ADMIN
                                 }
                             });
-                            if(adminRole){
+                            if (adminRole) {
                                 await userCreated.addRole(adminRole);
+                            }
+                            const allowedRole = await Role.findOne({
+                                where: {
+                                    name: ROLE_NAME_ALLOWED_MANAGEMENT
+                                }
+                            });
+                            if (allowedRole) {
+                                await userCreated.addRole(allowedRole);
                             }
                         }
                     }
 
-                    const user = await User.findOne({
+                    console.log("credentials", credentials);
+
+                    const user = (await User.findOne({
                         include: ["roles"],
                         where: {
                             name: credentials?.username
                         }
-                    });
-    
-                    if(!user){
-                        return null;
-                    }
-    
-                    const adminRol = user.roles?.find((role: any) => role.name === "admin");
-                    if(!adminRol){
+                    }))?.toJSON();
+
+                    if (!user) {
                         return null;
                     }
 
+                    const allowedRol = user.roles?.find((role: any) => role.name === ROLE_NAME_ALLOWED_MANAGEMENT);
+
+
+                    if (!allowedRol) {
+                        return null;
+                    }
+                    
                     if (user && bcrypt.compareSync(credentials?.password!, user?.password!)) {
-                        if(user.emailVerified === null){
+                        console.log("user", user, bcrypt.compareSync(credentials?.password!, user?.password!));
+                        if (user.emailVerified === null) {
                             throw new Error("EmailNotVerified");
                         }
-                        // Any object returned will be saved in `user` property of the JWT
-                        const userJson = user.toJSON();
-    
+
+                        if(user?.image){
+                            user.image = await S3BucketUtil.getSignedUrlByKey({
+                                folder: S3BucketUtil.FOLDERS.AVATARS,
+                                key: user.image,
+                            });
+                        }
+
                         return {
-                            id: userJson.id,
-                            name: userJson.name,
-                            email: userJson.email,
-                            image: userJson.image,
-                            emailVerified: userJson.emailVerified,
-                            roles: userJson.roles?.map((role: any) => role.name)
+                            id: user.id,
+                            name: user.name,
+                            email: user.email,
+                            image: user.image,
+                            emailVerified: user.emailVerified,
+                            roles: user.roles?.map((role: any) => role.name)
                         };
                     } else {
                         // If you return null then an error will be displayed advising the user to check their details.
@@ -98,32 +121,39 @@ export const authOptions: NextAuthOptions = {
                         // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                     }
 
-                //Client login
-                }else{
+                    //Client login
+                } else {
                     const user = await User.findOne({
                         include: ["roles"],
                         where: {
                             name: credentials?.username
                         }
                     });
-    
-                    if(!user){
+
+                    if (!user) {
                         return null;
                     }
 
                     //check if user is a client
-                    const clientRol = user.roles?.find((role: any) => role.name === "client");
-                    if(!clientRol){
+                    const clientRol = user.roles?.find((role: any) => role.name === ROLE_CLIENT);
+                    if (!clientRol) {
                         return null;
                     }
-    
+
                     if (user && bcrypt.compareSync(credentials?.password!, user?.password!)) {
-                        if(user.emailVerified === null){
+                        if (user.emailVerified === null) {
                             throw new Error("EmailNotVerified");
                         }
                         // Any object returned will be saved in `user` property of the JWT
                         const userJson = user.toJSON();
-    
+
+                        if(userJson?.image){
+                            userJson.image = await S3BucketUtil.getSignedUrlByKey({
+                                folder: S3BucketUtil.FOLDERS.AVATARS,
+                                key: userJson.image,
+                            });
+                        }
+
                         return {
                             id: userJson.id,
                             name: userJson.name,
@@ -218,29 +248,16 @@ export const authOptions: NextAuthOptions = {
         },
         session({ session, token }) {
             /* Step 2: update the session.user based on the token object */
-            /*
             if (token && session.user) {
-              session.user.role = token.role;
+                session.user.roles = token.roles;
             }
-            */
             return session;
         },
-
-
-
-        /*session: async (session, user) => {
-          session.id = user.id;
-          return Promise.resolve(session);
-        },*/
         async signIn({ user, account, profile, email, credentials }) {
-            //console.log("########-signIn", user, account, profile, email, credentials);
             const userInstance = user as User;
 
-            console.log("LOGIIIIIIIIIIIIIIIIN", account?.provider);
-            console.log({ user, account, profile, email, credentials });
-
             //check if a user try to login with google account and user not exists
-            if(account?.provider === "google" && userInstance.createdAt===undefined) {
+            if (account?.provider === "google" && userInstance.createdAt === undefined) {
                 const existingUser = await User.findOne({
                     where: {
                         [Op.or]: [
@@ -252,7 +269,7 @@ export const authOptions: NextAuthOptions = {
                 if (existingUser) {
                     //if user exists, create a new account for this provider
                     console.log("existingUser", existingUser);
-                    if(existingUser.password){
+                    if (existingUser.password) {
                         await Account.create({
                             ...account,
                             userId: existingUser.id
@@ -294,29 +311,18 @@ export const authOptions: NextAuthOptions = {
                 return "/verify-email?verification-sended=true";
             }
 
-            if(userInstance.emailVerified === null){
+            if (userInstance.emailVerified === null) {
                 throw new Error("EmailNotVerified");
             }
-            
+
             return true;
         },
         async redirect({ url, baseUrl }) {
-            console.log("########-redirect", url, baseUrl);
             if (url.startsWith("/management")) {
                 return Promise.resolve(url);
             }
             return Promise.resolve(baseUrl);
         },
-        /*
-        async jwt({ token, user, account, profile, isNewUser }) {
-          console.log("########-jwt", token, user, account, profile, isNewUser);
-          return token
-        },
-        async session({ session, user, token}) {
-          console.log("########-session", session, user, token);
-          return session
-        }
-        */
     },
 
     // Events are useful for logging

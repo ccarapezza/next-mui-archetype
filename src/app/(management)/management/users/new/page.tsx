@@ -12,11 +12,11 @@ export default async function NewUserPage({ params }: { params: { id: string } }
         image: "",
     }
 
-    const availableRoles = roles.filter(role => role.name.toLocaleLowerCase() !== "user");
+    const availableRoles = roles.filter(role => role.name.toLocaleLowerCase() !== "user" && role.name.toLocaleLowerCase() !== "client");
     const preSelectedRoles = roles.filter(role => role.name.toLocaleLowerCase() === "user");
 
     return (<>
-        <PageHeader title="New User" />
+        <PageHeader title="Nuevo Usuario" />
         <MuiBox className="px-4 pt-8 flex justify-center">
             <UserForm roles={availableRoles} preSelectedRoles={preSelectedRoles} userData={initialData} />
         </MuiBox>

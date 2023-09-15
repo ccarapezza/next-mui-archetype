@@ -21,7 +21,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
     return (<>
         <PageHeader title="Products" />
         <MuiBox className="py-2 px-10">
-            <EntityTableToolbar newButtonLabel="Create new Product" newEntityPath="/management/products/new"/>
+            <EntityTableToolbar newButtonLabel="Crear nuevo producto" newEntityPath="/management/products/new"/>
             <ProductDataGrid rows={data.rows} rowCount={data.totalItems} editPath="/management/products/edit" deletePath="/api/management/product/"/>
         </MuiBox>
     </>)

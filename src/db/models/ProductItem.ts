@@ -23,8 +23,8 @@ export default class ProductItem extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   public stock!: number;
 
-  @Column({ type: DataType.STRING, allowNull: true })
-  public image?: string;
+  @Column({ type: DataType.JSON, allowNull: true, get: function () { return this.getDataValue('image')?JSON.parse(this.getDataValue('image')):[]; } })
+  public image?: string[];
 
   @Column({ type: DataType.NUMBER, allowNull: false })
   public price!: number;

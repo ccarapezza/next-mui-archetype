@@ -7,8 +7,7 @@ import ReactCrop, { centerCrop, makeAspectCrop, Crop, PixelCrop } from 'react-im
 import 'react-image-crop/dist/ReactCrop.css'
 import { canvasPreview } from './crop/canvasPreview';
 import Image from 'next/image';
-import {compressAccurately} from 'image-conversion';
-import { EImageType } from 'lib-image-conversion';
+import { compressAccurately, EImageType } from 'image-conversion';
 
 // This is to demonstate how to make and center a % aspect crop
 // which is a bit trickier so we use some helper functions.
@@ -32,15 +31,27 @@ function centerAspectCrop(
     )
 }
 
-export default function ImageCropEditor({ file, setFormatedFile }: { file: File, setFormatedFile: Function }) {
-    const [imgSrc, setImgSrc] = useState('')
-    const imgRef = useRef<HTMLImageElement>(null)
-    const previewCanvasRef = useRef<HTMLCanvasElement>(null)
-    const [crop, setCrop] = useState<Crop>()
-    const [completedCrop, setCompletedCrop] = useState<PixelCrop>()
-    const [scale, setScale] = useState(1)
-    const [rotate, setRotate] = useState(0)
-    const [aspect, setAspect] = useState<number | undefined>(1 / 1);
+export default function ImageCropEditor({
+    file,
+    setFormatedFile,
+    minWidth = 10,
+    minHeight = 10,
+    compressedWidth = 548,
+    compressedHeight = 850,
+    compressedSizeOnKb = 60,
+}: { file: File, setFormatedFile: Function, minWidth?: number, minHeight?: number, compressedWidth?: number, compressedHeight?: number, compressedSizeOnKb?: number }) {
+    const [imgSrc, setImgSrc] = useState('');
+    const imgRef = useRef<HTMLImageElement>(null);
+    const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+    const [crop, setCrop] = useState<Crop>();
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
+    const [scale, setScale] = useState(1);
+    const [rotate, setRotate] = useState(0);
+    const [selectedFileAspect, setSelectedFileAspect] = useState<number>(0);
+
+    const calculatedAspect = compressedWidth / compressedHeight;
+    const imageSizeRenderer = Math.max(compressedWidth, compressedHeight);
+    console.log("imageSizeRenderer", imageSizeRenderer);
 
     useEffect(() => {
         if (file) {
@@ -51,21 +62,33 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
     function onSelectFile(file: File) {
         setCrop(undefined) // Makes crop preview update between images.
         const reader = new FileReader()
-        reader.addEventListener('load', () =>
-            setImgSrc(reader.result?.toString() || ''),
-        )
+        reader.addEventListener('load', () =>{
+            setImgSrc(reader.result?.toString() || '');
+
+            const img = document.createElement("img");
+            img.onload = () => {
+                // Natural size is the actual image size regardless of rendering.
+                // The 'normal' `width`/`height` are for the **rendered** size.
+                const width  = img.naturalWidth;
+                const height = img.naturalHeight; 
+                setSelectedFileAspect(width / height);
+    
+                console.log(`Image size: ${width}x${height}`);
+            };
+            img.src = reader.result?.toString() || '';
+        })
         reader.readAsDataURL(file)
     }
 
     function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
-        if (aspect) {
+        if (calculatedAspect) {
             const { width, height } = e.currentTarget
-            setCrop(centerAspectCrop(width, height, aspect))
+            setCrop(centerAspectCrop(width, height, calculatedAspect))
         }
     }
 
     async function handleUploadCrop() {
-        if(imgRef.current && completedCrop && previewCanvasRef.current) {
+        if (imgRef.current && completedCrop && previewCanvasRef.current) {
             await canvasPreview(
                 imgRef.current,
                 previewCanvasRef.current,
@@ -77,14 +100,14 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
                 if (!blob) {
                     throw new Error('Failed to create blob')
                 }
-                if(setFormatedFile){
-
-                    const compressBlob = await compressAccurately(blob,{
-                        size: 60,    // 100kb
+                if (setFormatedFile) {
+                    //TODO: Check image compression parameters
+                    const compressBlob = await compressAccurately(blob, {
+                        size: compressedSizeOnKb,
                         accuracy: 0.9,
                         type: EImageType.JPEG,//the type of compressed image, default jpeg;
-                        width: 840,
-                        height: 840
+                        width: compressedWidth,
+                        height: compressedHeight,
                     })
 
                     setFormatedFile(compressBlob);
@@ -97,6 +120,10 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
         setScale(newValue as number);
     };
 
+    if(selectedFileAspect==0){
+        return <div className="App">Cargando...</div>
+    }
+
     return (
         <div className="App">
             {!!imgSrc && (
@@ -105,14 +132,14 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
                     onChange={(_, percentCrop) => setCrop(percentCrop)}
                     onComplete={(c) => setCompletedCrop(c)}
                     keepSelection={true}
-                    aspect={aspect}
-                    minWidth={150}
-                    minHeight={150}
-                >
+                    aspect={calculatedAspect}
+                    minWidth={minWidth}
+                    minHeight={minHeight}
+                    >
                     <Image
-                        width={840}
-                        height={840}
-                        className='w-full h-full'
+                        className={selectedFileAspect > 1 ? 'h-auto w-[520px]':'h-[420px] w-auto' }
+                        width={imageSizeRenderer}
+                        height={imageSizeRenderer}
                         ref={imgRef}
                         alt="Crop me"
                         src={imgSrc}
@@ -123,11 +150,11 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
             )}
             <div className="Crop-Controls py-2 px-8">
                 <div>
-                    <FontAwesomeIcon icon={faMagnifyingGlass}/><Typography className='px-2' component={"span"}>Zoom</Typography>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} /><Typography className='px-2' component={"span"}>Zoom</Typography>
                     <Slider
                         size='small'
                         id="scale-input"
-                        aria-label="Scale"                       
+                        aria-label="Scale"
                         value={scale}
                         max={3}
                         min={0.2}
@@ -136,10 +163,10 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
                     />
                 </div>
                 <div>
-                    <FontAwesomeIcon icon={faRotate}/><Typography className='px-2' component={"span"}>Rotar</Typography>
+                    <FontAwesomeIcon icon={faRotate} /><Typography className='px-2' component={"span"}>Rotar</Typography>
                     <Slider
                         id="rotate-input"
-                        aria-label="Rotate"                       
+                        aria-label="Rotate"
                         size='small'
                         value={rotate}
                         max={360}
@@ -152,7 +179,12 @@ export default function ImageCropEditor({ file, setFormatedFile }: { file: File,
                     />
                 </div>
             </div>
-            <canvas ref={previewCanvasRef} className='hidden' />
+            <canvas ref={previewCanvasRef} className='hidden'  style={{
+                border: '1px solid black',
+                objectFit: 'contain',
+                width: completedCrop?.width,
+                height: completedCrop?.height,
+            }} />
             <Button variant='outlined' onClick={() => { handleUploadCrop() }} autoFocus className='float-right'>
                 Guardar
             </Button>

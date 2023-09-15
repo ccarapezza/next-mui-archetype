@@ -62,17 +62,15 @@ export async function GET(request: NextRequest) {
         const productDto = product.toJSON<ProductDto>();
 
         for(let i=0;i<productDto.items.length;i++){
-            const images = productModel.items[i].image?(productModel.items[i].image?.split(",")):[];
+            const images = productModel.items[i].image?(productModel.items[i].image):[];
             if(images && images?.length!>0){
                 for (let j = 0; j < images?.length!; j++) {
-                    images[j] = await S3BucketUtil.getSignedUrlByKey({ key: images[j] });
+                    images[j] = await S3BucketUtil.getSignedUrlByKey({ key: images[j], folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES });
                 }
                 productDto.items[i].images = images;
             }
         }
     }
-
-    console.log("··#################",products.rows);
-           
+          
     return NextResponse.json(products);
 }

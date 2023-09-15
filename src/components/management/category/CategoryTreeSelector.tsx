@@ -1,5 +1,5 @@
 'use client'
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { Box, Chip, FormControl, InputAdornment, InputBaseComponentProps, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
 import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,7 +16,7 @@ const SquareXmarkIcon = () => {
     );
 }
 
-const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...props }: { categories: ProductCategoryDto[], fullWidth?: boolean, size?: 'small' | 'medium', small?: boolean, className: string, inputProps?: InputBaseComponentProps, onChange: (event: string | React.ChangeEvent<Element>) => void }) => {
+const CategoryTree = ({ categories: initialCategories, inputProps, onChange, defaultValue, ...props }: { categories: ProductCategoryDto[], fullWidth?: boolean, size?: 'small' | 'medium', small?: boolean, className: string, inputProps?: InputBaseComponentProps, onChange: (event: string | React.ChangeEvent<Element>) => void, defaultValue?: string }) => {
     const [categories, setCategories] = useState<ProductCategoryDto[]>(initialCategories);
     const [expandedIds, setExpandedIds] = useState<string[]>(['root']);
     const [selectedCategory, setSelectedCategory] = useState<ProductCategoryDto | null>(null);
@@ -128,7 +128,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
         setSelectedCategory(null);
     }, [initialCategories]);
 
-    const findIdOnTree = (id: number, categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto | null => {
+    const findIdOnTree = useCallback((id: number, categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto | null => {
         let result: ProductCategoryDto | null = null;
         categories?.forEach((category) => {
             if (category.id === id) {
@@ -141,7 +141,8 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
             }
         });
         return result;
-    }
+    }, [initialCategories]);
+    
 
     const treeToList = (categories: ProductCategoryDto[] = initialCategories): ProductCategoryDto[] => {
         let result: ProductCategoryDto[] = [];
@@ -189,6 +190,14 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
         }
     }, [searchValue, initialCategories]);
 
+    useEffect(() => {
+        if (defaultValue) {
+            const categoryFinded = findIdOnTree(parseInt(defaultValue));
+            setSelectedCategory(categoryFinded);
+            console.log("categoryFinded", categoryFinded);
+        }
+    }, [defaultValue, findIdOnTree]);
+
     return (
         <FormControl {...props}>
             <InputLabel id="demo-multiple-chip-label">Categoría</InputLabel>
@@ -199,6 +208,7 @@ const CategoryTree = ({ categories: initialCategories, inputProps, onChange, ...
                 labelId="demo-multiple-chip-label"
                 id="demo-multiple-chip"
                 multiple={false}
+                defaultValue={defaultValue?parseInt(defaultValue!):0}
                 value={selectedCategory?.id || ""}
                 input={<OutlinedInput id="select-multiple-chip" label="Categoría" />}
                 renderValue={(value) => (

@@ -3,16 +3,14 @@ import S3BucketUtil from '@/utils/S3BucketUtil';
 import crypto from 'crypto';
 
 export async function GET(request: NextRequest, {params}: {params: {ext: string}}) {
-    console.log("upload-image-product!!!!!!!!")
     const {ext} = params;
-    const key = crypto.randomBytes(32).toString('hex');
+    const key = crypto.randomBytes(10).toString('hex');
     const keyWithExt = `${key}.${ext}`;
-
-    console.log("A ver", keyWithExt, ext, "image/" + ext, "image/" + ext === "image/jpg");
-
+    
     const url = await S3BucketUtil.getPresignedUploadUrl({
-        key: `temp/${keyWithExt}`,
+        key: keyWithExt,
         contentType: `image/${ext}`,
+        folder: S3BucketUtil.FOLDERS.TEMP,
     });
 
     return NextResponse.json({

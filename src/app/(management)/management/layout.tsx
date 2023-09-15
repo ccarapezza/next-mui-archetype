@@ -1,4 +1,5 @@
 import '@/app/globals.css'
+import '../../../../styles/custom-fonts.css';
 import * as React from 'react';
 // The following import prevents a Font Awesome icon server-side rendering bug,
 // where the icons flash from a very large icon down to a properly sized one:

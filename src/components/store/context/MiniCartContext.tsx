@@ -2,6 +2,7 @@
 import React, { useState, createContext, useEffect } from 'react'
 import useLocalStorage from '@/hooks/useLocalStorage';
 import { ProductToCart } from '@/schemas/product';
+import { enqueueSnackbar } from 'notistack';
 interface Props {
   children?: React.ReactNode
 }
@@ -11,7 +12,7 @@ export const CartContext = createContext({
   addProduct: (product: ProductToCart) => { },
   deleteProduct: (product: ProductToCart) => { },
   updateProductQuantity: (product: ProductToCart, quantity: number) => { },
-  geTotalMinicart: () => {
+  getTotalMiniCart: () => {
     return { subtotal: 0, descuento: 0, total: 0 };
   },
   emptyMinicart: () => { }
@@ -31,9 +32,15 @@ export default function MiniCartProvider({ children }: Props) {
         }
         return prod
       })
+      enqueueSnackbar('Producto agregado al carrito', {
+        variant: 'success',
+      });
       return setProducts([...listOfProducts])
     }
     setProducts([...products, product])
+    enqueueSnackbar('Producto agregado al carrito', {
+      variant: 'success',
+    });
   }
 
   // Delete product from cart
@@ -53,7 +60,7 @@ export default function MiniCartProvider({ children }: Props) {
     setProducts([...listOfProducts])
   }
 
-  const geTotalMinicart = () => {
+  const getTotalMiniCart = () => {
     let total = 0;
     let subtotal = 0;
     let descuento = 0;
@@ -78,7 +85,7 @@ export default function MiniCartProvider({ children }: Props) {
     setStoredValue(products);
   }, [products, setStoredValue]);
 
-  return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, geTotalMinicart, emptyMinicart }}>
+  return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, getTotalMiniCart: getTotalMiniCart, emptyMinicart }}>
     {children}
   </CartContext.Provider>
 }

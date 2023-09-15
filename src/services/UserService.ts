@@ -4,13 +4,19 @@ import { Role, User } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
 import { Op, WhereOptions } from "sequelize";
 import { GenericService } from "./GenericService";
-import { AdapterUser } from "next-auth/adapters";
-import { Model } from "sequelize-typescript";
 
 //UserService extends GenericService
 export class UserService extends GenericService<User> {
     constructor() {
         super(User);
+    }
+    getByIdWithInclude = async (id: string, include: any[]) => {
+        return await User.findOne({
+            where: {
+                id
+            },
+            include
+        });
     }
     getByEmail = async (email: string) => {
         return await User.findOne({

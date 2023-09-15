@@ -10,26 +10,29 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import MiniCartProvider from '@/components/store/context/MiniCartContext';
 import NavBarServer from '@/components/store/navbar/NavBarServer';
 import FooterServer from '@/components/store/footer/FooterServer';
+import NotistackProviderWrapper from '@/components/providers/NotistackProvider';
 config.autoAddCss = false;
 
 export const metadata = {
-    title: 'Cultivo Mis Derechos',
-    description: 'Sitio Oficial de Cultivo Mis Derechos',
+  title: 'Cultivo Mis Derechos',
+  description: 'Sitio Oficial de Cultivo Mis Derechos',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="relative min-h-screen pt-[97px] md:pb-[400px] pb-[1100px]">
-        <SessionProviderWrapper>
-          <MiniCartProvider>
-            <NavBarServer />
-            <main>
-              {children}
-            </main>
-            <FooterServer />
-          </MiniCartProvider>
-        </SessionProviderWrapper>
+      <body className="relative min-h-screen pt-[97px] md:pb-[380px] pb-[1100px]">
+        <NotistackProviderWrapper>
+          <SessionProviderWrapper>
+            <MiniCartProvider>
+              <NavBarServer />
+              <main>
+                {children}
+              </main>
+              <FooterServer />
+            </MiniCartProvider>
+          </SessionProviderWrapper>
+        </NotistackProviderWrapper>
       </body>
     </html>
   );

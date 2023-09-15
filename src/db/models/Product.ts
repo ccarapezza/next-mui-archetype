@@ -18,8 +18,8 @@ export default class Product extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
   public name!: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  public description!: string;
+  @Column({ type: DataType.JSON, allowNull: false })
+  public description!: Object;
 
   @ForeignKey(() => ProductCategory)
   @Column({ type: DataType.INTEGER, allowNull: false })

@@ -18,7 +18,7 @@ const fetchEmailTemplatesData = async (page: number, size: number, search: strin
 export default async function SendEmailsPage() {
     const emailTemplates = (await fetchEmailTemplatesData(1, 5, ""))?.rows;
     return (<>
-        <PageHeader title="Send Emails" />
+        <PageHeader title="Envío de email" />
         <MuiBox className="p-10 max-w-6xl mx-auto">
             <MuiGrid container spacing={2}>
                 <MuiGrid item xs={12}>

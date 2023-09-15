@@ -11,7 +11,7 @@ function SubscribersCard({ count }: { count: number }) {
             <CardContent>
                 <div className='flex flex-col items-center'>
                     <FontAwesomeIcon icon={faUserAlt} size='6x' className='m-5 text-slate-400'/>
-                    <Typography className='font-bold'>{`${count} Subscribers`}</Typography>
+                    <Typography className='font-bold'>{`${count} Suscripciones`}</Typography>
                     <Button variant='outlined' startIcon={<FontAwesomeIcon icon={faEnvelopeOpenText}/>} className='mt-2'>
                         Send Email to all subscribers
                     </Button>

@@ -5,10 +5,6 @@ import { BelongsToMany, Column, DataType, Model, Table } from "sequelize-typescr
 import { User as UserDefinition } from "@next-auth/sequelize-adapter/dist/models";
 import Role from "./Role";
 
-interface CustomAdapterUser extends AdapterUser {
-  password?: string;
-  roles?: Role[];
-}
 
 @Table({
   tableName: "users",
@@ -49,4 +45,5 @@ export default class User extends Model{
   public _roles?: Role[];
   declare addRole: BelongsToManyAddAssociationMixin<Role, number>;
   declare addRoles: BelongsToManyAddAssociationMixin<Role[], number>;
+  declare getRoles: () => Promise<Role[]>;
 }

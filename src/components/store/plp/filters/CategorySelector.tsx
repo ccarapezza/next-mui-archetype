@@ -3,12 +3,13 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 
-export default function CategorySelector(props: { categoryTree: ProductCategoryDto[], categoryTitle: string, filters: any, setFilters: any }) {
+export default function CategorySelector(props: { categoryTree: ProductCategoryDto[], categoryTitle: string | null, filters: any, setFilters: any }) {
 
     const { categoryTree, categoryTitle, filters, setFilters } = props;
 
     // Subcategory List
     const [subCategories, setsubCategories] = useState<ProductCategoryDto[]>([]);
+    const [variatonCollapse, setVariatonCollapse] = useState(filters.selectedCategories.length?true:false);
 
     
     useEffect(() => {
@@ -26,15 +27,19 @@ export default function CategorySelector(props: { categoryTree: ProductCategoryD
             });
             return result;
         }
-        const category = findNameOnTree(categoryTitle);
-        setsubCategories(category?.childrens!);
+        if(categoryTitle){
+            const category = findNameOnTree(categoryTitle);
+            setsubCategories(category?.childrens!);
+        }else{
+            setsubCategories(categoryTree);
+        }
     }, [categoryTree, categoryTitle])
 
     return (
         subCategories?.length > 0 ?
             <details
                 className="overflow-hidden rounded border border-gray-300 [&_summary::-webkit-details-marker]:hidden"
-                open={filters.selectedCategories.length > 0}
+                open={variatonCollapse}
             >
                 <summary
                     className="flex cursor-pointer items-center justify-between gap-2 bg-white p-4 text-gray-900 transition"

@@ -32,7 +32,7 @@ export default async function SubscriberPage({ searchParams }: { searchParams: {
     ];
 
     return (<>
-        <PageHeader title="Subscribers" />
+        <PageHeader title="Suscriptores" />
         <MuiBox className="p-10">
             <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} />
         </MuiBox>

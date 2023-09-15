@@ -85,7 +85,7 @@ export default function CredentialsForm({ provider }: { provider: ClientSafeProv
                 <div>
                     <div className="flex justify-between items-center">
                         <label htmlFor="password" className="block text-sm mb-2 dark:text-white">Contraseña</label>
-                        <a className="text-sm text-primary decoration-2 hover:underline font-medium" href="../examples/html/recover-account.html">¿Olvidaste tu contraseña?</a>
+                        <a className="text-sm text-primary decoration-2 hover:underline font-medium" href="/recover-pass">¿Olvidaste tu contraseña?</a>
                     </div>
                     <div className="relative">
                         <input {...register("password")} type="password" id="password" name="password" className="py-3 px-4 block w-full border border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400" required aria-describedby="password-error" />

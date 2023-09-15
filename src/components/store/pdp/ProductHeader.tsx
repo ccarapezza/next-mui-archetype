@@ -2,10 +2,22 @@
 import PriceFormatting from "@/components/management/product/PriceFormatting";
 import { ProductDto } from "@/schemas/product";
 import { ProductItemDto } from "@/schemas/productItem";
+import draftToHtml from "draftjs-to-html";
+import { convertToRaw, convertFromRaw, EditorState } from 'draft-js';
+import { useState } from "react";
+import { ContentState } from "react-draft-wysiwyg";
 
 export default function ProductHeader(props: { product: ProductDto | null, selectedItem: ProductItemDto }) {
   const { product, selectedItem } = props;
-
+  let jsonObj = JSON.parse(product?.description?product?.description:"");
+  if(typeof jsonObj === "string"){
+    jsonObj = JSON.parse(jsonObj);
+  }
+ 
+  const html = draftToHtml(convertToRaw(EditorState.createWithContent(convertFromRaw(jsonObj)).getCurrentContent()));
+  const DescriptionDisplay = () => {
+    return (<div className="text-tertiary reactWysiwygContainer" dangerouslySetInnerHTML={{ __html: html}}></div>)
+  }
   return (
     <>
       <div>
@@ -17,9 +29,7 @@ export default function ProductHeader(props: { product: ProductDto | null, selec
       </div>
       <div className="mt-4">
         <div className="max-w-none">
-          <p className="text-tertiary">
-            {product?.description}
-          </p>
+            <DescriptionDisplay />
         </div>
       </div>
     </>

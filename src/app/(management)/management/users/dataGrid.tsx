@@ -1,6 +1,8 @@
 "use client"
 import MuiDataGrid from '@/components/client/DataGrid'
+import { getRoleDataByName } from '@/utils/RoleDataUtil';
 import { faAtom, faPaperPlane, faUnlockKeyhole } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Chip, Stack, Tooltip } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { useSnackbar } from 'notistack';
@@ -12,7 +14,7 @@ function UserDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?: a
     const columns: GridColDef[] = [
         {
             field: 'name',
-            headerName: 'Name',
+            headerName: 'Nombre de usuario',
             flex: 1
         },
         {
@@ -27,12 +29,12 @@ function UserDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?: a
         },
         {
             field: 'emailVerified',
-            headerName: 'Email Verified',
+            headerName: 'Cuenta verificada',
             headerAlign: 'center',
             flex: 1,
             cellClassName: 'flex justify-center',
             renderCell: (params: GridRenderCellParams) => {
-                return (<Chip className={`${params?.value ? "bg-green-500" : "bg-red-500"}  text-xs text-white`} label={params?.value ? 'Verified' : 'No'} />)
+                return (<Chip className={`${params?.value ? "bg-green-500" : "bg-red-500"}  text-xs text-white`} label={params?.value ? 'Verificado' : 'No verificado'} />)
             }
         },
         {
@@ -41,8 +43,8 @@ function UserDataGrid({ data, rows, rowCount, editPath, deletePath }: { data?: a
             flex: 2,
             renderCell: (params: GridRenderCellParams) => {
                 return (<Stack direction={'row'} gap={1}>
-                    {params?.value?.map((item: any, index: number) =>
-                        <Chip variant='outlined' key={item.id} label={item.name?.toUpperCase()} className='text-xs' />
+                    {params?.value?.filter((item: { name: string; })=>item.name!=="user").map((item: any, index: number) =>
+                        <Chip variant='outlined' key={"roles-"+item.id} icon={<FontAwesomeIcon className='pl-2' icon={getRoleDataByName(item.name).icon}/>} label={getRoleDataByName(item.name).label} className='text-xs' />
                     )}
                 </Stack>)
             }
