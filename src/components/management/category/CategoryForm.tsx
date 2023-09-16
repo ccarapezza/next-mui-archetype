@@ -15,7 +15,7 @@ interface ICategoryForm {
 }
 
 const schema = yup.object({
-    name: yup.string().min(3).max(20).required()
+    name: yup.string().min(3).max(50).required()
 }).required();
 
 const updateCategoryData = async (categoryData: any) => {
