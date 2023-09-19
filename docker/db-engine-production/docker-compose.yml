@@ -10,7 +10,7 @@ services:
       - MYSQL_ROOT_PASSWORD=${DOCKER_MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${DOCKER_MYSQL_DATABASE}
     volumes:
-      - mysql-data-development:/var/lib/mysql
+      - mysql-data-production:/var/lib/mysql
 
 volumes:
   mysql-data-production:
