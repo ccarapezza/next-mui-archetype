@@ -2,6 +2,7 @@ version: "3.9"
 services:
   db-engine-production:
     image: mysql
+    restart: always
     ports:
       - "${DOCKER_MYSQL_PORT}:3306"
     expose:
