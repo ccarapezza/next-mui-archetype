@@ -15,3 +15,6 @@ export default async function Faq() {
     <FaqSite faqList={faqListDto} />
   )
 }
+
+//5 minutes
+export const revalidate = 300;
