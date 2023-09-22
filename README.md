@@ -62,9 +62,9 @@ npm run docker-db-container-start-development ## Inicia el contenedor con el mot
 npm run docker-db-container-stop-development ## Detiene el contenedor con el motor de base de datos
 
 ## Para Production
-npm run docker-db-container-create-development
-npm run docker-db-container-start-development
-npm run docker-db-container-stop-development
+npm run docker-db-container-create-production
+npm run docker-db-container-start-production
+npm run docker-db-container-stop-production
 ```
 
 Los parametros de conexión a la base de datos se encuentran definidos en variables de entorno, configurarlas es necesario para que los siguientes scripts funcionen correctamete. [Ver especificaciones](<#variables-de-entorno>)

@@ -1,16 +1,17 @@
 version: "3.9"
 services:
   db-engine-production:
-    image: mariadb
+    image: mysql
+    restart: always
     ports:
       - "${DOCKER_MYSQL_PORT}:3306"
     expose:
       - ${DOCKER_MYSQL_PORT}
     environment:
-      - MARIADB_ROOT_PASSWORD=${DOCKER_MYSQL_ROOT_PASSWORD}
-      - MARIADB_DATABASE=${DOCKER_MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DOCKER_MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DOCKER_MYSQL_DATABASE}
     volumes:
-      - mariadb-data-production:/var/lib/mysql
+      - mysql-data-production:/var/lib/mysql
 
 volumes:
-  mariadb-data-production:
+  mysql-data-production:
