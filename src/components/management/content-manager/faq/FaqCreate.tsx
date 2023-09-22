@@ -8,7 +8,7 @@ import { Button, Grid, TextField } from '@mui/material';
 import MuiBox from '@/components/client/MuiBox';
 import LoadingBlocker from '@/components/client/LoadingBlocker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faSave } from '@fortawesome/free-solid-svg-icons'
 import { useSnackbar } from 'notistack';
 
 interface IFaqForm {
@@ -89,9 +89,24 @@ export default function FaqCreate({ faqData, faqSelected, setIdAskSelected }: { 
             }
             <div className="max-w-screen-xl mx-auto bg-white p-4 rounded-md shadow-lg">
                 <MuiBox className="flex flex-col px-2 pt-2 flex justify-center">
-                    <h1 className="text-xl font-semibold mb-4">{
-                        isEdit ? 'Editar Pregunta' : 'Crear Pregunta'
-                    }</h1>
+                    <div className='flex justify-between'>
+                        <h1 className="text-xl font-semibold mb-4">{
+                            isEdit ? 'Editar Pregunta' : 'Crear Pregunta'
+                        }</h1>
+                        {
+                            isEdit ?
+                                <Button startIcon={<FontAwesomeIcon icon={faEdit} />} type='button' variant="outlined" color="primary" onClick={() => {
+                                    reset({ ask: '', answer: '' });
+                                    setIsEdit(false);
+                                    setIdAskSelected(null);
+                                }
+                                }>
+                                    Nueva Pregunta
+                                </Button>
+                                :
+                                null
+                        }
+                    </div>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Grid container marginTop={2} paddingTop={0} gap={2}>
                             <Grid item xs={12}>
@@ -123,7 +138,7 @@ export default function FaqCreate({ faqData, faqSelected, setIdAskSelected }: { 
                             <Grid item xs={12} className='flex flex-row justify-end items-center gap-2'>
                                 {
                                     isEdit ?
-                                        <Button type='button' variant="contained" color="error" onClick={() => {
+                                        <Button type='button' variant="outlined" color="error" onClick={() => {
                                             reset({ ask: '', answer: '' });
                                             setIsEdit(false);
                                             setIdAskSelected(null);
@@ -134,7 +149,7 @@ export default function FaqCreate({ faqData, faqSelected, setIdAskSelected }: { 
                                         :
                                         null
                                 }
-                                <Button type='submit' startIcon={<FontAwesomeIcon icon={faSave} />} variant="contained" color="primary" disabled={!isValid}>
+                                <Button type='submit' startIcon={<FontAwesomeIcon icon={faSave} />} variant="outlined" color="primary" disabled={!isValid}>
                                     {
                                         isEdit ? 'Actualizar' : 'Guardar'
                                     }

@@ -40,7 +40,7 @@ export default function AlertDialog({id, type, message, title, open = true, setO
         aria-describedby="alert-dialog-description"
       >
         {title&&
-          <DialogTitle id="alert-dialog-title">
+          <DialogTitle id="alert-dialog-title" className='flex justify-center'>
             {title}
           </DialogTitle>
         }
@@ -49,11 +49,11 @@ export default function AlertDialog({id, type, message, title, open = true, setO
             {message}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions className='flex justify-center'>
           {type==="confirm"&&
-            <Button variant='contained' color='error' onClick={handleClose}>Cancelar</Button>
+            <Button variant='outlined' color='error' onClick={handleClose}>Cancelar</Button>
           }
-          <Button variant='contained' color='success' onClick={handleConfirm} autoFocus>OK</Button>
+          <Button variant='outlined' color='success' onClick={handleConfirm} autoFocus>Aceptar</Button>
         </DialogActions>
       </Dialog>
   );

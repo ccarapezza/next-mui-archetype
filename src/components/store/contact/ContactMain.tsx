@@ -12,7 +12,7 @@ const schema = yup.object({
     name: yup.string().min(3).max(50).required(),
     lastname: yup.string().min(3).max(50).required(),
     email: yup.string().email().min(3).max(50).required(),
-    message: yup.string().min(3).max(50).required(),
+    message: yup.string().min(3).max(500).required(),
 }).required();
 
 export default function ContactMain() {

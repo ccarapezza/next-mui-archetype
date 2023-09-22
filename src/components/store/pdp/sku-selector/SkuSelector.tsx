@@ -79,7 +79,7 @@ export default function SkuSelector(props: { items: ProductItemDto[], setProduct
     }, [variationState, items, setProductAvailable, setItemId]);
 
     return (
-        <div className="my-4 py-2 border-y">
+        <div className="my-4 py-2">
             <SkuComponent items={items} setSelectedOption={setVariationState} variationState={variationState} resultArray={resultArray} />
         </div>
     )

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
         console.log("error", error);
         //error Check if email is already subscribed
         if (error?.name === "SequelizeUniqueConstraintError") {
-            return NextResponse.json({ error: "Email already subscribed!" }, { status: 400 });
+            return NextResponse.json({ error: "El email ya se encuentra suscripto!" }, { status: 400 });
         }
         //return a generic error
         return NextResponse.json({ error: "Error subscribing email!" }, { status: 400 });

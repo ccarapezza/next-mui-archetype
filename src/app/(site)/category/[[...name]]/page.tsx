@@ -50,7 +50,6 @@ export default async function SiteCategoryPage(props: { params: any, searchParam
         }
     }
     
-    
     const categoryTree = await fetchCategoryData();
     const listProducts = await fetchProductData(filters);
     const varations = await fetchVariationData();

@@ -13,6 +13,9 @@ import CustomerContactStatus from "./CustomerContactStatus";
     timestamps: true,
 })
 export default class CustomerContact extends Model {
+    static findAllSequelizePagination(arg0: { attributes: string[]; include: string[]; order: (string | import("sequelize/types/utils").Literal)[][]; }) {
+        throw new Error("Method not implemented.");
+    }
     @Column({ type: DataType.STRING, allowNull: false })
     public name!: string;
 
@@ -28,12 +31,18 @@ export default class CustomerContact extends Model {
     @Column({ type: DataType.TEXT, allowNull: false })
     public message!: string;
 
-    // OrderStatus
+    @Column({ type: DataType.TEXT, allowNull: true })
+    public answer!: string;
+
+    @Column({ type: DataType.TEXT, allowNull: true })
+    public owner!: string;
+
+    // CustomerContactStatus
     @BelongsTo(() => CustomerContactStatus)
     public status!: CustomerContactStatus;
 
     @ForeignKey(() => CustomerContactStatus)
     @Column({ type: DataType.NUMBER })
     public statusId?: number;
-    // End OrderStatus
+    // End CustomerContactStatus
 }

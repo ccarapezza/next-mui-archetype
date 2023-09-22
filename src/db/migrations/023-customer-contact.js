@@ -28,6 +28,14 @@ module.exports = {
             message: {
                 type: Sequelize.TEXT,
             },
+            answer: {
+                type: Sequelize.TEXT,
+                allowNull: true,
+            },
+            owner: {
+                type: Sequelize.STRING,
+                allowNull: true,
+            },
             statusId: {
                 type: Sequelize.INTEGER,
                 allowNull: false

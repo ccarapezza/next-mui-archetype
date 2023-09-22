@@ -76,7 +76,8 @@ const MENU_DEFAULT: MenuItem[] = [
         id: 'Clientes',
         roles: ['ADMIN', 'SALES', 'MARKETING'],
         children: [
-            { id: 'Mensajes de Contacto', icon: faComment, href: '/management/contacto', active: false }
+            { id: 'Mensajes de contacto', icon: faComment, href: '/management/contacto/bandeja-entrada', active: false },
+            { id: 'Historial de mensajes', icon: faHistory, href: '/management/contacto/history', active: false }
         ],
     },
     {

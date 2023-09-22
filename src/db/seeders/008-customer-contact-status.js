@@ -5,8 +5,7 @@ module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.bulkInsert('customer_contact_status', [
             { name: "Abierta" },
-            { name: "Cerrada" },
-            { name: "Cancelada" },
+            { name: "Cerrada" }
         ], {});
     },
 

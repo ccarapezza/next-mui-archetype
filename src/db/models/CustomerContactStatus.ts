@@ -11,5 +11,5 @@ import {
   })
   export default class CustomerContactStatus extends Model {
     @Column({ type: DataType.STRING, allowNull: false, unique: true })
-    public status!: string;
+    public name!: string;
   }

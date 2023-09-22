@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingUI from './LoadingUI';
+import { useSnackbar } from 'notistack';
 
 interface ISubscriptionForm {
     email: string
@@ -24,29 +25,35 @@ const subscribe = async (roleData: { email: string }) => {
         },
         body: JSON.stringify(roleData)
     });
-    if(!res.ok){
+    if (!res.ok) {
         const errorData = await res?.json();
         console.log("errorData", errorData);
-        throw new Error((errorData.error)?(errorData.error):"Error subscribing");
+        throw new Error((errorData.error) ? (errorData.error) : "Error subscribing");
     }
     return res.json();
 };
 
-function SubscriptionForm({ mode }: { mode: "footer" | "popup" }) {
+function SubscriptionForm({ mode, setModalState }: { mode: "footer" | "popup", setModalState?: React.Dispatch<React.SetStateAction<boolean>> }) {
+    const { enqueueSnackbar } = useSnackbar();
     const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, formState: { errors } } = useForm<ISubscriptionForm>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ISubscriptionForm>({
         resolver: yupResolver(schema)
     });
 
     const onSubmit = async (data: ISubscriptionForm) => {
+
         setLoading(true);
         console.log(data)
         subscribe(data).then((response) => {
             console.log("response", response);
-            alert("Thanks for subscribing!");//TODO: replace with toast
+            enqueueSnackbar('¡Gracias por suscribirce a nuestro newsletter!', { variant: 'success' });
+            if (mode === "popup" && setModalState) {
+                setModalState(false);
+            }
+            reset();
         }).catch((error) => {
             console.log("error", error);
-            alert(error);//TODO: replace with toast
+            enqueueSnackbar(error, { variant: 'error' });
         }).finally(() => {
             setLoading(false);
         });
@@ -55,43 +62,42 @@ function SubscriptionForm({ mode }: { mode: "footer" | "popup" }) {
     return (<form onSubmit={handleSubmit(onSubmit)}>
         {
             mode === "footer" && !loading ?
-            <>
-                <label className="block pt-4 pb-2">¡Subscribite y entérate de las últimas novedades!</label>
-                <div className="max-w-sm flex items-center border rounded-md p-1">
-                    <input
-                        {...register("email")}
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Ingresa tu email"
-                        className="w-full p-2.5 outline-none text-primary rounded-s-md"
-                    />
-                    <button type='submit' disabled={loading} className="p-2.5 rounded-e-md text-white hover:text-primary bg-primary outline-none shadow-md focus:shadow-none sm:px-5 hover:bg-secondary">
-                        ENVIAR
-                    </button>
-                </div>
-                <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
-            </>
-            : mode === "popup" && !loading ?
-            <>
-                <div className="relative">
-                    <FontAwesomeIcon className="w-6 h-6 text-gray-400 absolute left-3 inset-y-0 my-auto" icon={faEnvelope} />
-                    <input
-                        {...register("email")}
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Ingresa tu email"
-                        className="w-full pl-12 pr-3 py-2 text-gray-500 bg-white outline-none border focus:border-primary shadow-sm rounded-lg"
-                    />
-                </div>
-                <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
-                <button type='submit' disabled={loading} className="block w-full mt-3 py-3 px-4 font-medium text-sm text-quaternary bg-primary disabled:bg-gray-300 hover:text-primary hover:bg-secondary active:bg-primary rounded-lg ring-offset-2 ring-indigo-600 focus:ring-2">
-                    ENVIAR
-                </button>
-            </>
-            :
-            <LoadingUI />
+                <>
+                    <label className="block pt-4 pb-2">¡Subscribite y entérate de las últimas novedades!</label>
+                    <div className="max-w-sm flex items-center border rounded-md p-1">
+                        <input
+                            {...register("email")}
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Ingresa tu email"
+                            className="w-full p-2.5 outline-none text-primary rounded-s-md"
+                        />
+                        <button type='submit' disabled={loading} className="p-2.5 rounded-e-md text-white hover:text-primary bg-primary outline-none shadow-md focus:shadow-none sm:px-5 hover:bg-secondary">
+                            ENVIAR
+                        </button>
+                    </div>
+                    <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
+                </>
+                : mode === "popup" && !loading ?
+                    <>
+                        <div className="flex items-center border rounded-md p-1">
+                            <input
+                                {...register("email")}
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Ingresa tu email"
+                                className="w-full p-2.5 outline-none text-primary rounded-s-md"
+                            />
+                            <button type='submit' disabled={loading} className="p-2.5 rounded-e-md text-white hover:text-primary bg-primary outline-none shadow-md focus:shadow-none sm:px-5 hover:bg-secondary">
+                                ENVIAR
+                            </button>
+                        </div>
+                        <p className="text-xs text-red-600 mt-2">{errors.email?.message}</p>
+                    </>
+                    :
+                    <LoadingUI />
         }
     </form>)
 }

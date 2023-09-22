@@ -5,11 +5,11 @@ export default function SkuComponent(props: { items: any, setSelectedOption: any
     const { setSelectedOption, resultArray, variationState } = props;
 
     return (
-        <>
+        <div className="border-y">
             {
                 resultArray.map((group: any, i: number) => {
                     return (
-                        <div key={i}>
+                        <div key={i} className="py-2">
                             <h3 >{group.variationName}</h3>
                             <ul className="flex items-center py-2">
                                 {
@@ -50,6 +50,6 @@ export default function SkuComponent(props: { items: any, setSelectedOption: any
                     )
                 })
             }
-        </>
+        </div>
     )
 }

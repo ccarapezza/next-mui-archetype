@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 @tailwind animations;
-
 .MuiTreeItem-group {
     margin-left: 15px !important;
 }
@@ -38,9 +37,11 @@
     }
 }
 
+
 /**
     Default styles for react-wysiwyg
 **/
+
 .reactWysiwygContainer p {
     padding: revert;
     margin: revert;
@@ -48,7 +49,7 @@
 
 .reactWysiwygContainer ul,
 .reactWysiwygContainer ol,
-.reactWysiwygContainer menu{
+.reactWysiwygContainer menu {
     list-style: revert;
     padding: revert;
     margin: revert;
