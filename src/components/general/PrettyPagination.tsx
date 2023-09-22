@@ -15,9 +15,9 @@ export default function PrettyPagination({ totalPages, currentPage, totalItems }
     const pathname = usePathname();
     useEffect(() => {
         const queryParams = new URLSearchParams();
-
         queryParams.set('page', currentPageState.toString());
         router.push(`${pathname}?${queryParams.toString()}`);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPageState, pages, totalPages])
 
     return (
