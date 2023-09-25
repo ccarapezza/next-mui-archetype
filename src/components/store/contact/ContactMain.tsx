@@ -25,7 +25,7 @@ export default function ContactMain() {
     });
 
     const saveCustomerData = async (customerData: any) => {
-        const res = await fetch('/api/management/customer-contact', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/customer-contact`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
