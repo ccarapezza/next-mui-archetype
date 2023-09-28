@@ -14,17 +14,17 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
   const pathname = usePathname();
   const params = useParams()
 
-  const categoriesParams = params.name;
+  const categoryName = params.name as string;
   // Props
   const { categoryTree, listProducts, varations } = props;
 
   return (
     <section>
       <div className="max-w-screen-2xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-        <ProductPageHeader categoryTitle={categoriesParams?.length?categoriesParams[categoriesParams?.length-1]:null}/>
+        <ProductPageHeader categoryTitle={categoryName?categoryName:""} />
         <div className='flex flex-col mt-8 lg:flex-row'>
           <div className='w-full lg:w-1/5 px-2'>
-            <ProductFilters categoryTree={categoryTree} categoryTitle={categoriesParams?.length?categoriesParams[categoriesParams?.length-1]:null} varationsDTO={varations}/>
+            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryName?.length?categoryName[categoryName?.length-1]:null} varationsDTO={varations}/>
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
             {

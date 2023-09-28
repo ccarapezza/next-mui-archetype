@@ -32,12 +32,14 @@ export default async function SiteCategoryPage(props: { params: any, searchParam
     [key: string]: number | string | undefined
 } }) {
     // Get URL Filters
+    const principalCategory = props.params.name?props.params.name:'' as string;
     const filters: FilterProduct = {
-        category: props.searchParams.category ? props.searchParams.category : null,
+        category: props.searchParams.category ? props.searchParams.category : principalCategory,
         priceMin: props.searchParams.priceMin ? props.searchParams.priceMin : null,
         priceMax: props.searchParams.priceMax ? props.searchParams.priceMax : null,
         variations: [],
     }
+    
     for (const key in props.searchParams) {
         if (props.searchParams.hasOwnProperty(key)) {
             if (key != 'category' && key != 'priceMin' && key != 'priceMax') {
@@ -49,15 +51,12 @@ export default async function SiteCategoryPage(props: { params: any, searchParam
             }
         }
     }
-    
+
     const categoryTree = await fetchCategoryData();
     const listProducts = await fetchProductData(filters);
     const varations = await fetchVariationData();
-    console.log('params', props.params);
-    console.log('searchParams', props.searchParams);
 
     return (<>
-
         <ProductListMain categoryTree={categoryTree} listProducts={listProducts.rows} varations={varations} />
     </>
     )
