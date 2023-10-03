@@ -60,7 +60,7 @@ export default function Navbar(props: {categoryTree: any}) {
     }, [])
 
     return (
-        <nav className={`md:text-sm fixed z-50 w-full top-0 bg-white shadow-lg ${state ? "shadow-lg md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
+        <nav className={`md:text-sm fixed z-10 w-full top-0 bg-white shadow-lg ${state ? "shadow-lg md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
             <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-1 md:block">
                     <Link href="/">

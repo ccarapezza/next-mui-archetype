@@ -14,7 +14,7 @@ interface FilterState {
 export default function ProductFilters(props: { categoryTree: any, categoryTitle: string | null, varationsDTO: any }) {
     // Porps
     const { categoryTree, categoryTitle, varationsDTO } = props;
-
+    
     // Routes
     const pathname = usePathname();
     const router = useRouter();

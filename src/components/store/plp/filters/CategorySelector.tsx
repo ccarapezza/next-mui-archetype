@@ -11,6 +11,7 @@ export default function CategorySelector(props: { categoryTree: ProductCategoryD
     const [subCategories, setsubCategories] = useState<ProductCategoryDto[]>([]);
     const [variatonCollapse, setVariatonCollapse] = useState(filters.selectedCategories.length?true:false);
 
+
     
     useEffect(() => {
         const findNameOnTree = (name: string, categories: ProductCategoryDto[] = categoryTree): ProductCategoryDto | null => {

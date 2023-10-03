@@ -62,7 +62,7 @@ export default function ProductDescription(props: { product: ProductDto | null, 
                 className="w-full rounded bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wide text-white hover:bg-tertiary transition"
                 onClick={() => addProduct({ ...productToCart })}
               >
-                Agregar al Carrito!
+                Agregar al Carrito
               </button>
           }
         </div>

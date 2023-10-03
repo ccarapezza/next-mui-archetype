@@ -38,7 +38,7 @@ export default function ProductImageMain(props: { images: string[], activeImage:
             key={i}
             alt={'Nombre pdp'}
             src={image}
-            className="rounded-xl object-cover w-[600] h-[800]"
+            className="rounded-xl object-cover w-[600px] h-[700px]"
             height={800}
             width={600}
           />

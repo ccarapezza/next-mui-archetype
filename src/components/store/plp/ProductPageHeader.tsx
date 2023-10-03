@@ -5,7 +5,7 @@ export default function ProductPageHeader(props: { categoryTitle: string | null 
 
     return (
         <header className="text-center">
-            <h2 className="font-tungsten text-primary text-6xl mb-4 text-center capitalize">
+            <h2 className="font-tungsten text-primary text-6xl mb-4 text-center capitalize font-normal">
                 {categoryTitle && categoryTitle.length ? categoryTitle : "Tienda"}
             </h2>
 

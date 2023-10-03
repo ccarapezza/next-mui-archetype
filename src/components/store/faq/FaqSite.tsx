@@ -17,9 +17,9 @@ export default function FaqSite(props: { faqList: FaqListDto[] }) {
     };
 
     return (
-        <section className="flex-1 leading-relaxed max-w-screen-xl pt-5 mx-auto px-4 md:px-8">
+        <section className="flex-1 leading-relaxed max-w-screen-xl pt-5 pb-14 mx-auto px-4 md:px-8">
             <div className="mt-12 mb-10 max-w-screen-xl mx-auto">
-                <h3 className="text-5xl font-tungsten text-primary sm:text-6xl mb-4 text-center">Preguntas Frecuentes:</h3>
+                <h3 className="text-5xl font-tungsten text-primary sm:text-6xl mb-4 text-center font-normal">Preguntas Frecuentes:</h3>
                 {
                     faqList.length === 0 && <p className="text-center text-gray-500">No hay preguntas frecuentes cargadas.</p>
                 }

@@ -13,17 +13,18 @@ export default function MiniCart() {
     const [quantityMiniCart, setQuantityMiniCart] = useState<number>(0)
 
     useEffect(() => {
+        setQuantityMiniCart(products.length)
+    }, [products.length])
+
+    useEffect(() => {
         console.log('openMiniCart', openMiniCart);
-        
-        if (openMiniCart !== null) {
+        if (openMiniCart === null) {
+            setOpenMiniCart(false)
+        } else if (openMiniCart !== null) {
             setOpenMiniCart(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getTotalMiniCart, quantityMiniCart])
-
-    useEffect(() => {
-        setQuantityMiniCart(products.length)
-    }, [products.length])
 
     return (
         <>

@@ -24,7 +24,7 @@ export default function HeaderCheckout(props: { ctaButton: string }) {
                     }
                 </Link>
                 <Link
-                    className="text-4xl font-tungsten text-primary"
+                    className="text-4xl font-tungsten text-primary font-normal"
                     href="/"
                 >
                     {ctaButton}
