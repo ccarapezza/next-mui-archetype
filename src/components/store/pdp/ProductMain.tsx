@@ -7,6 +7,9 @@ import { ProductItemDto } from "@/schemas/productItem";
 
 export default function ProductMain(props: { product: ProductDto | null }) {
     const { product } = props;
+    console.log('====================================');
+    console.log('product', product);
+    console.log('====================================');
 
     const [itemId, setItemId] = useState(0);
     const [selectedItem, setSelectedItem] = useState<any>({
@@ -28,7 +31,7 @@ export default function ProductMain(props: { product: ProductDto | null }) {
         <section>
             <div className="md:flex max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
                 {/* Componente Imagenes */}
-                <ProductImage images={selectedItem.images} />
+                <ProductImage images={selectedItem.images} productName={product?.name}/>
                 {/* Componente Info Producto */}
                 <ProductDescription product={product} setItemId={setItemId} selectedItem={selectedItem}/>
             </div>

@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className='relative min-h-screen pb-[65px]'>
         <SessionProviderWrapper>
           <MiniCartProvider>
-            <HeaderCheckout ctaButton={"Seguir Comprando"}/>
+            <HeaderCheckout ctaButton={"Seguir Comprando"} bgColor={'bg-white'}/>
             <main>
               {children}
             </main>

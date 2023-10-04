@@ -18,9 +18,7 @@ export default function MiniCart() {
 
     useEffect(() => {
         console.log('openMiniCart', openMiniCart);
-        if (openMiniCart === null) {
-            setOpenMiniCart(false)
-        } else if (openMiniCart !== null) {
+        if(openMiniCart !== null) {
             setOpenMiniCart(true)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -5,13 +5,13 @@ import { usePathname } from 'next/navigation';
 import { Box, Typography } from "@mui/material";
 import { use, useEffect } from "react";
 
-export default function HeaderCheckout(props: { ctaButton: string }) {
-    const { ctaButton } = props
+export default function HeaderCheckout(props: { ctaButton: string, bgColor: string }) {
+    const { ctaButton, bgColor } = props
     const pathName = usePathname();
     const managementAuth = pathName.includes('management-auth');
     
     return (
-        <nav className="flex justify-center bg-slate-200 w-full">
+        <nav className={`flex justify-center bg-slate-200 w-full ${bgColor}`}>
             <div className="flex justify-between items-center w-full p-4 max-w-screen-xl border-b">
                 <Link href="/">
                     {managementAuth?

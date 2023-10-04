@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className='relative min-h-screen pb-[65px]'>
         <SessionProviderWrapper>
-          <HeaderCheckout ctaButton={'Volver al Inicio'}/>
+          <HeaderCheckout ctaButton={'Volver al Inicio'} bgColor={'bg-slate-200'}/>
           {children}
           <FooterCheckout brandName={"CULTIVO MIS DERECHOS"}/>
         </SessionProviderWrapper>

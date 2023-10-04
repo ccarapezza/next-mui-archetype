@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
-export default function ProductImageMain(props: { images: string[], activeImage: number }) {
+export default function ProductImageMain(props: { images: string[], activeImage: number, productName: string | undefined }) {
 
-  const { images, activeImage } = props;
+  const { images, activeImage, productName } = props;
 
   return (
 
@@ -36,7 +36,7 @@ export default function ProductImageMain(props: { images: string[], activeImage:
         images?.map((image: string, i: number) => (
           <Image
             key={i}
-            alt={'Nombre pdp'}
+            alt={`Image of ${productName ? productName : ""}`}
             src={image}
             className="rounded-xl object-cover w-[600px] h-[700px]"
             height={800}
