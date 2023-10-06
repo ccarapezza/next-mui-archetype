@@ -15,6 +15,10 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
   const params = useParams()
 
   const categoryName = params.name as string;
+  console.log('====================================');
+  console.log('CategoryName', categoryName);
+  console.log('====================================');
+  // categoryTitle={categoryName?.length?categoryName[categoryName?.length-1]:null}
   // Props
   const { categoryTree, listProducts, varations } = props;
 
@@ -24,7 +28,7 @@ export default function ProductListMain(props: { categoryTree: any, listProducts
         <ProductPageHeader categoryTitle={categoryName?categoryName:""} />
         <div className='flex flex-col mt-8 lg:flex-row'>
           <div className='w-full lg:w-1/5 px-2'>
-            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryName?.length?categoryName[categoryName?.length-1]:null} varationsDTO={varations}/>
+            <ProductFilters categoryTree={categoryTree} categoryTitle={categoryName} varationsDTO={varations}/>
           </div>
           <div className='w-full lg:w-4/5 px-2 mt-5 lg:mt-0'>
             {

@@ -29,7 +29,7 @@ export default function Navbar(props: {categoryTree: any}) {
         },
         {
             title: "Tienda",
-            path: "/category",
+            path: "/category/tienda",
             children: categoryTree.map((category: any) => {
                 return {
                     title: category.name,

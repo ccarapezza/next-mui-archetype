@@ -28,8 +28,8 @@ export default function CategorySelector(props: { categoryTree: ProductCategoryD
             });
             return result;
         }
-        if(categoryTitle){
-            const category = findNameOnTree(categoryTitle);
+        if(categoryTitle !== 'tienda'){
+            const category = findNameOnTree(categoryTitle!);
             setsubCategories(category?.childrens!);
         }else{
             setsubCategories(categoryTree);
@@ -77,7 +77,7 @@ export default function CategorySelector(props: { categoryTree: ProductCategoryD
                             subCategories?.map((subcategory: any, i: number) => {
                                 return (
                                     <li key={i}>
-                                        <label htmlFor="FilterSubcategory" className="inline-flex items-center gap-2">
+                                        <label className="inline-flex items-center gap-2">
                                             <input
                                                 type="checkbox"
                                                 id="FilterSubcategory"
