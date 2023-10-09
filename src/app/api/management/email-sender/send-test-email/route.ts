@@ -1,12 +1,12 @@
-import EmailUtil from '@/utils/EmailUtil';
+import EmailSenderContext from '@/utils/email/EmailSenderContext';
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {
     const { htmlContent , email }:{htmlContent: string, email: string} = await request.json();
 
-    await EmailUtil.sendEmail({
+    await EmailSenderContext.sendEmail({
         to: email,
-        from: `carapezza.christian@gmail.com`,
+        from: process.env.EMAIL_USER!,
         subject: "Test Email",
         html: htmlContent
     });

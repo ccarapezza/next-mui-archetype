@@ -2,7 +2,7 @@ import { Role, User, VerificationToken } from '@/db';
 import { NextRequest, NextResponse } from 'next/server'
 import { Op } from "sequelize";
 import bcrypt from 'bcryptjs';
-import EmailUtil from '@/utils/EmailUtil';
+import EmailSenderContext from '@/utils/email/EmailSenderContext';
 
 export async function POST(request: NextRequest) {
     const { name, email, password } = await request.json();
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
                 expires
             });
 
-            await EmailUtil.sendVerificationEmail({
+            await EmailSenderContext.sendVerificationEmail({
                 email,
                 token: verificationToken.token
             })

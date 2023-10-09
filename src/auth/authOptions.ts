@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { Account, Role, adapter } from "@/db/index"
 import bcrypt from 'bcryptjs';
 import { User, VerificationToken } from "@/db";
-import EmailUtil from "@/utils/EmailUtil";
+import EmailSenderContext from "@/utils/email/EmailSenderContext";
 import { Op } from "sequelize";
 import S3BucketUtil from "@/utils/S3BucketUtil";
 
@@ -299,7 +299,7 @@ export const authOptions: NextAuthOptions = {
 
                 console.log('%Sending verification email...', 'color: green');
                 try {
-                    await EmailUtil.sendVerificationEmail({
+                    await EmailSenderContext.sendVerificationEmail({
                         email: profile?.email!,
                         token: verificationToken.token
                     })

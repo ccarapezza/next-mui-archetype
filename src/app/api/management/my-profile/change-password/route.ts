@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from 'bcryptjs';
 import { VerificationToken } from "@/db";
-import EmailUtil from '@/utils/EmailUtil';
+import EmailSenderContext from '@/utils/email/EmailSenderContext';
 
 export async function PUT(request: NextRequest) {
     const { currentPassword, newPassword } = await request.json();
@@ -42,7 +42,7 @@ export async function PUT(request: NextRequest) {
 
     try {
         console.log("TOKEN:",`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/verify-email?token=${verificationToken.token}`);
-        await EmailUtil.sendVerificationEmail({
+        await EmailSenderContext.sendVerificationEmail({
             email: user?.email!,
             token: verificationToken.token
         })

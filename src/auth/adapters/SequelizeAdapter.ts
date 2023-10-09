@@ -7,7 +7,7 @@ import type {
 } from "next-auth/adapters"
 import { Sequelize, Model, ModelStatic } from "sequelize"
 import * as defaultModels from "@next-auth/sequelize-adapter/dist/models"
-import EmailUtil from "@/utils/EmailUtil"
+import EmailSenderContext from '@/utils/email/EmailSenderContext';
 import bcrypt from 'bcryptjs';
 
 export { defaultModels as models }
@@ -98,9 +98,9 @@ export default function SequelizeAdapter(
 
             console.log('%Sending welcome email...', 'color: green');
             try {
-                await EmailUtil.sendEmail({
+                await EmailSenderContext.sendEmail({
                     to: user.email,
-                    from: "carapezza.christian@gmail.com",
+                    from: process.env.EMAIL_USER!,
                     subject: 'Welcome to NextAuth.js',
                     html: 'Your account has been created.',
                 });
@@ -126,7 +126,7 @@ export default function SequelizeAdapter(
 
             console.log('%Sending verification email...', 'color: green');
             try {
-                await EmailUtil.sendVerificationEmail({
+                await EmailSenderContext.sendVerificationEmail({
                     email: user.email,
                     token: verificationToken.token
                 })

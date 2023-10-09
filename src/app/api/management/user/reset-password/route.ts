@@ -1,7 +1,7 @@
 import { User } from '@/db';
 import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs';
-import emailUtil from '@/utils/EmailUtil';
+import EmailSenderContext from '@/utils/email/EmailSenderContext';
 
 export async function POST(request: NextRequest) {
     const { email } = await request.json();
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
         console.log('%Sending new password...', 'color: green');
         try {
-            await emailUtil.sendWelcomeEmail({
+            await EmailSenderContext.sendWelcomeEmail({
                 email: user.email,
                 url: `${process.env.NEXT_PUBLIC_URL}/auth/signin`,
                 temporalPassword: temporalPassword,
