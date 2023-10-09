@@ -32,11 +32,13 @@ export default function Footer(props: { categoryTree: any }) {
 
   const footerNavs = [
     {
-      label: "Categorias",
+      label: "Tienda",
+      href: '/category/tienda',
       items: categoryNav
     },
     {
       label: "Nosotros",
+      href: '/nosotros',
       items: [
         {
           href: '/nosotros',
@@ -60,6 +62,7 @@ export default function Footer(props: { categoryTree: any }) {
     },
     {
       label: "Síguenos",
+      href: '/',
       items: [
         {
           href: '/',
@@ -102,9 +105,14 @@ export default function Footer(props: { categoryTree: any }) {
                   className="space-y-4"
                   key={idx}
                 >
-                  <h4 className="text-secondary underline font-medium">
-                    {item.label}
-                  </h4>
+                  <Link
+                    href={item.href}
+                    className="hover:underline hover:text-primary"
+                  >
+                    <h4 className="text-secondary underline font-medium">
+                      {item.label}
+                    </h4>
+                  </Link>
                   {
                     item.items.map(((el: any, idx: number) => (
                       <li key={idx}>

@@ -1,9 +1,13 @@
 //Service object for Role Sequelize Model
-import { ContactForm, OrderLine, ProductItem, ShopOrder, VariationOption } from "@/db";
+import { ContactForm, OrderLine, OrderStatus, ProductItem, ShopOrder, VariationOption } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
 import { GenericService } from "./GenericService";
 import S3BucketUtil from "@/utils/S3BucketUtil";
-
+import { AdapterSession } from 'next-auth/adapters';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth/authOptions';
+import { userService } from "./UserService";
+import { Op } from "sequelize";
 //VariationService extends GenericService
 export class ShopOrderService extends GenericService<ShopOrder> {
     constructor() {
@@ -75,7 +79,40 @@ export class ShopOrderService extends GenericService<ShopOrder> {
             return shopOrder;
         }
         return null;
-    }
+    };
+    getOrderByUserId = async () => {
+
+        const session = await getServerSession(authOptions);
+        const user = session?.user?.email ? await userService.getByEmail(session.user.email) : null;
+        const key = user?.id;
+
+        const orderListByUserId = await ShopOrder.findAll({
+            attributes: ['id', 'statusId', 'orderTotal', 'orderDate'],
+            where: {
+                userId: {
+                    [Op.like]: `%${key}%`
+                }
+            },
+            include: [
+                {
+                    model: OrderStatus,
+                    attributes: ["name"],
+                }
+            ],
+            limit: 10
+        });
+
+        const orderListByUserIdDTO = orderListByUserId.map((order) => {
+            return {
+                id: order.id,
+                statusId: order.statusId,
+                orderDate: order.orderDate,
+                orderTotal: order.orderTotal,
+                statusName: order.status.toJSON().name
+            }
+        })
+        return orderListByUserIdDTO;
+    };
 };
 
 //VariationService as a singleton

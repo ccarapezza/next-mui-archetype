@@ -14,4 +14,4 @@ export type ShopOrderDto = {
     contactForm: ContactForm;
     contactFormId: number;
     orderLines: OrderLineDto[];
-}
+};
