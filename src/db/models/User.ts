@@ -41,6 +41,7 @@ export default class User extends Model {
         foreignKey: 'userId',
         otherKey: 'roleId',
     })
+    public _roles?: Role[];
 
     declare addRole: BelongsToManyAddAssociationMixin<Role, number>;
     declare addRoles: BelongsToManyAddAssociationMixin<Role[], number>;
