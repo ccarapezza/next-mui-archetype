@@ -8,6 +8,7 @@ import {
 @Table({
     tableName: "faq_editor",
     timestamps: true,
+    modelName: "FaqEditor"
 })
 export default class FaqEditor extends Model {
     @Column({ type: DataType.TEXT, allowNull: false })

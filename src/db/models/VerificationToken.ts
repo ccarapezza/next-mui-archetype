@@ -6,6 +6,7 @@ import { VerificationToken as VerificationTokenDefinition } from "@next-auth/seq
 @Table({
   tableName: "verification_tokens",
   timestamps: true,
+  modelName: "VerificationToken"
 })
 export default class VerificationToken extends Model<VerificationTokenAdapter, Partial<VerificationTokenAdapter>>{
 

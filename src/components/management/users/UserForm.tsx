@@ -1,10 +1,8 @@
 "use client"
-import AvatarUploadModal from '@/components/client/AvatarUploadModal'
 import MuiBox from '@/components/client/MuiBox'
 import { RoleDto } from '@/schemas/role'
 import { getRoleDataByName } from '@/utils/RoleDataUtil'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { faP, faPaintBrush, faSave, faScrewdriverWrench, faUser, faUserTie } from '@fortawesome/free-solid-svg-icons'
+import { faSave } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Avatar, Button, Card, Checkbox, Chip, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, TextField, Typography } from '@mui/material'

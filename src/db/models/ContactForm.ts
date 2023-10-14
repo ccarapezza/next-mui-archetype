@@ -8,6 +8,7 @@ import {
 @Table({
     tableName: "contact_form",
     timestamps: true,
+    modelName: "ContactForm"
 })
 export default class ContactForm extends Model {
     @Column({ type: DataType.STRING, allowNull: false })

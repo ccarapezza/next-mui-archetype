@@ -15,6 +15,7 @@ import ContactForm from "./ContactForm";
 @Table({
     tableName: "shop_order",
     timestamps: true,
+    modelName: "ShopOrder"
 })
 export default class ShopOrder extends Model {
     @Column({ type: DataType.DATE, allowNull: false })

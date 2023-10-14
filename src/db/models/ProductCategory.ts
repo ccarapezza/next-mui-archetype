@@ -11,6 +11,7 @@ import {
 @Table({
   tableName: "product_category",
   timestamps: true,
+    modelName: "ProductCategory",
 })
 export default class ProductCategory extends Model {
   @Column({ type: DataType.STRING, allowNull: false })

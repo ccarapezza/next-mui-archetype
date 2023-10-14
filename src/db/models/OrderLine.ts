@@ -12,6 +12,7 @@ import ShopOrder from "./ShopOrder";
 @Table({
     tableName: "order_line",
     timestamps: true,
+    modelName: "OrderLine"
 })
 export default class OrderLine extends Model {
     /* Associantions */

@@ -13,6 +13,7 @@ import VariationOption from "./VariationOption";
 @Table({
   tableName: "variation",
   timestamps: true,
+  modelName: "Variation",
 })
 export default class Variation extends Model {
   @Column({ type: DataType.STRING, allowNull: false })

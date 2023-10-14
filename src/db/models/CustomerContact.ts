@@ -11,6 +11,7 @@ import CustomerContactStatus from "./CustomerContactStatus";
 @Table({
     tableName: "customer_contact",
     timestamps: true,
+    modelName: "CustomerContact"
 })
 export default class CustomerContact extends Model {
     static findAllSequelizePagination(arg0: { attributes: string[]; include: string[]; order: (string | import("sequelize/types/utils").Literal)[][]; }) {

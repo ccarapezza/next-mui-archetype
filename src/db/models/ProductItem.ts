@@ -6,7 +6,6 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
-  HasMany,
   BelongsToMany
 } from "sequelize-typescript";
 import Product from "./Product";
@@ -15,6 +14,7 @@ import VariationOption from "./VariationOption";
 @Table({
   tableName: "product_item",
   timestamps: true,
+  modelName: "ProductItem",
 })
 export default class ProductItem extends Model {
   @Column({ type: DataType.STRING, allowNull: false, unique: true })

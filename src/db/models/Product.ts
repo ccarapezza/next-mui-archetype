@@ -13,6 +13,7 @@ import ProductItem from "./ProductItem";
 @Table({
   tableName: "product",
   timestamps: true,
+    modelName: "Product",
 })
 export default class Product extends Model {
   @Column({ type: DataType.STRING, allowNull: false })

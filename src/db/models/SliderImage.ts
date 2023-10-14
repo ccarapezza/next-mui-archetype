@@ -8,6 +8,7 @@ import {
 @Table({
     tableName: "slider_image",
     timestamps: true,
+    modelName: "SliderImage"
 })
 export default class SliderImage extends Model {
     @Column({ type: DataType.STRING, allowNull: false })

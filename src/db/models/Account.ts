@@ -8,6 +8,7 @@ import User from "./User";
 @Table({
   timestamps: true,
   tableName: "accounts",
+    modelName: "Account",
 })
 export default class Account extends Model<AdapterAccount, Partial<AdapterAccount>>{
 

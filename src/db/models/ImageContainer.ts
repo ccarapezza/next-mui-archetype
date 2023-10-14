@@ -8,6 +8,7 @@ import {
 @Table({
     tableName: "image_container",
     timestamps: true,
+    modelName: "ImageContainer"
 })
 export default class ImageContainer extends Model {
     @Column({ type: DataType.STRING, allowNull: false })

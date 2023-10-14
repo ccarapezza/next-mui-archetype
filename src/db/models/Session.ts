@@ -7,6 +7,7 @@ import User from "./User";
 @Table({
   tableName: "sessions",
     timestamps: true,
+    modelName: "Session"
 })
 export default class Session extends Model<AdapterSession, Partial<AdapterSession>>{
 

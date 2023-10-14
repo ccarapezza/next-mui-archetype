@@ -11,6 +11,7 @@ import User from "./User";
 @Table({
   tableName: "posts",
   timestamps: true,
+  modelName: "Post",
 })
 export default class Post extends Model {
   @Column({ type: DataType.STRING, allowNull: false })
