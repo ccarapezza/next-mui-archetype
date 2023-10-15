@@ -30,14 +30,7 @@ export default class EmailSenderNodemailerStrategy extends EmailSenderStrategy {
             subject: subject,
             html: html,
         });
-
-        this.transporter.sendMail(info, (error, info) => {
-            if (error) {
-                console.log(error);
-                return error;
-            }
-            console.log('Message sent: %s', info.messageId);
-        });
+        
         return info.messageId;
     }
     async sendVerificationEmail({ email, token }: { email: string, token: string }) {
@@ -58,8 +51,8 @@ export default class EmailSenderNodemailerStrategy extends EmailSenderStrategy {
         return await this.sendEmail({
             to: email,
             from: process.env.EMAIL_USER!,
-            subject: 'Welcome to the app!',
-            html: `<h1>Welcome to the app!</h1><p>Thanks for signing up! To verify your email address, please click the link below.</p><a href="${url}">Verify your email</a>`,
+            subject: 'Welcome to the site!',
+            html: `<h1>Welcome to the site!</h1><p>Your temporary password is: <strong>${temporalPassword}</strong></p><p>Please <a href="${url}">click here</a> to login and change your password.</p>`,
         });
     }
 }
