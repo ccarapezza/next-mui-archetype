@@ -24,9 +24,11 @@ async function sendWelcomeEmail({ email, url, temporalPassword }: { email: strin
     return await strategy.sendWelcomeEmail({ email, url, temporalPassword });
 }
 
-export default {
+const EmailSenderContext = {
     sendBulkEmail,
     sendEmail,
     sendVerificationEmail,
     sendWelcomeEmail,
 };
+
+export default EmailSenderContext;

@@ -19,7 +19,7 @@ function ListmonkComponent({ authorizationString, listmonkUrl }: { authorization
             return { __html: await response.text() };
         }
         createMarkup().then(result => setHTML(result));
-    }, []);
+    }, [authorizationString, listmonkUrl]);
 
 
     return <div dangerouslySetInnerHTML={html} />;
