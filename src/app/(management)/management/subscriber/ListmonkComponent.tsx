@@ -10,7 +10,6 @@ function ListmonkComponent({ authorizationString, listmonkUrl }: { authorization
             response = await fetch(listmonkUrl,
                 {
                     //no cors config
-                    mode: 'no-cors',
                     headers: {
                         Authorization: 'Basic ' + btoa(authorizationString),
                         'Content-Type': 'text/html'
