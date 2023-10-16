@@ -38,8 +38,6 @@ export default async function SubscriberPage({ searchParams }: { searchParams: {
 
     return (<>
         <PageHeader title="Suscriptores" />
-        <MuiBox className="p-10">
-            <ListmonkComponent authorizationString={`${publicRuntimeConfig.listmonkUser}:${publicRuntimeConfig.listmonkPassword}`} listmonkUrl={publicRuntimeConfig.listmonkUrl} />
-        </MuiBox>
+        <ListmonkComponent authorizationString={`${publicRuntimeConfig.listmonkUser}:${publicRuntimeConfig.listmonkPassword}`} listmonkUrl={publicRuntimeConfig.listmonkUrl} />
     </>)
 }
