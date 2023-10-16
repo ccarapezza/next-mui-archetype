@@ -4,6 +4,9 @@ import PageHeader from '@/components/management/paperbase/PageHeader'
 import { GridColDef } from '@mui/x-data-grid';
 import React from 'react'
 import { subscriberService } from '@/services/SubscriberService';
+import ListmonkComponent from './ListmonkComponent';
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig()
 
 const fetchSubscriberListData = async (page: number, size: number, search: string) => {
     return await subscriberService.search(search, page, size);
@@ -31,10 +34,12 @@ export default async function SubscriberPage({ searchParams }: { searchParams: {
         }
     ];
 
+    
+
     return (<>
         <PageHeader title="Suscriptores" />
         <MuiBox className="p-10">
-            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} />
+            <ListmonkComponent authorizationString={`${publicRuntimeConfig.listmonkUser}:${publicRuntimeConfig.listmonkPassword}`} listmonkUrl={publicRuntimeConfig.listmonkUrl} />
         </MuiBox>
     </>)
 }
