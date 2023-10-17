@@ -90,6 +90,7 @@ export default function ChangePasswordForm() {
                         className='my-2'
                         label="Contraseña actual"
                         variant="outlined"
+                        type='password'
                         fullWidth
                         required
                         error={!!errors.currentPassword}
@@ -101,6 +102,7 @@ export default function ChangePasswordForm() {
                         className='my-2'
                         label="Nueva contraseña"
                         variant="outlined"
+                        type='password'
                         fullWidth
                         required
                         error={!!errors.newPassword}
@@ -111,6 +113,7 @@ export default function ChangePasswordForm() {
                         className='my-2'
                         label="Confirmar contraseña"
                         variant="outlined"
+                        type='password'
                         fullWidth
                         required
                         error={!!errors.confirmPassword}

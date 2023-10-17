@@ -77,8 +77,12 @@ export const authOptions: NextAuthOptions = {
 
                     const user = (await User.findOne({
                         include: ["roles"],
+                        //where name or email
                         where: {
-                            name: credentials?.username
+                            [Op.or]: [
+                                { email: credentials?.username! },
+                                { name: credentials?.username! }
+                            ]
                         }
                     }))?.toJSON();
 
@@ -126,7 +130,10 @@ export const authOptions: NextAuthOptions = {
                     const user = await User.findOne({
                         include: ["roles"],
                         where: {
-                            name: credentials?.username
+                            [Op.or]: [
+                                { email: credentials?.username! },
+                                { name: credentials?.username! }
+                            ]
                         }
                     });
 

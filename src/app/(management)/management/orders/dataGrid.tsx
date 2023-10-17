@@ -24,7 +24,7 @@ const moveToPaymentAcceptedStatus = async (shopOrderId: any) => {
         },
         body: JSON.stringify({
             shopOrderId: shopOrderId,
-            statusId: OrderStatus.Pending
+            statusId: OrderStatus.PaymentAccepted
         })
     });
     if(!res.ok){

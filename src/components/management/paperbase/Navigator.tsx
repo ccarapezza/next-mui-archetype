@@ -84,9 +84,7 @@ const MENU_DEFAULT: MenuItem[] = [
         id: 'Email Marketing',
         roles: ['ADMIN', 'MARKETING'],
         children: [
-            { id: 'Suscriptores', icon: faUserFriends, href: '/management/subscriber', active: false },
-            { id: 'Enviar Emails', icon: faPaperPlane, href: '/management/send-emails', active: false },
-            { id: 'Templates', icon: faPalette, href: '/management/email-templates', active: false }
+            { id: 'Suscripciones', icon: faUserFriends, href: '/management/subscriber', active: false },
         ],
     }
 ];
