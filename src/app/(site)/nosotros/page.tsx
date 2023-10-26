@@ -4,7 +4,7 @@ const links = [
     { name: 'REPROCANN', href: '/' },
     { name: 'Aliados', href: '/aliados' },
     { name: 'Preguntas frecuentes', href: '/faq' },
-    { name: 'Nuestra tienda', href: '/category/tienda' },
+    { name: 'Nuestra tienda', href: '/shop' },
 ]
 
 export default function AboutUs() {

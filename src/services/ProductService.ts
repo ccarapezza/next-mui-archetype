@@ -143,7 +143,59 @@ export class ProductService extends GenericService<Product> {
     };
     searchByFilters = async (filters: FilterProduct, page: number = 1, size: number = 10) => {
         //TODO: Enviar directamente el id de la categoria, por ahora se busca por el nombre
-        const categoryId = filters.category?(await ProductCategory.findOne({ attributes: ['id'], where: { name: filters.category } }))?.id:null;
+        if(isNaN(parseInt(filters.category!)) && filters.category){
+            throw new Error('Invalid category id');
+        }
+
+        //obtain categoryId
+        const categoryId = filters.category;
+
+        const categoriesSearch = `WITH RECURSIVE generation AS (
+            SELECT id, name, parentId
+            FROM product_category
+            WHERE parentId IS NULL
+        UNION ALL
+            SELECT child.id, child.name, child.parentId
+            FROM product_category child
+            JOIN generation g ON g.id = child.parentId
+        )
+        
+        SELECT g.id
+        FROM generation g
+        JOIN product_category parent
+        ON g.parentId = parent.id and parent.id = :parentCategoryId`
+
+        const categoriesResultSet = await sequelizeInstace.query(
+            categoriesSearch,
+            {
+                replacements: {
+                    parentCategoryId: categoryId
+                },
+                type: QueryTypes.SELECT,
+                nest: true,
+            }
+        );
+
+        const categoriesFilter = [categoryId].concat(categoriesResultSet.map((c: any) => c.id));
+
+        /*
+
+        WITH RECURSIVE generation AS (
+            SELECT id, name, parentId
+            FROM product_category
+            WHERE parentId IS NULL
+        UNION ALL
+            SELECT child.id, child.name, child.parentId
+            FROM product_category child
+            JOIN generation g ON g.id = child.parentId
+        )
+        
+        SELECT g.id, g.name, g.parentId
+        FROM generation g
+        JOIN product_category parent
+        ON g.parentId = parent.id and parent.id = 9
+
+        */
 
         //obtain searchs for variants
         const variationsIdsSearchs = [];
@@ -180,8 +232,8 @@ export class ProductService extends GenericService<Product> {
         
         const whereClauses: string[] = [];
 
-        if(categoryId){
-            whereClauses.push('pc.id = :categoryId');
+        if(categoriesFilter){
+            whereClauses.push('pc.id in (:categoriesFilter)');
         }
         if(filters.priceMin){
             whereClauses.push('pi.price >= :minPrice');
@@ -202,7 +254,7 @@ export class ProductService extends GenericService<Product> {
 
         const query = querySearch.concat(where);
         const replacements = {
-            categoryId: categoryId,
+            categoriesFilter: categoriesFilter,
             minPrice: filters.priceMin,
             maxPrice: filters.priceMax,
             variationsIds: variationsIdsSearchs

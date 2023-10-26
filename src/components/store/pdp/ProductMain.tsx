@@ -7,10 +7,6 @@ import { ProductItemDto } from "@/schemas/productItem";
 
 export default function ProductMain(props: { product: ProductDto | null }) {
     const { product } = props;
-    console.log('====================================');
-    console.log('product', product);
-    console.log('====================================');
-
     const [itemId, setItemId] = useState(0);
     const [selectedItem, setSelectedItem] = useState<any>({
         ...

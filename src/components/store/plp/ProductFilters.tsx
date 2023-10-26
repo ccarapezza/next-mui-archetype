@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams, useParams } from 'next/navigation';
 import CategorySelector from './filters/CategorySelector';
 import PricePicker from './filters/PricePicker';
 import MainGenericSelector from './filters/generic-filters/MainGenericSelector';
@@ -19,7 +19,7 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
     const pathname = usePathname();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const categoryParam = searchParams.get('category');
+    const { category } = useParams<{category: string[]}>();
     const priceMinParams = searchParams.get('priceMin');
     const priceMaxParams = searchParams.get('priceMax');
 
@@ -39,7 +39,7 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
     });
 
     const [filters, setFilters] = useState<FilterState>({
-        selectedCategories: categoryParam ? categoryParam.split(',') : [],
+        selectedCategories: category?category:[],
         ...initialVariationStates,
         selectedPrice: {
             from: priceMinParams ? priceMinParams : '',
@@ -65,9 +65,7 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
                     });
                 }
             };
-    
-    
-            addParam('category', selectedCategories);
+
             if (selectedPrice.from !== '' || selectedPrice.to !== '') {
                 if (selectedPrice.from !== '') {
                     addParam('priceMin', [selectedPrice.from]);
@@ -89,15 +87,15 @@ export default function ProductFilters(props: { categoryTree: any, categoryTitle
                 paramsToAdd.map((param: any) => [param.name, param.value])
             );
     
-            router.push(`${pathname}?${queryParams.toString()}`);
+            router.push(`/shop/${selectedCategories.join('/')}?${queryParams.toString()}`);
         };
         setStateToUrl(filters)
-    }, [filters,pathname, router])
+    }, [filters, pathname, router])
 
     return (
         <div className="space-y-2">
             <h3 className='text-lg text-tertiary-800 font-semibold pb-2 border-b border-gray-300 mb-4'>Filtros:</h3>
-            <CategorySelector categoryTree={categoryTree} categoryTitle={categoryTitle} filters={filters} setFilters={setFilters} />
+            <CategorySelector level={0} categoryTree={categoryTree} categoryTitle={categoryTitle} filters={filters} setFilters={setFilters} />
             <MainGenericSelector filters={filters} setFilters={setFilters} varationsDTO={varationsDTO} />
             <PricePicker filters={filters} setFilters={setFilters} />
         </div>

@@ -33,7 +33,7 @@ export default function Footer(props: { categoryTree: any }) {
   const footerNavs = [
     {
       label: "Tienda",
-      href: '/category/tienda',
+      href: '/shop',
       items: categoryNav
     },
     {

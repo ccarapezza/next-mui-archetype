@@ -29,7 +29,7 @@ export default function Navbar(props: {categoryTree: any}) {
         },
         {
             title: "Tienda",
-            path: "/category/tienda",
+            path: "/shop",
             children: categoryTree.map((category: any) => {
                 return {
                     title: category.name,
@@ -91,7 +91,6 @@ export default function Navbar(props: {categoryTree: any}) {
                                     return (<Box key={"cat-"+idx} className="group relative dropdown">
                                         <Link
                                             href={item.path}
-                                            
                                             className='hover:text-primary whitespace-nowrap'
                                         >
                                             {item.title} 
@@ -102,7 +101,7 @@ export default function Navbar(props: {categoryTree: any}) {
                                                     {item.children.map((child: any, subIdx: number) => {
                                                         return (
                                                             <Link
-                                                                href={`/category/${child.path}`}
+                                                                href={`/shop/${child.path}`}
                                                                 key={"subcat-"+idx+subIdx}
                                                                 className='hover:text-primary whitespace-nowrap px-4 py-2'
                                                             >

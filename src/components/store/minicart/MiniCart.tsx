@@ -17,7 +17,6 @@ export default function MiniCart() {
     }, [products.length])
 
     useEffect(() => {
-        console.log('openMiniCart', openMiniCart);
         if(openMiniCart !== null) {
             setOpenMiniCart(true)
         }
