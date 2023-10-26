@@ -53,7 +53,7 @@ export default function CategorySelector(props: { options?: ProductCategoryDto[]
         if (level !== 0) {
             setCategoryLabel(parentCategory?.name || "");
         }
-    }, [categoryTree, categoryTitle])
+    }, [categoryTree, categoryTitle, level, selectedLevelKey, props.options])
 
     return (<>
         {subCategories?.length > 0 ?

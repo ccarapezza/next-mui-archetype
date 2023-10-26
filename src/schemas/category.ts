@@ -3,6 +3,6 @@ export type ProductCategoryDto = {
     name: string;
     parentId: number | null;
     parent: ProductCategoryDto | null;
-    key: string | null;
+    key?: string | null;
     childrens?: ProductCategoryDto[];
 };
