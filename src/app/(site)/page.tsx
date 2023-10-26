@@ -28,4 +28,7 @@ export default async function Home() {
         ;
 }
 //5 minutes
-export const revalidate = 300;
+//export const revalidate = 300;
+
+//dynamic
+export const dynamic = 'force-dynamic'
