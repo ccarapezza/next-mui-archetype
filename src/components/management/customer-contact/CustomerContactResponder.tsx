@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faPaperPlane, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { enqueueSnackbar } from "notistack";
 import { CustomerContactDto } from "@/schemas/customerContact";
-
+import { DialogContext } from "../context/DialogContext";
+import { useContext } from "react";
 interface IAnswerForm {
     answer: string
 }
@@ -17,10 +18,10 @@ const schema = yup.object({
     answer: yup.string().min(3).max(300).required()
 }).required();
 
-export default function CustomerContactResponder({ openModalstate, setOpenModalState, customerContact }: { openModalstate: boolean, setOpenModalState: any, customerContact: any }) {
-
-    console.log(customerContact);
+export default function CustomerContactResponder({ openModalstate, setOpenModalState, customerContact, emailFrom }: { openModalstate: boolean, setOpenModalState: any, customerContact: any, emailFrom: string }) {    
+    
     const router = useRouter();
+    const { showMessage } = useContext(DialogContext);
 
     const { register, handleSubmit, reset, setValue, formState: { errors, isValid } } = useForm<IAnswerForm>({
         resolver: yupResolver(schema)
@@ -45,20 +46,9 @@ export default function CustomerContactResponder({ openModalstate, setOpenModalS
             statusId: 2,
         }
         updateStatusData(editStatus).then((response) => {
+            showMessage(`Respuesta enviada a: ${customerContact.email}`, `En caso de respuesta del cliente esta consulta continuara su curso a través de ${emailFrom}`);
             enqueueSnackbar('Mensaje contestado con éxito!', { variant: 'success' });
-            // Enviar Email
-            const sendMail = true;
-            if (sendMail) {
-                const dataForEmail = {
-                    id: customerContact.id,
-                    name: customerContact.name,
-                    email: customerContact.email,
-                    message: customerContact.message,
-                    answer: data.answer
-                }
-                console.log('Send Email --->', dataForEmail);
-                router.refresh();
-            }
+            router.refresh();
         }).catch((error) => {
             console.log("error", error);
             enqueueSnackbar('No se pudo contestar el mensaje!', { variant: 'error' });

@@ -41,6 +41,7 @@ const nextConfig = {
         listmonkUrl: process.env.NEXT_PUBLIC_LISTMONK_URL,
         listmonkUser: process.env.LISTMONK_app__admin_username,
         listmonkPassword: process.env.LISTMONK_app__admin_password,
+        emailFrom: process.env.EMAIL_USER,
     },
     webpack: (config, { webpack, isServer, nextRuntime }) => {
         // Avoid AWS SDK Node.js require issue

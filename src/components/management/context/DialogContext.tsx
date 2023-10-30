@@ -35,7 +35,7 @@ export const DialogContextProvider = ({
     return (
       <DialogContext.Provider value={{
             showMessage: (title: string, message: string) => {
-                setDialogs([...dialogs, { type: "confirm", title, message }]);
+                setDialogs([...dialogs, { type: "message", title, message }]);
             },
             showConfirm: (title: string, message: string, onConfirm: () => void, onCancel?: () => void) => {
                 setDialogs([...dialogs, { type: "confirm", title, message, onConfirm, onCancel }]);

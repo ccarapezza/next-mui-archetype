@@ -12,7 +12,7 @@ import { enqueueSnackbar } from 'notistack';
 import { usePathname, useRouter } from 'next/navigation';
 import PrettyPagination from '@/components/general/PrettyPagination';
 
-export default function CustomerContactLit({ customerContactListDto, totalPages, currentPage, totalItems }: { customerContactListDto: CustomerContactDto[], totalPages: number, currentPage: number, totalItems: number }) {
+export default function CustomerContactLit({ customerContactListDto, totalPages, currentPage, totalItems, emailFrom }: { customerContactListDto: CustomerContactDto[], totalPages: number, currentPage: number, totalItems: number, emailFrom: string }) {
 
     const { showConfirm } = useContext(DialogContext);
     const router = useRouter();
@@ -141,7 +141,7 @@ export default function CustomerContactLit({ customerContactListDto, totalPages,
                 </div>
                 <PrettyPagination totalPages={totalPages} currentPage={currentPage} totalItems={totalItems} />
             </section>
-            <CustomerContactResponder openModalstate={openModalstate} setOpenModalState={setOpenModalState} customerContact={customerContact} />
+            <CustomerContactResponder openModalstate={openModalstate} setOpenModalState={setOpenModalState} customerContact={customerContact} emailFrom={emailFrom}/>
         </>
 
     );
