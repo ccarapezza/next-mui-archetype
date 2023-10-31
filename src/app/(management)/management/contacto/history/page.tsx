@@ -22,7 +22,7 @@ export default async function CustomerContactPageHistoric({ searchParams }: { se
     return (<>
         <PageHeader title="Formulario de contacto" />
         <MuiBox className="pb-10 pt-5">
-            <CustomerContactLit customerContactListDto={rows} totalPages={totalPages} currentPage={currentPage} totalItems={totalItems}/>
+            <CustomerContactLit customerContactListDto={rows} totalPages={totalPages} currentPage={currentPage} totalItems={totalItems} emailFrom={process.env.EMAIL_USER!}/>
         </MuiBox>
     </>)
 }
