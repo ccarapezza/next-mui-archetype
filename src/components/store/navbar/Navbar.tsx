@@ -7,6 +7,7 @@ import NavBarAuth from './auth/NavBarAuth';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
 export default function Navbar(props: {categoryTree: any}) {
 
@@ -24,6 +25,7 @@ export default function Navbar(props: {categoryTree: any}) {
 
     const staticMenu = [
         {
+            icon: faWhatsapp,
             title: "Turnos Reprocann",
             path: "https://wa.me/message/6F43BK65OY2EK1",
             target: "_blank"
@@ -95,6 +97,7 @@ export default function Navbar(props: {categoryTree: any}) {
                                             target={item.target}
                                             className='hover:text-primary whitespace-nowrap'
                                         >
+                                            {item.icon && <FontAwesomeIcon icon={item.icon} className='mr-2' />}
                                             {item.title} 
                                         </Link>
                                         {item.children && (
