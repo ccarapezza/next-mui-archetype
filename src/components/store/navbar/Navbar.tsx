@@ -25,7 +25,8 @@ export default function Navbar(props: {categoryTree: any}) {
     const staticMenu = [
         {
             title: "Turnos Reprocann",
-            path: "/"
+            path: "https://wa.me/message/6F43BK65OY2EK1",
+            target: "_blank"
         },
         {
             title: "Tienda",
@@ -91,6 +92,7 @@ export default function Navbar(props: {categoryTree: any}) {
                                     return (<Box key={"cat-"+idx} className="group relative dropdown">
                                         <Link
                                             href={item.path}
+                                            target={item.target}
                                             className='hover:text-primary whitespace-nowrap'
                                         >
                                             {item.title} 

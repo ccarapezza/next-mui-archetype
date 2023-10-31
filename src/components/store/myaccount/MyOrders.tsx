@@ -1,6 +1,8 @@
 'use client'
 
 import PriceFormatting from "@/components/management/product/PriceFormatting";
+import getConfig from 'next/config';
+const { publicRuntimeConfig } = getConfig();
 
 export default function MyOrders(porps: { shopOrderDto: any }) {
     const { shopOrderDto } = porps;
@@ -44,7 +46,7 @@ export default function MyOrders(porps: { shopOrderDto: any }) {
                                     Tus pedidos:
                                 </h3>
                                 <p className="text-gray-600 mt-2">
-                                    Ante cualquier consulta con tus pedidos no dudes en contactarnos a contacto@cultivomisderechos.com.ar
+                                    Ante cualquier consulta con tus pedidos no dudes en contactarnos a {publicRuntimeConfig.emailFrom}
                                 </p>
                             </div>
                         </div>

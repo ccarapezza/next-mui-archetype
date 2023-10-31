@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, InputAdornment, OutlinedInput, Stack, Tooltip, Typography } from '@mui/material';
 import Image from 'next/image';
 import { enqueueSnackbar } from 'notistack';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { DialogContext } from '../context/DialogContext';
 
 const uploadFile = async (file: File, code: string) => {
     //get presigner url from server
@@ -65,6 +66,16 @@ const getImageContainer = async (code: string) => {
     return await response.json();
 }
 
+const deleteImageContainer = async (key: string) => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/management/content-manager/image-container/delete-image-container/${key}`, {
+        method: 'DELETE',
+    });
+    if (!response.ok) {
+        throw new Error("Error al eliminar la imagen");
+    }
+    return await response.json();
+}
+
 export default function ImageContainerControl({code, size:{ width = 774, height = 1161}, compressedSizeOnKb=150, name, title}: {code:string, size: {width: number, height: number}, name: string, compressedSizeOnKb?: number, title?: string}) {
     const inputFileRef = useRef<HTMLInputElement>(null);
     const [fileToUpload, setFileToUpload] = useState<File|null>(null);
@@ -72,6 +83,7 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
     const [file, setFile] = useState<ImageContainerDto|null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const { showConfirm } = useContext(DialogContext);
 
     const uploadFileAction = (file: File) => {
         setIsLoading(true);
@@ -86,6 +98,22 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
             console.log("error", error);
         }).finally(() => {
             setIsLoading(false);
+        });
+    }
+
+    const deleteFileAction = (code: string) => {
+        showConfirm("Confirmar eliminación", "Estás seguro que deseas eliminar la imagen?", () => {
+            deleteImageContainer(code).then(() => {
+                setFile(null);
+                //show success message
+                enqueueSnackbar('Imagen eliminada correctamente', { variant: 'success' });
+                router.refresh();
+            }).catch((error) => {
+                enqueueSnackbar('Error al eliminar la imagen', { variant: 'error' });
+                console.log("error", error);
+            });
+        },() => {
+
         });
     }
 
@@ -205,7 +233,7 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
             :
                 <Image id={`image-${code}`} width={width} height={height} src={`http://dummyimage.com/${width}x${height}/322F30/EFE6D9.jpg`} alt="preview image" />
             }
-            <Box className='flex justify-center'>
+            <Box className='flex justify-center flex-col'>
                 <Tooltip title="Cargar imagen">
                     <Button size='small' variant='outlined' onClick={() => inputFileRef.current?.click()} className='mb-1 mt-2 p-2'>
                         <Stack>
@@ -217,6 +245,19 @@ export default function ImageContainerControl({code, size:{ width = 774, height 
                         <FontAwesomeIcon icon={faUpload} className='ml-2' />
                     </Button>
                 </Tooltip>
+                {file&&
+                    <Tooltip title="Borrar imagen">
+                        <Button size='small' color='error' variant='outlined' onClick={() => deleteFileAction(file.key) } className='mb-1 mt-2 p-2'>
+                            <Stack>
+                                <Typography variant='caption' className='mt-0.5'>
+                                    Eliminar imagen
+                                </Typography>
+                            </Stack>
+                            <FontAwesomeIcon icon={faImage} className='ml-2' />
+                            <FontAwesomeIcon icon={faUpload} className='ml-2' />
+                        </Button>
+                    </Tooltip>
+                }
             </Box>
             {file?.key &&
                 <form onSubmit={handleSubmit(onSubmit)}>

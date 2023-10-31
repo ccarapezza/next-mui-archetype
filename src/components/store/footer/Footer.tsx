@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import SubscriptionForm from '../../main-ui/SubscriptionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faFacebookF, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faInstagram, faFacebookF, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 
 export default function Footer(props: { categoryTree: any }) {
@@ -65,19 +65,22 @@ export default function Footer(props: { categoryTree: any }) {
       href: '/',
       items: [
         {
-          href: '/',
+          href: 'https://instagram.com/cultivomisderechos',
           name: 'instagram',
-          icon: faInstagram
+          icon: faInstagram,
+          target: '_blank'
         },
         {
-          href: '/',
+          href: 'https://www.facebook.com/agrupacioncultivomisderechos',
           name: 'facebook',
-          icon: faFacebookF
+          icon: faFacebookF,
+          target: '_blank'
         },
         {
-          href: '/',
-          name: 'twitter',
-          icon: faTwitter
+          href: 'https://www.youtube.com/@cultivomisderechos',
+          name: 'youtube',
+          icon: faYoutube,
+          target: '_blank'
         }
       ]
     }
@@ -120,6 +123,7 @@ export default function Footer(props: { categoryTree: any }) {
                           el.icon != null ?
                             <a
                               href={el.href}
+                              target={el.target}
                               className="hover:underline hover:text-primary"
                             >
                               <FontAwesomeIcon icon={el.icon} className='text-2xl' />

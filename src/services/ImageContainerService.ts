@@ -44,7 +44,7 @@ export class ImageContainerService extends GenericService<ImageContainer> {
             where,
         });
         
-        return containerImage;
+        return containerImage as ImageContainer;
     }
     getDtoByCodes = async (codes: string[]) => {
         const imageContainer = await this.getByCodes(codes);

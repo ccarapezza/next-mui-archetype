@@ -69,7 +69,7 @@ export default function PoliticasPrivacidad() {
                 Contáctanos
                 </Typography>
                 <Typography variant="body1">
-                    Si tienes preguntas o inquietudes sobre esta Política de Privacidad o la forma en que manejamos tus datos, no dudes en contactarnos en <Typography component="span" className='font-bold'>admin@cultivomisderechos.com.ar</Typography>
+                    Si tienes preguntas o inquietudes sobre esta Política de Privacidad o la forma en que manejamos tus datos, no dudes en contactarnos en <Typography component="span" className='font-bold'>{process.env.EMAIL_USER}</Typography>
                 </Typography>
             </Paper>
         </Container>

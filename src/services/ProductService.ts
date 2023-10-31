@@ -176,27 +176,8 @@ export class ProductService extends GenericService<Product> {
             }
         );
 
-        const categoriesFilter = [categoryId].concat(categoriesResultSet.map((c: any) => c.id));
-
-        /*
-
-        WITH RECURSIVE generation AS (
-            SELECT id, name, parentId
-            FROM product_category
-            WHERE parentId IS NULL
-        UNION ALL
-            SELECT child.id, child.name, child.parentId
-            FROM product_category child
-            JOIN generation g ON g.id = child.parentId
-        )
+        const categoriesFilter = categoryId?[categoryId].concat(categoriesResultSet.map((c: any) => c.id)):null;
         
-        SELECT g.id, g.name, g.parentId
-        FROM generation g
-        JOIN product_category parent
-        ON g.parentId = parent.id and parent.id = 9
-
-        */
-
         //obtain searchs for variants
         const variationsIdsSearchs = [];
         
