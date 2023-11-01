@@ -17,8 +17,13 @@ export default function ProductDescription(props: { product: ProductDto | null, 
   // Product Available
   const [productAvailable, setProductAvailable] = useState<boolean>(false);
 
-  const { addProduct } = useContext(CartContext)
+  const { addProduct, openMinicart } = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
+
+  const addProductFunction = () => {
+    addProduct({ ...productToCart })
+    openMinicart();
+  }
 
   const variationsArray = (selectedItem?.variationOptions || [])
   .map((item: any) => ({
@@ -60,7 +65,7 @@ export default function ProductDescription(props: { product: ProductDto | null, 
               :
               <button
                 className="w-full rounded bg-primary px-6 py-3 text-sm font-bold uppercase tracking-wide text-white hover:bg-tertiary transition"
-                onClick={() => addProduct({ ...productToCart })}
+                onClick={() => addProductFunction()}
               >
                 Agregar al Carrito
               </button>

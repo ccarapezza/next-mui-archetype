@@ -15,13 +15,16 @@ export const CartContext = createContext({
   getTotalMiniCart: () => {
     return { subtotal: 0, descuento: 0, total: 0 };
   },
-  emptyMinicart: () => { }
+  emptyMinicart: () => { },
+  openMinicart: () => { },
+  triggerOpenMiniCart: false
 });
 
 export default function MiniCartProvider({ children }: Props) {
 
   const [storedValue, setStoredValue] = useLocalStorage('products', [] as ProductToCart[]);
   const [products, setProducts] = useState(storedValue);
+  const [triggerOpenMiniCart, setTriggerOpenMiniCart] = useState<boolean>(false);
 
   // Add product to cart
   const addProduct = (product: ProductToCart) => {
@@ -80,12 +83,22 @@ export default function MiniCartProvider({ children }: Props) {
     setProducts([]);
   }
 
+  const openMinicart = () => {
+    setTriggerOpenMiniCart(true);
+  }
+
+  useEffect(() => {
+    if(triggerOpenMiniCart){
+        setTriggerOpenMiniCart(false);
+    }
+  }, [triggerOpenMiniCart]);
+
   // Saved to local storage
   useEffect(() => {
     setStoredValue(products);
   }, [products, setStoredValue]);
 
-  return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, getTotalMiniCart: getTotalMiniCart, emptyMinicart }}>
+  return <CartContext.Provider value={{ products, addProduct, deleteProduct, updateProductQuantity, getTotalMiniCart: getTotalMiniCart, emptyMinicart, openMinicart, triggerOpenMiniCart }}>
     {children}
   </CartContext.Provider>
 }
