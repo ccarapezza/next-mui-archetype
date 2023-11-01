@@ -22,14 +22,19 @@ const nextConfig = {
                 port: "",
                 pathname: "**",
             },
+            {
+                protocol: "https",
+                hostname: "*.s3.us-east-1.amazonaws.com",
+                port: "",
+                pathname: "**",
+            },
+            {
+                protocol: "https",
+                hostname: "dummyimage.com",
+                port: "",
+                pathname: "**",
+            }
         ],
-        domains: [
-            'dummyimage.com',
-            'nextjs-image-bucket.s3.us-east-1.amazonaws.com',
-            'cmd-dev-image-bucket.s3.us-east-1.amazonaws.com',
-            'cmd-prod-image-bucket.s3.us-east-1.amazonaws.com',
-            'cmd-test-image-bucket.s3.us-east-1.amazonaws.com'
-        ]
     },
     experimental: {
         /** Needed to fix --"Module not found: Can't resolve 'pg-hstore'"--" */
