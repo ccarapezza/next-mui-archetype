@@ -2,10 +2,9 @@
 
 import PriceFormatting from "@/components/management/product/PriceFormatting";
 import getConfig from 'next/config';
-const { publicRuntimeConfig } = getConfig();
 
-export default function MyOrders(porps: { shopOrderDto: any }) {
-    const { shopOrderDto } = porps;
+export default function MyOrders(porps: { shopOrderDto: any, emailFrom: string }) {
+    const { shopOrderDto, emailFrom } = porps;
 
     function formatDate(dateIso: string) {
         let newDate = new Date(dateIso);
@@ -46,7 +45,7 @@ export default function MyOrders(porps: { shopOrderDto: any }) {
                                     Tus pedidos:
                                 </h3>
                                 <p className="text-gray-600 mt-2">
-                                    Ante cualquier consulta con tus pedidos no dudes en contactarnos a {publicRuntimeConfig.emailFrom}
+                                    Ante cualquier consulta con tus pedidos no dudes en contactarnos a {emailFrom}
                                 </p>
                             </div>
                         </div>
