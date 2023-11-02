@@ -38,6 +38,6 @@ export default async function SubscriberPage({ searchParams }: { searchParams: {
 
     return (<>
         <PageHeader title="Suscriptores" />
-        <ListmonkComponent authorizationString={`${publicRuntimeConfig.listmonkUser}:${publicRuntimeConfig.listmonkPassword}`} listmonkUrl={publicRuntimeConfig.listmonkUrl} />
+        <ListmonkComponent authorizationString={`${publicRuntimeConfig.listmonkUser}:${publicRuntimeConfig.listmonkPassword}`} listmonkUrl={`${publicRuntimeConfig.listmonkUrl}/admin`} />
     </>)
 }
