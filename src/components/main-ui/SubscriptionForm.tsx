@@ -8,8 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import LoadingUI from './LoadingUI';
 import { useSnackbar } from 'notistack';
 
-const uuidNewsletterSuscription = 'f43ed4b3-8569-4249-84f4-74b2c2df1e02';
-
 interface ISubscriptionForm {
     email: string
 }
@@ -20,15 +18,12 @@ const schema = yup.object({
 
 const subscribe = async (roleData: { email: string }) => {
     console.log("roleData", roleData);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_LISTMONK_URL}/public/subscription`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_ENDPOINT}/api/subscribe`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            "email": roleData?.email,
-            "list_uuids": [uuidNewsletterSuscription]
-        })
+        body: JSON.stringify(roleData)
     });
     if (!res.ok) {
         const errorData = await res?.json();
