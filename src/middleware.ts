@@ -42,7 +42,7 @@ export default withAuth(
 
         if (!accessAuthorized) {
             console.log("Not authorized for this token: ", req.nextauth.token)
-            return new NextResponse("You are not authorized!");
+            return new NextResponse("You are not authorized!", { status: 403 });
         }
     },
     {
