@@ -25,12 +25,16 @@ export default function PopUpNewsletter(){
                                 <FontAwesomeIcon icon={faClose}/>
                             </button>
                         </div>
-                        <Image src="https://dummyimage.com/800x800/322F30/EFE6D9.png" alt="Newsletter" width={200} height={200} layout="responsive" className=""/>
-                        <div className="space-y-3 px-5 py-4">
-                            {/* <h4 className="text-lg font-medium text-gray-800">
-                                ¡Bienvenido a Cultivo mis derechos!
-                            </h4> */}
-                            <p className="text-[16px] text-tertiary mb-5">
+                        <div className="flex justify-center my-6">
+                            <Image
+                                src="/logos/CMD-Logo-Navbar.png"
+                                alt="Logo"
+                                width={200}
+                                height={200}
+                            />
+                        </div>
+                        <div className="space-y-3 px-5">
+                            <p className="text-[16px] text-tertiary my-5">
                                 Suscríbete al newsletter y entérate de las últimas novedades y recibí importantes cupones de descuento.
                             </p>
                             <SubscriptionForm mode='popup' setModalState={setModalState}/>
