@@ -5,8 +5,9 @@ Este es un arquetipo creado a partir de [Next.js](https://nextjs.org/) y utiliza
 ## Índice
 
 - [Ejecución en desarrollo](<#ejecución-en-desarrollo>)
-- [Login con Providers de 3eros](<#login-con-Providers-de-3eros>)
+- [Login con Providers de 3eros](<#login-con-providers-de-3eros>)
 - [Base de datos](<#base-de-datos>)
+- [Listmonk - Gestor de Email Marketing](<#listmonk---gestor-de-email-marketing>)
 
 ## Ejecución en desarrollo
 
@@ -102,13 +103,30 @@ npm run recreate-database --url 'mysql://root:password@host:port/database_name'
 ## Configuración de conexión a la base de datos
 
 La conexión a la base de datos se toma de las siguientes variables de entorno
-|production|development|
-|----------|----------|
-|PROD_MYSQLDATABASE|DEV_MYSQLDATABASE|
-|PROD_MYSQLHOST|DEV_MYSQLHOST|
-|PROD_MYSQLPASSWORD|DEV_MYSQLPASSWORD|
-|PROD_MYSQLPORT|DEV_MYSQLPORT|
-|PROD_MYSQLUSER|DEV_MYSQLUSER|
+|development|
+|----------|
+|DEV_MYSQLDATABASE|
+|DEV_MYSQLHOST|
+|DEV_MYSQLPASSWORD|
+|DEV_MYSQLPORT|
+|DEV_MYSQLUSER|
+
+|production|
+|----------|
+|PROD_MYSQLDATABASE|
+|PROD_MYSQLHOST|
+|PROD_MYSQLPASSWORD|
+|PROD_MYSQLPORT|
+|PROD_MYSQLUSER|
+
+## Listmonk - Gestor de Email Marketing
+Listmonk es un administrador de Email Marketing y listas de correo auto-hosteado y de alto rendimiento. Su única dependencia es una base de datos Postgres.
+
+El acceso a listmonk en esta aplicación se realiza de manera local del lado del servidor, disponibilizando el acceso a travez de una URL pública (configurable mediante la variable de entorno: NEXT_PUBLIC_LISTMONK_URL) aprovechando la capa de seguridad de NextJs.
+
+Solo los usuarios administradores (rol: user) podrán acceder a las URLs públicas de Listmonk, y las configuraciones avanzadas solo podrán ser modificadas por superusuarios (rol: admin).
+
+Para desplegar una instancia de Lismonk siga las siguientes instrucciones: [Listmonk docker container | NextJs-Archetype](/docker/listmonk/README.md)
 
 ## Variables de entorno
 
@@ -138,3 +156,17 @@ La conexión a la base de datos se toma de las siguientes variables de entorno
 |DOCKER_MYSQL_DATABASE|MySql Docker Container Config|Nombre de la base de datos por defecto, se utiliza para la creación del container|
 |NODE_APP_ADMIN_USER|Admin User App|Nombre de usuario para el usuario inicial de administración de la aplicación|
 |NODE_APP_ADMIN_PASSWORD|Admin User App|Password para el usuario inicial de administración de la aplicación|
+|EMAIL_HOST|Email Configuration|Host del servidor para enviar emails|
+|EMAIL_PORT|Email Configuration|Puerto para la conexión al servidor para enviar emails|
+|EMAIL_SENDER_STRATEGY|Email Configuration|Tipo de 'strategy' para el envio de emails (aws \| nodemailer). Default: aws|
+|EMAIL_USER|Email Configuration|Usuario para la conexion al servidor para enviar emails|
+|EMAIL_PASS|Email Configuration|Password para la conexion al servidor para enviar emails|
+|LISTMONK_app__address|Listmonk Configuration|Dirección desde donde será accesible Listmonk. Default: "0.0.0.0:9000"|
+|LISTMONK_db__host|Listmonk Configuration|Host de la base de datos para Listmonk. Default:listmonk_db|
+|LISTMONK_db__port|Listmonk Configuration|Puerto de la base de datos para Listmonk. Default:5432|
+|LISTMONK_db__user|Listmonk Configuration|Usuario de la base de datos para Listmonk. Default:listmonk|
+|LISTMONK_db__password|Listmonk Configuration|Password de la base de datos para Listmonk|
+|LISTMONK_db__database|Listmonk Configuration|Nombre de la base de datos para Listmonk. Default:listmonk|
+|LISTMONK_db__ssl_mode|Listmonk Configuration|Modo de conexión SSL. Default:disable|
+|NEXT_PUBLIC_LISTMONK_URL|Listmonk-NextJs Proxy Configuration|Url pública donde se podrá acceder listmonk.|
+|LOCAL_LISTMONK_URL|Listmonk-NextJs Proxy Configuration|Url local para acceder a Listmonk. Esta dirección se utilizará como acceso para que el servidor Next pueda canalizar las peticiones desde la URL pública (NEXT_PUBLIC_LISTMONK_URL) a la instancia real del contenedor de Listmonk |
