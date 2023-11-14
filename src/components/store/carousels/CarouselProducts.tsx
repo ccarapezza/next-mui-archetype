@@ -32,7 +32,7 @@ export default function CarouselProducts(props: { products: any[] }) {
 
   return (
     <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
-      <h3 className='text-5xl font-tungsten text-primary sm:text-6xl mb-4 text-center font-normal'>NUESTRA SELECCIÓN</h3>
+      <h3 className='text-4xl font-tungsten text-primary sm:text-4xl mb-4 text-center font-normal'>NUESTRA SELECCIÓN</h3>
       {/* {JSON.stringify(props.products)} */}
       <Carousel
         navButtonsAlwaysVisible={true} // Show next and previous buttons

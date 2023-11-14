@@ -4,15 +4,16 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('product_category', [
-        { id:1, name: 'Ropa', parentId: null },
+        { id:1, name: 'Hombre', parentId: null },
         { id:2, name: 'Remera', parentId: 1 },
-        { id:3, name: 'Gorra', parentId: 1 },
-        { id:4, name: 'Grow', parentId: null },
-        { id:5, name: 'Cultivo', parentId: 4 },
-        { id:6, name: 'Parafernalia', parentId: 4 },
-        { id:7, name: 'Fertilizante', parentId: 5 },
-        { id:8, name: 'Sustrato', parentId: 5 },
-        { id:9, name: 'Merchandising', parentId: null },
+        { id:3, name: 'Pantalón', parentId: 1 },
+        { id:4, name: 'Mujer', parentId: null },
+        { id:5, name: 'Remera', parentId: 4 },
+        { id:6, name: 'Pantalón', parentId: 4 },
+        { id:7, name: 'Kids', parentId: null },
+        { id:8, name: 'Remera', parentId: 7 },
+        { id:9, name: 'Pantalón', parentId: 7 },
+        { id:10, name: 'Sale', parentId: null },
     ], {});
   },
 

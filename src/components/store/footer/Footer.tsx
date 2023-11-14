@@ -25,7 +25,7 @@ export default function Footer(props: { categoryTree: any }) {
   const categoryNav = categoryTree.map((category: any) => {
     return {
       name: category.name,
-      href: `/category/${clearNameForUrl(category.name)}`,
+      href: `/shop/${clearNameForUrl(category.name)}`,
       icon: null
     }
   })
@@ -38,16 +38,8 @@ export default function Footer(props: { categoryTree: any }) {
     },
     {
       label: "Nosotros",
-      href: '/nosotros',
+      href: '/',
       items: [
-        {
-          href: '/nosotros',
-          name: 'Sobre Nosotros',
-        },
-        {
-          href: '/aliados',
-          name: 'Aliados',
-        },
         {
           href: '/faq',
           name: 'Preguntas frecuentes',
@@ -57,6 +49,11 @@ export default function Footer(props: { categoryTree: any }) {
           href: '/terminos-y-condiciones',
           name: 'Terminos y condiciones',
           icon: null
+        },
+        {
+          href: '/politicas-privacidad',
+          name: 'Políticas y privacidad',
+          icon: null
         }
       ],
     },
@@ -65,19 +62,19 @@ export default function Footer(props: { categoryTree: any }) {
       href: '/',
       items: [
         {
-          href: 'https://instagram.com/cultivomisderechos',
+          href: 'https://instagram.com/',
           name: 'instagram',
           icon: faInstagram,
           target: '_blank'
         },
         {
-          href: 'https://www.facebook.com/agrupacioncultivomisderechos',
+          href: 'https://www.facebook.com/',
           name: 'facebook',
           icon: faFacebookF,
           target: '_blank'
         },
         {
-          href: 'https://www.youtube.com/@cultivomisderechos',
+          href: 'https://www.youtube.com/',
           name: 'youtube',
           icon: faYoutube,
           target: '_blank'
@@ -93,7 +90,7 @@ export default function Footer(props: { categoryTree: any }) {
           <div className="flex-1">
             <div className="flex justify-center items-center md:items-start md:justify-start">
               <Link href="/">
-                <Image src="/logos/CMD-Logo-Footer.png" className="dark:hidden" alt='Float UI logo' width={250} height={250} />
+                <Image src="/logos/Next-Store-white-logo.png" className="dark:hidden" alt='Float UI logo' width={250} height={250} />
               </Link>
               {/* <p className="leading-relaxed mt-2 text-[15px]">
                 Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
@@ -148,7 +145,7 @@ export default function Footer(props: { categoryTree: any }) {
         </div>
         <div className="mt-8 py-6 border-t items-center justify-between xl:flex">
           <div className="text-center mt-4 sm:mt-0 md:text-center">
-            Todos los derechos reservados CULTIVO MIS DERECHOS &copy; - {currentYear}
+            Todos los derechos reservados Random Brand! &copy; - {currentYear}
           </div>
           <div className="text-center mt-6 sm:mt-0 md:text-center">
             <h5>Desarrollado por: Random Brand!</h5>

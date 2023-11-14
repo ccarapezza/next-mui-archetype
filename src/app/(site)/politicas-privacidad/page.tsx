@@ -6,7 +6,7 @@ export default function PoliticasPrivacidad() {
         <Container maxWidth="md" className="mt-6">
             <Paper elevation={3} className="p-4">
                 <Typography variant="h5" component="h1" className="mb-4">
-                    Política de Privacidad de Cultivo Mis Derechos
+                    Política de Privacidad de -----
                 </Typography>
 
                 <Typography variant="subtitle1" className="w-full text-end">
@@ -17,13 +17,13 @@ export default function PoliticasPrivacidad() {
                     Introducción
                 </Typography>
                 <Typography variant="body1" className="my-4">
-                    En Cultivo Mis Derechos, respetamos tu privacidad y estamos comprometidos en proteger tus datos personales. Esta Política de Privacidad explica cómo recopilamos, utilizamos y compartimos tu información cuando utilizas nuestra aplicación. Al acceder o utilizar la aplicación, aceptas las prácticas descritas en esta política.
+                    En -----, respetamos tu privacidad y estamos comprometidos en proteger tus datos personales. Esta Política de Privacidad explica cómo recopilamos, utilizamos y compartimos tu información cuando utilizas nuestra aplicación. Al acceder o utilizar la aplicación, aceptas las prácticas descritas en esta política.
                 </Typography>
 
                 <Typography variant="h5" className="mb-8 mt-12">Información que Recopilamos</Typography>
                 <Typography variant="h6" className="my-4">Información Personal</Typography>
                 <Typography variant="body1" className="my-4">
-                    Cultivo Mis Derechos puede recopilar información personal que proporcionas voluntariamente, como tu nombre, dirección de correo electrónico, número de teléfono y otros datos de contacto cuando te registras o interactúas con la aplicación.
+                    ----- puede recopilar información personal que proporcionas voluntariamente, como tu nombre, dirección de correo electrónico, número de teléfono y otros datos de contacto cuando te registras o interactúas con la aplicación.
                 </Typography>
 
                 <Typography variant="h6" className="my-4">Información No Personal</Typography>

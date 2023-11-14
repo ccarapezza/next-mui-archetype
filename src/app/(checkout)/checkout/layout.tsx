@@ -9,8 +9,8 @@ config.autoAddCss = false;
 
 
 export const metadata = {
-    title: 'Cultivo Mis Derechos',
-    description: 'Sitio Oficial de Cultivo Mis Derechos',
+    title: 'Next Store',
+    description: 'Sitio Oficial de Next Store',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <main>
               {children}
             </main>
-            <FooterCheckout brandName={"CULTIVO MIS DERECHOS"}/>
+            <FooterCheckout brandName={"NEXT STORE"}/>
           </MiniCartProvider>
         </SessionProviderWrapper>
       </body>

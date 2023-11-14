@@ -7,9 +7,8 @@ import NavBarAuth from './auth/NavBarAuth';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 
-export default function Navbar(props: {categoryTree: any}) {
+export default function Navbar(props: { categoryTree: any }) {
 
     const { categoryTree } = props;
     const [state, setState] = useState(false);
@@ -19,41 +18,22 @@ export default function Navbar(props: {categoryTree: any}) {
         urlCategory = urlCategory.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
         // Reemplazar caracteres especiales y espacios por guiones
         urlCategory = urlCategory.replace(/[^\w]/g, '');
-        
+
         return urlCategory;
     }
 
-    const staticMenu = [
-        {
-            icon: faWhatsapp,
-            title: "Turnos Reprocann",
-            path: "https://wa.me/message/6F43BK65OY2EK1",
-            target: "_blank"
-        },
-        {
-            title: "Tienda",
-            path: "/shop",
-            children: categoryTree.map((category: any) => {
+    const staticMenu = categoryTree.map((category: any) => {
+        return {
+            title: category.name,
+            path: `/shop/${clearNameForUrl(category.name)}`,
+            children: category?.childrens?.map((subcategory: any) => {
                 return {
-                    title: category.name,
-                    path: clearNameForUrl(category.name)
+                    title: subcategory.name,
+                    path: `/shop/${clearNameForUrl(category.name)}/${clearNameForUrl(subcategory.name)}`,
                 }
             })
-        },
-        {
-            title: "Nosotros",
-            path: "/nosotros"
-        },
-        {
-            title: "Alianzas",
-            path: "/aliados"
-        },
-        {
-            title: "Contacto",
-            path: "/contacto"
         }
-    ]
-
+    })
 
     useEffect(() => {
         document.onclick = (e) => {
@@ -67,7 +47,7 @@ export default function Navbar(props: {categoryTree: any}) {
             <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-1 md:block">
                     <Link href="/">
-                        <Image src="/logos/CMD-Logo-Navbar.png" alt='Float UI logo' className='min-h-64' width={200} height={200} />
+                        <Image src="/logos/NEXT-Store-logo.png" alt='Float UI logo' className='min-h-64' width={200} height={200} />
                     </Link>
                     <div className="flex items-center gap-2.5 md:hidden">
                         {/* <AuthSection /> */}
@@ -78,9 +58,9 @@ export default function Navbar(props: {categoryTree: any}) {
                         >
                             {
                                 state ? (
-                                    <FontAwesomeIcon icon={faTimes} size='xl' fixedWidth/>
+                                    <FontAwesomeIcon icon={faTimes} size='xl' fixedWidth />
                                 ) : (
-                                    <FontAwesomeIcon icon={faBars} size='xl' fixedWidth/>
+                                    <FontAwesomeIcon icon={faBars} size='xl' fixedWidth />
                                 )
                             }
                         </button>
@@ -91,23 +71,23 @@ export default function Navbar(props: {categoryTree: any}) {
                         <ul className="flex content-center justify-center flex-col gap-10 space-y-4 pb-4 text-lg text-tertiary-800 md:flex md:space-y-0 md:flex-row md:pb-0 font-semibold">
                             {
                                 staticMenu.map((item: any, idx: number) => {
-                                    return (<Box key={"cat-"+idx} className="group relative dropdown">
+                                    return (<Box key={"cat-" + idx} className="group relative dropdown">
                                         <Link
                                             href={item.path}
                                             target={item.target}
                                             className='hover:text-primary whitespace-nowrap'
                                         >
                                             {item.icon && <FontAwesomeIcon icon={item.icon} className='mr-2' />}
-                                            {item.title} 
+                                            {item.title}
                                         </Link>
-                                        {item.children && (
+                                        {item.children.length > 0 && (
                                             <div className="group-hover:block dropdown-menu absolute hidden h-auto p-6 brder drop-shadow-sm">
                                                 <ul className="flex flex-col gap-2 p-2 bg-white rounded-lg border">
                                                     {item.children.map((child: any, subIdx: number) => {
                                                         return (
                                                             <Link
-                                                                href={`/shop/${child.path}`}
-                                                                key={"subcat-"+idx+subIdx}
+                                                                href={child.path}
+                                                                key={"subcat-" + idx + subIdx}
                                                                 className='hover:text-primary whitespace-nowrap px-4 py-2'
                                                             >
                                                                 {child.title}
