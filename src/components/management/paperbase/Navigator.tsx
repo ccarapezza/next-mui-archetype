@@ -7,7 +7,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faUserPen, faKey, faCompass, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faCartShopping, faTags, faUserTie, faUsers, faPhotoFilm, faPanorama, faQuestion, faComment, faHistory } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserPen, faKey, faCompass, faUserFriends, faPaperPlane, faPalette, faBoxesStacked, faCartShopping, faTags, faUserTie, faUsers, faPhotoFilm, faPanorama, faQuestion, faComment, faHistory, faRectangleList } from '@fortawesome/free-solid-svg-icons'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link';
 import { useSession } from "next-auth/react"
@@ -69,7 +69,8 @@ const MENU_DEFAULT: MenuItem[] = [
             { id: 'Productos', icon: faBoxesStacked, href: '/management/products', active: false },
             { id: 'Categorias', icon: faTags, href: '/management/categories', active: false },
             { id: 'Ordenes de compra', icon: faCartShopping, href: '/management/orders', active: false },
-            { id: 'Historial de ordenes', icon: faHistory, href: '/management/orders/history', active: false }
+            { id: 'Historial de ordenes', icon: faHistory, href: '/management/orders/history', active: false },
+            { id: 'Colecciones', icon: faRectangleList, href: '/management/collections', active: false }
         ],
     },
     {
