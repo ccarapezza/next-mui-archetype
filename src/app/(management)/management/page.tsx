@@ -8,7 +8,7 @@ export default function ManagementHome() {
             Panel de administración
         </Typography>
         <Stack direction="row" columnGap={1}>
-            <Image src="/logos/logo-03.png" alt='Float UI logo' width={550} height={550} className="max-h-72 object-contain"/>
+            <Image src="/logos/NEXT-Store-logo.png" alt='Float UI logo' width={550} height={550} className="max-h-72 object-contain"/>
         </Stack>
     </Grid>)
 }

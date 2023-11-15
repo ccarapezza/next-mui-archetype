@@ -16,15 +16,15 @@ export default function HeaderCheckout(props: { ctaButton: string, bgColor: stri
                 <Link href="/">
                     {managementAuth?
                         <Box className="flex flex-row items-center gap-2">
-                            <Image src={"/logos/logo-02.png"} alt='Float UI logo' width={100} height={200} />
+                            <Image src={"/logos/NEXT-Store-logo.png"} alt='Float UI logo' width={100} height={200} />
                             <Typography variant="h5" className="font-bold">Panel de Administración</Typography>
                         </Box>
                     :
-                        <Image src={"/logos/CMD-Logo-Navbar.png"} alt='Float UI logo' width={200} height={200} />
+                        <Image src={"/logos/NEXT-Store-logo.png"} alt='Float UI logo' width={200} height={200} />
                     }
                 </Link>
                 <Link
-                    className="text-4xl font-tungsten text-primary font-normal"
+                    className="text-2xl font-tungsten text-primary font-normal"
                     href="/"
                 >
                     {ctaButton}

@@ -11,8 +11,8 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false;
 
 export const metadata = {
-    title: 'Cultivo Mis Derechos',
-    description: 'Sitio Oficial de Cultivo Mis Derechos',
+    title: 'Next Store',
+    description: 'Sitio Oficial de Next Store',
 };
 
 export default function RootLayout({
@@ -26,7 +26,7 @@ export default function RootLayout({
         <SessionProviderWrapper>
           <HeaderCheckout ctaButton={'Volver al Inicio'} bgColor={'bg-slate-200'}/>
           {children}
-          <FooterCheckout brandName={"CULTIVO MIS DERECHOS"}/>
+          <FooterCheckout brandName={"NEXT STORE"}/>
         </SessionProviderWrapper>
       </body>
     </html>

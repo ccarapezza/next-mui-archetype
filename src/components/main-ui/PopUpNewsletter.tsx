@@ -27,7 +27,7 @@ export default function PopUpNewsletter(){
                         </div>
                         <div className="flex justify-center my-6">
                             <Image
-                                src="/logos/CMD-Logo-Navbar.png"
+                                src="/logos/NEXT-Store-logo.png"
                                 alt="Logo"
                                 width={200}
                                 height={200}

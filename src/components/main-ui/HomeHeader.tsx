@@ -2,7 +2,7 @@ import React from 'react'
 
 function HomeHeader() {
     return (<header className="text-center">
-        <h2 className="text-5xl font-tungsten text-primary sm:text-6xl font-normal">
+        <h2 className="text-4xl font-tungsten text-primary sm:text-4xl font-normal">
             NOVEDADES
         </h2>
 
