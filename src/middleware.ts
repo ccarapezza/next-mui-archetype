@@ -15,6 +15,7 @@ const urlAccess: { [key: string]: string[] } = {
     "/management": ["admin", "user"],
     "/management/categories": ["admin", "sales"],
     "/management/change-password": ["admin", "user"],
+    "/management/collections": ["admin", "sales"],
     "/management/customers": ["admin", "sales", "marketing"],
     "/management/email-templates": ["admin", "marketing"],
     "/management/my-profile": ["admin", "user"],

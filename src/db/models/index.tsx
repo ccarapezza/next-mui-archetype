@@ -20,6 +20,7 @@ import ImageContainer from '@/db/models/ImageContainer'
 import FaqEditor from '@/db/models/FaqEditor';
 import CustomerContactStatus from '@/db/models/CustomerContactStatus';
 import CustomerContact from '@/db/models/CustomerContact';
+import Collection from '@/db/models/Collection';
 
 export {
     Account,
@@ -43,5 +44,6 @@ export {
     ImageContainer,
     FaqEditor,
     CustomerContactStatus,
-    CustomerContact
+    CustomerContact,
+    Collection
 }

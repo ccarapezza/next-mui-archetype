@@ -1,7 +1,7 @@
-'use client'
+'use client';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { Box, Chip, FormControl, InputAdornment, InputBaseComponentProps, InputLabel, MenuItem, OutlinedInput, Select, SelectChangeEvent, TextField, Typography } from '@mui/material';
-import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
+import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/x-tree-view';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare, faSquareMinus, faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';

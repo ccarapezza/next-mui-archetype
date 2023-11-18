@@ -35,7 +35,7 @@ export default async function EmailTemplatesPage({ searchParams }: { searchParam
     return (<>
         <PageHeader title="Templates" />
         <MuiBox className="py-2 px-4">
-            <EntityTableToolbar newButtonLabel="Create new Template" newEntityPath="/management/email-templates/new"/>
+            <EntityTableToolbar newButtonLabel="Crear nuevo Template" newEntityPath="/management/email-templates/new"/>
             <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/email-templates/edit" deletePath="/api/management/email-template/"/>
         </MuiBox>
     </>)

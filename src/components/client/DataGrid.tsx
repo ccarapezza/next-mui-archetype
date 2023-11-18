@@ -52,7 +52,7 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
 
     const onDelete = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, row: any) => {
         e.stopPropagation();
-        showConfirm("Confirm delete", "Are you sure you want to delete this item?", () => {
+        showConfirm("Confirmar eliminación", "Estás seguro que deseas eliminar el item?", () => {
             fetchDelete(row.id).then((ok) => {
                 if (ok) {
                     enqueueSnackbar('Item deleted', { variant: 'success' });
@@ -67,7 +67,7 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
         let finalColumns = [...columns];
         if (editPath || deletePath) {
             finalColumns.push({
-                field: 'actions', headerName: 'Actions', flex: .75, align: 'center', headerAlign: 'center', sortable: false,
+                field: 'actions', headerName: 'Acciones', flex: .75, align: 'center', headerAlign: 'center', sortable: false,
                 renderCell: (params) => {
                     return (<>
                         {
@@ -82,14 +82,14 @@ export default function MuiDataGrid({ columns, rows, rowCount, editPath, deleteP
                             )
                         }
                         {editPath &&
-                            <Tooltip title="Edit">
+                            <Tooltip title="Editar">
                                 <IconButton size='small' onClick={(e) => onEdit(e, params.row)}>
                                     <FontAwesomeIcon fixedWidth icon={faEdit} />
                                 </IconButton>
                             </Tooltip>
                         }
                         {deletePath &&
-                            <Tooltip title="Delete">
+                            <Tooltip title="Eliminar">
                                 <IconButton size='small' onClick={(e) => onDelete(e, params.row)}>
                                     <FontAwesomeIcon fixedWidth icon={faTrash} />
                                 </IconButton>

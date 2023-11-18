@@ -9,6 +9,7 @@ import { VariationDto } from "@/schemas/variation";
 import { VariationOptionDto } from "@/schemas/variationOption";
 
 import { FilterProduct } from "@/schemas/filterProduct";
+import { ProductItemDto } from "@/schemas/productItem";
 
 //ProductService extends GenericService
 export class ProductService extends GenericService<Product> {
@@ -104,7 +105,7 @@ export class ProductService extends GenericService<Product> {
             model: Product,
             page: page,
             size: size,
-            attributes: ['id', 'name', 'description', 'categoryId'],
+            attributes: ['id', 'name', 'categoryId'],
             include: [
                 'category',
                 {
@@ -127,16 +128,22 @@ export class ProductService extends GenericService<Product> {
             where
         });
 
-        for (const product of products.rows) {
-            const productModel = product as Product;
-            for (const item of productModel.items) {
-                const itemModel = item as ProductItem;
-                if (itemModel.image) {
-                    for (let i = 0; i < itemModel.image.length; i++) {
-                        itemModel.image[i] = await S3BucketUtil.getSignedUrlByKey({ key: itemModel.image[i], folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES });
+        for (const product of products?.rows) {
+            const productDto = product as any;
+            for (let i = 0; i < productDto.items.length; i++) {
+                const item = productDto.items[i];
+                if (item.image) {
+                    const imagesKeys = item.image;
+                    const images = []
+                    for (const image of imagesKeys) {
+                        const urlImage = await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES});
+                        images.push(urlImage)
                     }
+                    item.images = images;
+                    delete item.image;
                 }
             }
+            delete productDto?.collection_products;
         }
 
         return products;
