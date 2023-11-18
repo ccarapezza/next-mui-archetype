@@ -67,7 +67,7 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
         ...DefaultOrderDataGridColumns.columns,
         {
             field: "actions",
-            headerName: "Actions",
+            headerName: "Acciones",
             flex: 1,
             renderCell: (params: GridRenderCellParams) => {
                 return <>

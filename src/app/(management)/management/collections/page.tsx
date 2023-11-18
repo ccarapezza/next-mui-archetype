@@ -28,15 +28,15 @@ export default async function CollectionsPage({ searchParams }: { searchParams: 
         },
         {
             field: 'name',
-            headerName: 'Name',
+            headerName: 'Nombre',
             flex: 1
         }
     ];
 
     return (<>
-        <PageHeader title="Collections" />
+        <PageHeader title="Colecciones" />
         <MuiBox className="p-10">
-            <EntityTableToolbar newButtonLabel="Create new Collection" newEntityPath="/management/collections/new"/>
+            <EntityTableToolbar newButtonLabel="Crear nueva colección" newEntityPath="/management/collections/new"/>
             <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/collections/edit" deletePath="/api/management/collection/"/>
         </MuiBox>
     </>)

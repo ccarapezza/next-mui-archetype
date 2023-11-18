@@ -36,7 +36,7 @@ export default async function RolesPage({ searchParams }: { searchParams: { page
     return (<>
         <PageHeader title="Roles" />
         <MuiBox className="p-10">
-            <EntityTableToolbar newButtonLabel="Create new Role" newEntityPath="/management/roles/new"/>
+            <EntityTableToolbar newButtonLabel="Crear nuevo Rol" newEntityPath="/management/roles/new"/>
             <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/roles/edit" deletePath="/api/management/role/"/>
         </MuiBox>
     </>)
