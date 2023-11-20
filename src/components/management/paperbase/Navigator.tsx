@@ -70,9 +70,10 @@ const MENU_DEFAULT: MenuItem[] = [
             { id: 'Categorias', icon: faTags, href: '/management/categories', active: false },
             { id: 'Ordenes de compra', icon: faCartShopping, href: '/management/orders', active: false },
             { id: 'Historial de ordenes', icon: faHistory, href: '/management/orders/history', active: false },
-            { id: 'Colecciones', icon: faRectangleList, href: '/management/collections', active: false }
+            { id: 'Colecciones', icon: faRectangleList, href: '/management/collections', active: false },
+            { id: 'Cupones de descuento', icon: faTags, href: '/management/checkout-discounts', active: false }
         ],
-    },
+    },  
     {
         id: 'Clientes',
         roles: ['ADMIN', 'SALES', 'MARKETING'],
