@@ -4,7 +4,8 @@ import OrderFormGuest from './second-step/OrderFormGuest';
 import LoadingUI from '@/components/main-ui/LoadingUI';
 
 
-export default function SecondStep() {
+export default function SecondStep(props: { checkoutDiscountsId: string | null }) {
+  const { checkoutDiscountsId } = props;
   const { status, data } = useSession();
 
   return (
@@ -15,7 +16,7 @@ export default function SecondStep() {
           status === 'loading' ?
             <LoadingUI />
             :
-            <OrderFormGuest />
+            <OrderFormGuest checkoutDiscountsId={checkoutDiscountsId} />
         }
       </div>
     </>

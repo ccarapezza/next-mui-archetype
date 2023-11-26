@@ -24,7 +24,8 @@ import {
   CustomerContactStatus,
   CustomerContact,
   Collection,
-  CheckoutDiscounts
+  CheckoutDiscounts,
+  DiscountsApplied
 } from "@/db/models";
 import SequelizeAdapter from "../auth/adapters/SequelizeAdapter";
 
@@ -57,7 +58,8 @@ sequelizeInstace.addModels([
   CustomerContactStatus,
   CustomerContact,
   Collection,
-  CheckoutDiscounts
+  CheckoutDiscounts,
+  DiscountsApplied
 ]);
 
 const adapter = SequelizeAdapter(sequelizeInstace!, {
@@ -94,7 +96,8 @@ export {
   CustomerContactStatus,
   CustomerContact,
   Collection,
-  CheckoutDiscounts
+  CheckoutDiscounts,
+  DiscountsApplied
 }
 
 export { sequelizeInstace, adapter }

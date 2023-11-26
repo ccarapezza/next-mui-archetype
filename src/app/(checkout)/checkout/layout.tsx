@@ -5,27 +5,30 @@ import FooterCheckout from '@/components/store/checkout/FooterCheckout';
 import HeaderCheckout from "@/components/store/checkout/HeaderCheckout"
 import MiniCartProvider from "@/components/store/context/MiniCartContext";
 import { config } from '@fortawesome/fontawesome-svg-core';
+import NotistackProviderWrapper from '@/components/providers/NotistackProvider';
 config.autoAddCss = false;
 
 
 export const metadata = {
-    title: 'Next Store',
-    description: 'Sitio Oficial de Next Store',
+  title: 'Next Store',
+  description: 'Sitio Oficial de Next Store',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className='relative min-h-screen pb-[65px]'>
-        <SessionProviderWrapper>
-          <MiniCartProvider>
-            <HeaderCheckout ctaButton={"Seguir Comprando"} bgColor={'bg-white'}/>
-            <main>
-              {children}
-            </main>
-            <FooterCheckout brandName={"NEXT STORE"}/>
-          </MiniCartProvider>
-        </SessionProviderWrapper>
+        <NotistackProviderWrapper>
+          <SessionProviderWrapper>
+            <MiniCartProvider>
+              <HeaderCheckout ctaButton={"Seguir Comprando"} bgColor={'bg-white'} />
+              <main>
+                {children}
+              </main>
+              <FooterCheckout brandName={"NEXT STORE"} />
+            </MiniCartProvider>
+          </SessionProviderWrapper>
+        </NotistackProviderWrapper>
       </body>
     </html>
   );

@@ -16,8 +16,8 @@ const schema = yup.object({
   email: yup.string().email().min(3).max(50).required(),
 }).required();
 
-export default function OrderFormGuest() {
-
+export default function OrderFormGuest(props: { checkoutDiscountsId: string | null}) {
+  const { checkoutDiscountsId } = props;
   const router = useRouter();
 
   // User Data
@@ -81,7 +81,8 @@ export default function OrderFormGuest() {
   const onSubmit = async (data: ContactFormDto) => {
     const order: PlaceOrderDto = {
       contactForm: data,
-      orderItems: orderItems
+      orderItems: orderItems,
+      checkoutDiscountsId: checkoutDiscountsId ? checkoutDiscountsId : null
     }
 
     placeOrder(order).then((data) => {

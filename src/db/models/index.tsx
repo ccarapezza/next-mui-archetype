@@ -22,6 +22,7 @@ import CustomerContactStatus from '@/db/models/CustomerContactStatus';
 import CustomerContact from '@/db/models/CustomerContact';
 import Collection from '@/db/models/Collection';
 import CheckoutDiscounts from '@/db/models/CheckoutDiscounts';
+import DiscountsApplied from '@/db/models/DiscountsApplied';
 
 export {
     Account,
@@ -47,5 +48,6 @@ export {
     CustomerContactStatus,
     CustomerContact,
     Collection,
-    CheckoutDiscounts
+    CheckoutDiscounts,
+    DiscountsApplied
 }

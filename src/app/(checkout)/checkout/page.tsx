@@ -11,6 +11,7 @@ export default function Checkout() {
   const { products } = useContext(CartContext);
   const [quantity, setQuantity] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [checkoutDiscounts, setCheckoutDiscounts] = useState({ discount: 0, coupon_id: null })
 
   useEffect(() => {
     setQuantity(products.length);
@@ -34,8 +35,8 @@ export default function Checkout() {
 
           :
           <>
-            <FirstStep products={products} />
-            <SecondStep />
+            <FirstStep products={products} checkoutDiscounts={checkoutDiscounts} setCheckoutDiscounts={setCheckoutDiscounts} />
+            <SecondStep checkoutDiscountsId={checkoutDiscounts.coupon_id} />
           </>
       }
     </>
