@@ -5,12 +5,14 @@ import {
     Model,
     BelongsTo,
     ForeignKey,
-    HasMany
+    HasMany,
+    HasOne
 } from "sequelize-typescript";
 import User from "./User";
 import OrderStatus from "./OrderStatus";
 import OrderLine from "./OrderLine";
 import ContactForm from "./ContactForm";
+import DiscountsApplied from "./DiscountsApplied";
 
 @Table({
     tableName: "shop_order",
@@ -55,4 +57,7 @@ export default class ShopOrder extends Model {
 
     @HasMany(() => OrderLine)
     public orderLines!: OrderLine[];
+
+    @HasOne(() => DiscountsApplied)
+    public discountsApplied!: DiscountsApplied[];
 }

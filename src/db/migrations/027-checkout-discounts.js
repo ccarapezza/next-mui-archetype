@@ -10,14 +10,16 @@ module.exports = {
                 primaryKey: true,
             },
             name: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                unique: true,
             },
             active: {
                 type: Sequelize.BOOLEAN,
                 defaultValue: false,
             },
             coupon: {
-                type: Sequelize.STRING
+                type: Sequelize.STRING,
+                unique: true,
             },
             value: {
                 type: Sequelize.INTEGER

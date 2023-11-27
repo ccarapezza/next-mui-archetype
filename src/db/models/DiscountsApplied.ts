@@ -34,12 +34,12 @@ export default class DiscountsApplied extends Model {
     /* Associantions */
     // ShopOrder
     @BelongsTo(() => ShopOrder)
-    public shop_order!: ShopOrder;
-    
+    public order!: ShopOrder;
+
     @ForeignKey(() => ShopOrder)
     @Column({ type: DataType.NUMBER })
     public orderId?: number;
-    // End CheckoutDiscounts
+    // End ShopOrder
 
     /* Associantions */
     // User
