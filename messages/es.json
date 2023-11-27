@@ -1,0 +1,22 @@
+{
+  "Index": {
+    "title": "Hola Mundo!"
+  },
+  "LanguageSwitcher": {
+    "languages": {
+      "en": "Inglés",
+      "es": "Español"
+    },
+    "nativeLanguages": {
+      "en": "English",
+      "es": "Español"
+    }
+  },
+  "HomeHeader": {
+    "title": "Novedades",
+    "subtitle": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit natus?"
+  },
+  "PopUpNewsletter": {
+    "text": "Suscríbete al newsletter y entérate de las últimas novedades y recibí importantes cupones de descuento."
+  }
+}

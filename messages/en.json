@@ -1,0 +1,22 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+  "LanguageSwitcher": {
+    "languages": {
+      "en": "English",
+      "es": "Spanish"
+    },
+    "nativeLanguages": {
+      "en": "English",
+      "es": "Español"
+    }
+  },
+  "HomeHeader": {
+    "subtitle": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. \nItaque praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit natus?",
+    "title": "News"
+  },
+  "PopUpNewsletter": {
+    "text": "Subscribe to the newsletter and find out about the latest news and receive important discount coupons."
+  }
+}
