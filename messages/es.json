@@ -14,7 +14,8 @@
   },
   "HomeHeader": {
     "title": "Novedades",
-    "subtitle": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit natus?"
+    "subtitle": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit natus?",
+    "subtitle2": "Esto es un texto"
   },
   "PopUpNewsletter": {
     "text": "Suscríbete al newsletter y entérate de las últimas novedades y recibí importantes cupones de descuento."

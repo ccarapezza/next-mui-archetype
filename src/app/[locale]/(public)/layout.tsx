@@ -10,7 +10,7 @@ import { NextIntlClientProvider } from 'next-intl';
 config.autoAddCss = false;
 
 // Can be imported from a shared config
-import { locales } from "@/navigation";
+import { getMessages, locales } from "@/navigation";
 
 export const metadata = {
     title: 'Next Store',
@@ -20,18 +20,14 @@ export const metadata = {
 export default async function RootLayout({ children, params: {locale} }: { children: React.ReactNode, params: {locale: string} }) {
     let messages;
     try {
-        messages = (await import(`../../../../messages/${locale}.json`)).default;
+        messages = await getMessages(locale);
     } catch (error) {
         notFound();
     }
     if (!locales.includes(locale as any)) notFound();
     return (
         <html lang={locale}>
-            {/*
-                <body className='relative min-h-screen pb-[65px]'>
-                <body className="relative min-h-screen pt-[97px] md:pb-[380px] pb-[1100px]">
-            */}
-            <body className="relative min-h-screen pt-[97px] md:pb-[380px] pb-[1100px]">
+            <body className="relative min-h-screen">
                 <NextIntlClientProvider messages={messages}>
                     {children}
                 </NextIntlClientProvider>

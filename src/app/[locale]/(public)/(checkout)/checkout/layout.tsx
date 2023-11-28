@@ -5,14 +5,16 @@ import MiniCartProvider from "@/components/store/context/MiniCartContext";
 
 export default function CheckoutLayout({ children }: { children: React.ReactNode }) {
     return (
-        <SessionProviderWrapper>
-            <MiniCartProvider>
-                <HeaderCheckout ctaButton={"Seguir Comprando"} bgColor={'bg-white'} />
-                <main>
-                    {children}
-                </main>
-                <FooterCheckout brandName={"NEXT STORE"} />
-            </MiniCartProvider>
-        </SessionProviderWrapper>
+        <div className="pb-[65px]">
+            <SessionProviderWrapper>
+                <MiniCartProvider>
+                    <HeaderCheckout ctaButton={"Seguir Comprando"} bgColor={'bg-white'} />
+                    <main>
+                        {children}
+                    </main>
+                    <FooterCheckout brandName={"NEXT STORE"} />
+                </MiniCartProvider>
+            </SessionProviderWrapper>
+        </div>
     );
 }
