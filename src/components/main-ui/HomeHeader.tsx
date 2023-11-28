@@ -4,7 +4,7 @@ import React from 'react'
 function HomeHeader() {
     const t = useTranslations('HomeHeader')
     return (<header className="text-center">
-        <h2 className="text-4xl font-tungsten text-primary sm:text-4xl font-normal">
+        <h2 data-testid="header-title" className="text-4xl font-tungsten text-primary sm:text-4xl font-normal">
             {t('title')}
         </h2>
 
