@@ -6,11 +6,14 @@ import { useState } from "react"
 import SubscriptionForm from "./SubscriptionForm";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import Image from 'next/image';
+import { useTranslations } from "next-intl";
 
 export default function PopUpNewsletter(){
 
     const { status } = useSession();
     const [modalState, setModalState] = useState(true)
+
+    const t = useTranslations('PopUpNewsletter');
 
     return (
         modalState && status === "unauthenticated" ? (
@@ -35,7 +38,7 @@ export default function PopUpNewsletter(){
                         </div>
                         <div className="space-y-3 px-5">
                             <p className="text-[16px] text-tertiary my-5">
-                                Suscríbete al newsletter y entérate de las últimas novedades y recibí importantes cupones de descuento.
+                                {t('text')}
                             </p>
                             <SubscriptionForm mode='popup' setModalState={setModalState}/>
                         </div>

@@ -1,3 +1,5 @@
+const withNextIntl = require('next-intl/plugin')();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     async headers() {
@@ -33,6 +35,12 @@ const nextConfig = {
                 hostname: "dummyimage.com",
                 port: "",
                 pathname: "**",
+            },
+            {
+                protocol: "https",
+                hostname: "flagcdn.com",
+                port: "",
+                pathname: "**",
             }
         ],
     },
@@ -62,4 +70,4 @@ process.on('unhandledRejection', error => {
 	console.log('unhandledRejection', error);
 });
 
-module.exports = nextConfig
+module.exports = withNextIntl(nextConfig);
