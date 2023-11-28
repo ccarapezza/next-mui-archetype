@@ -4,14 +4,11 @@ import LoadingBlocker from '@/components/client/LoadingBlocker';
 import { DialogContext } from '@/components/management/context/DialogContext';
 import { DefaultOrderDataGridColumns } from '@/components/management/orders/DefaultOrderDataGridColumns';
 import OrderDialog from '@/components/management/orders/OrderDialog';
-import CurrencyDisplay from '@/components/management/product/CurrencyDisplay';
 import { OrderStatus } from '@/schemas/orderStatus';
-import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
-import { faArrowRightFromFile, faCheckToSlot, faClose, faCopy, faEnvelope, faPhone, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromFile, faCheckToSlot } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Box, Button, Chip, Dialog, DialogContent, DialogTitle, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { GridColDef, GridRenderCellParams, GridValueFormatterParams } from '@mui/x-data-grid';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useSnackbar } from 'notistack';
 import { useContext, useState } from 'react';
@@ -80,7 +77,7 @@ function OrderDataGrid({ data, rows, rowCount}: { data?: any, rows: any[], rowCo
             }
         }
     ];
-
+    
     return (<>
         {loading&&selected&&
             <LoadingBlocker />

@@ -104,6 +104,7 @@ export default function CollectionForm({ collectionData }: { collectionData: any
         }else{
             setValue('productsIds', []);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [products]);
 
     return (<Card variant='outlined' className='max-w-full lg:max-w-2xl pt-2'>

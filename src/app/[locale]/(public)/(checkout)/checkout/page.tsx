@@ -11,10 +11,12 @@ export default function Checkout() {
   const { products } = useContext(CartContext);
   const [quantity, setQuantity] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const [checkoutDiscounts, setCheckoutDiscounts] = useState({ value: 0, coupon_id: null, coupon_type: null })
 
   useEffect(() => {
     setQuantity(products.length);
     setLoaded(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products])
 
   return (
@@ -34,8 +36,8 @@ export default function Checkout() {
 
           :
           <>
-            <FirstStep products={products} />
-            <SecondStep />
+            <FirstStep products={products} checkoutDiscounts={checkoutDiscounts} setCheckoutDiscounts={setCheckoutDiscounts} />
+            <SecondStep checkoutDiscountsId={checkoutDiscounts.coupon_id} />
           </>
       }
     </>

@@ -1,5 +1,5 @@
 //Service object for Role Sequelize Model
-import { ContactForm, OrderLine, OrderStatus, ProductItem, ShopOrder, VariationOption } from "@/db";
+import { DiscountsApplied, ContactForm, OrderLine, OrderStatus, ProductItem, ShopOrder, VariationOption, CheckoutDiscounts } from "@/db";
 import findAllSequelizePagination from "@/db/utils/pagination";
 import { GenericService } from "./GenericService";
 import S3BucketUtil from "@/utils/S3BucketUtil";
@@ -38,6 +38,16 @@ export class ShopOrderService extends GenericService<ShopOrder> {
                     {
                         model: ContactForm,
                         attributes: ["id", "name", "lastName", "email", "phone"],
+                    },
+                    {
+                        model: DiscountsApplied,
+                        include: [
+                            {
+                                model: CheckoutDiscounts,
+                                attributes: ["id", "name", "coupon_type", "value", "coupon"],
+                                paranoid: false
+                            }
+                        ]
                     }
                 ],
                 where: {
@@ -46,7 +56,7 @@ export class ShopOrderService extends GenericService<ShopOrder> {
                 order: [["createdAt", "DESC"]],
             }
         );
-
+        
         const rows = []
 
         for (const shopOrder of data.rows) {
@@ -97,18 +107,30 @@ export class ShopOrderService extends GenericService<ShopOrder> {
                 {
                     model: OrderStatus,
                     attributes: ["name"],
+                },
+                {
+                    model: DiscountsApplied,
+                    include: [
+                        {
+                            model: CheckoutDiscounts,
+                            attributes: ["id", "name", "coupon_type", "value", "coupon"],
+                            paranoid: false
+                        }
+                    ]
                 }
             ],
             limit: 10
         });
 
         const orderListByUserIdDTO = orderListByUserId.map((order) => {
+            const orderJson = order.toJSON();
             return {
                 id: order.id,
                 statusId: order.statusId,
                 orderDate: order.orderDate,
                 orderTotal: order.orderTotal,
-                statusName: order.status.toJSON().name
+                statusName: order.status.toJSON().name,
+                coupon: orderJson.discountsApplied?.checkout_discounts
             }
         })
         return orderListByUserIdDTO;

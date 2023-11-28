@@ -14,4 +14,5 @@ export type ContactFormDto = {
 export type PlaceOrderDto = {
     orderItems: OrderItemDto[];
     contactForm: ContactFormDto;
+    checkoutDiscountsId: string | null;
 };

@@ -21,6 +21,8 @@ import FaqEditor from '@/db/models/FaqEditor';
 import CustomerContactStatus from '@/db/models/CustomerContactStatus';
 import CustomerContact from '@/db/models/CustomerContact';
 import Collection from '@/db/models/Collection';
+import CheckoutDiscounts from '@/db/models/CheckoutDiscounts';
+import DiscountsApplied from '@/db/models/DiscountsApplied';
 
 export {
     Account,
@@ -45,5 +47,7 @@ export {
     FaqEditor,
     CustomerContactStatus,
     CustomerContact,
-    Collection
+    Collection,
+    CheckoutDiscounts,
+    DiscountsApplied
 }

@@ -18,6 +18,22 @@ export default async function OrdersPage({ searchParams }: { searchParams: { pag
     }
     const paginationParams = getPaginationParams();
     const data = await fetchPendingOrdersData(paginationParams.page, paginationParams.size);
+    //Get total and total less discount
+    data.rows.forEach((row: any) => {
+        const { discountsApplied } = row;
+    
+        if (discountsApplied) {
+            const { checkout_discounts } = discountsApplied;
+            const { coupon_type, value: discountValue } = checkout_discounts;
+            const total = row.orderTotal;
+    
+            if (coupon_type === "percentage") {
+                row.orderTotal = total - (total * discountValue / 100);
+            } else if (coupon_type === "fixedAmount") {
+                row.orderTotal = total - discountValue;
+            }
+        }
+    });
 
     return (<>
         <PageHeader title="Historial" />
