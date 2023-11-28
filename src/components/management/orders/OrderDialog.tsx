@@ -15,7 +15,7 @@ interface ActionButtonProps {
     className?: string;
 }
 
-function OrderDialog({order, open, onClose, actionsButtons}: {order: any, open: boolean, onClose: any, actionsButtons?: ActionButtonProps[]}) {
+function OrderDialog({ order, open, onClose, actionsButtons }: { order: any, open: boolean, onClose: any, actionsButtons?: ActionButtonProps[] }) {
     return (<Dialog open={open} className='w-screen'>
         <DialogTitle className='p-2 flex items-center justify-between border-b mb-2'>
             <Typography className='mx-2 p-0'>Pedido #{order ? order.id : ''}</Typography>
@@ -104,14 +104,20 @@ function OrderDialog({order, open, onClose, actionsButtons}: {order: any, open: 
                 <Typography className='flex items-center justify-between font-bold'>Subtotal: <CurrencyDisplay className='' value={order?.orderLines.reduce((acc: number, orderLine: any) => {
                     return acc + (orderLine.item.price * orderLine.qty)
                 }, 0)} /></Typography>
-                <Typography className='flex items-center justify-between font-bold'>Cupón de descuento "{order?.discountsApplied?.checkout_discounts.coupon}":  <CurrencyDisplay className='' value={
-                    order?.discountsApplied?.checkout_discounts.coupon_type === "percentage" ?
-                        order?.discountsApplied?.checkout_discounts.value * order?.orderLines.reduce((acc: number, orderLine: any) => {
-                            return acc + (orderLine.item.price * orderLine.qty)
-                        }, 0) / 100
+                {
+                    order?.discountsApplied?.checkout_discounts ?
+                        <Typography className='flex items-center justify-between font-bold'>Cupón de descuento - {order?.discountsApplied?.checkout_discounts.coupon}:  <CurrencyDisplay className='' value={
+                            order?.discountsApplied?.checkout_discounts.coupon_type === "percentage" ?
+                                order?.discountsApplied?.checkout_discounts.value * order?.orderLines.reduce((acc: number, orderLine: any) => {
+                                    return acc + (orderLine.item.price * orderLine.qty)
+                                }, 0) / 100
+                                :
+                                order?.discountsApplied?.checkout_discounts.value
+                        } /></Typography>
                         :
-                        order?.discountsApplied?.checkout_discounts.value
-                } /></Typography>
+                        <></>
+                }
+
                 <Typography className='flex items-center justify-between font-bold text-xl'>Total: <CurrencyDisplay className='' value={order?.orderLines.reduce((acc: number, orderLine: any) => {
                     //Discounted Total Calculator
                     const { discountsApplied } = order;
@@ -124,6 +130,8 @@ function OrderDialog({order, open, onClose, actionsButtons}: {order: any, open: 
                         } else if (coupon_type === "fixedAmount") {
                             return acc + (total - discountValue)
                         }
+                    }else{
+                        return acc + (orderLine.item.price * orderLine.qty)
                     }
                 }, 0)} /></Typography>
             </Box>
@@ -131,8 +139,8 @@ function OrderDialog({order, open, onClose, actionsButtons}: {order: any, open: 
             <Divider />
             <Box className='flex justify-end'>
                 {actionsButtons && actionsButtons.map(({ label, icon, onAction, className }) => {
-                    const classNameDefault = className?className:'bg-green-500 hover:bg-green-600 text-white';
-                    return <Button key={`action-button-${label}`} onClick={() => { onAction(order) }} className={'my-2 flex items-center text-center px-4 py-2 rounded-md '+classNameDefault}>
+                    const classNameDefault = className ? className : 'bg-green-500 hover:bg-green-600 text-white';
+                    return <Button key={`action-button-${label}`} onClick={() => { onAction(order) }} className={'my-2 flex items-center text-center px-4 py-2 rounded-md ' + classNameDefault}>
                         <FontAwesomeIcon icon={icon} className='mr-2' />
                         <Typography>{label}</Typography>
                     </Button>

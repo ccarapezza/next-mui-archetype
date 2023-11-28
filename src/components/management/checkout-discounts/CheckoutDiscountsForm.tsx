@@ -85,6 +85,7 @@ export default function CheckoutDiscountsForm() {
                 setmessageHelpCoupons("");
                 break;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [applicationType]);
 
     const defaultValues: ICheckoutDiscountsForm = {

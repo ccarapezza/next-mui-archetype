@@ -107,18 +107,30 @@ export class ShopOrderService extends GenericService<ShopOrder> {
                 {
                     model: OrderStatus,
                     attributes: ["name"],
+                },
+                {
+                    model: DiscountsApplied,
+                    include: [
+                        {
+                            model: CheckoutDiscounts,
+                            attributes: ["id", "name", "coupon_type", "value", "coupon"],
+                            paranoid: false
+                        }
+                    ]
                 }
             ],
             limit: 10
         });
 
         const orderListByUserIdDTO = orderListByUserId.map((order) => {
+            const orderJson = order.toJSON();
             return {
                 id: order.id,
                 statusId: order.statusId,
                 orderDate: order.orderDate,
                 orderTotal: order.orderTotal,
-                statusName: order.status.toJSON().name
+                statusName: order.status.toJSON().name,
+                coupon: orderJson.discountsApplied?.checkout_discounts
             }
         })
         return orderListByUserIdDTO;

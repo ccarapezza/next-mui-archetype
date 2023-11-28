@@ -33,6 +33,18 @@ export default function MyOrders(porps: { shopOrderDto: any, emailFrom: string }
         }
     }
 
+    function getTotalWithDiscount(orderTotal: number, coupon: any) {
+        if (coupon) {
+            if (coupon.coupon_type === "percentage") {
+                orderTotal = orderTotal - (orderTotal * (coupon.value / 100));
+            } else {
+                orderTotal = orderTotal - coupon.value;
+            }
+        }
+        return orderTotal;
+    }
+
+
     return (
         <div className="max-w-screen-xl mx-auto px-4 md:px-8">
             {
@@ -70,7 +82,7 @@ export default function MyOrders(porps: { shopOrderDto: any, emailFrom: string }
                                                         {item.statusName}
                                                     </span>
                                                 </td>
-                                                <td className="pr-6 py-4 whitespace-nowrap"><PriceFormatting value={item.orderTotal} /></td>
+                                                <td className="pr-6 py-4 whitespace-nowrap"><PriceFormatting value={getTotalWithDiscount(item.orderTotal, item.coupon)} /></td>
                                             </tr>
                                         ))
                                     }

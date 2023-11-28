@@ -15,23 +15,6 @@ export async function POST(request: NextRequest) {
     const userName = session?.user?.name ? session?.user?.name : false;
     const userLogged = session?.user?.email ? await userService.getByEmail(session.user.email) : null;
 
-    //Function to validate and apply the discount coupon
-    const applyCoupon = (coupon: any, total: number) => {
-        if (coupon.coupon_type === 'percentage') {
-            const couponData = {
-                discount: total * (coupon.value / 100),
-                coupon_id: coupon.id,
-            }
-            return couponData;
-        } else if (coupon.coupon_type === 'fixedAmount') {
-            const couponData = {
-                discount: coupon.value,
-                coupon_id: coupon.id,
-            }
-            return couponData;
-        }
-    }
-
     //Find if the discount coupon exists in checkout discounts
     const getCoupon = await CheckoutDiscounts.findOne({
         where: {
@@ -69,9 +52,10 @@ export async function POST(request: NextRequest) {
             }
         }
 
-        const couponData = applyCoupon(getCoupon, total);
         return NextResponse.json({
-            couponData: couponData
+            value: getCoupon.value,
+            coupon_id: getCoupon.id,
+            coupon_type: getCoupon.coupon_type
         });
 
     } else {
