@@ -1,15 +1,15 @@
+import { useTranslations } from 'next-intl'
 import React from 'react'
 
 function HomeHeader() {
+    const t = useTranslations('HomeHeader')
     return (<header className="text-center">
-        <h2 className="text-4xl font-tungsten text-primary sm:text-4xl font-normal">
-            NOVEDADES
+        <h2 data-testid="header-title" className="text-4xl font-tungsten text-primary sm:text-4xl font-normal">
+            {t('title')}
         </h2>
 
         <p className="max-w-md mx-auto my-4 text-tertiary">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque
-            praesentium cumque iure dicta incidunt est ipsam, officia dolor fugit
-            natus?
+            {t('subtitle')}
         </p>
     </header>)
 }

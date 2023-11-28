@@ -7,6 +7,7 @@ import NavBarAuth from './auth/NavBarAuth';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import LanguageSwitcher from '@/components/main-ui/LanguageSwitcher';
 
 export default function Navbar(props: { categoryTree: any }) {
 
@@ -106,6 +107,7 @@ export default function Navbar(props: { categoryTree: any }) {
                     </div>
                     <div className="flex-1 gap-x-6 items-center justify-end hidden space-y-6 md:space-y-0 md:flex">
                         {/* <AuthSection /> */}
+                        <LanguageSwitcher/>
                         <NavBarAuth />
                         <MiniCart />
                     </div>
