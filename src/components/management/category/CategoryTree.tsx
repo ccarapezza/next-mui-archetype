@@ -1,7 +1,7 @@
-'use client'
+'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { IconButton, Box, Typography, Dialog, Button, Tooltip } from '@mui/material';
-import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/lab';
+import { TreeItem, TreeItemContentProps, TreeItemProps, TreeView, useTreeItem } from '@mui/x-tree-view';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faSquare, faSquareMinus, faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 import { faCircle, faCircleDot, faPlus, faTrash, faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -208,6 +208,7 @@ const CategoryTree = ({ categories }: { categories: ProductCategoryDto[] }) => {
                 defaultExpandIcon={<FontAwesomeIcon icon={faSquarePlus} className='ml-px fa-fw' transform={{size:20}} />}
                 defaultEndIcon={<SquareXmarkIcon />}
                 className='[&>*:nth-child(odd)]:bg-white-200 [&>*:nth-child(even)]:bg-slate-200'
+                multiSelect
                 selected={[selectedCategory?.id.toString() || '']}
             >
                 {recursiveTree(categories || [])}

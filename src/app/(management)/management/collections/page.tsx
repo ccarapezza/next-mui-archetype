@@ -4,14 +4,14 @@ import MuiDataGrid from "@/components/client/DataGrid";
 import MuiBox from "@/components/client/MuiBox";
 import EntityTableToolbar from "@/components/management/EntityTableToolbar";
 import PageHeader from "@/components/management/paperbase/PageHeader";
-import { roleService } from "@/services/RoleService";
+import { collectionService } from "@/services/CollectionService";
 import { GridColDef } from "@mui/x-data-grid";
 
-const fetchRolesData = async (page: number, size: number, search: string) => {
-    return await roleService.search(search, page, size);
+const fetchCollectionsData = async (page: number, size: number, search: string) => {
+    return await collectionService.search(search, page, size);
 };
 
-export default async function RolesPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {
+export default async function CollectionsPage({ searchParams }: { searchParams: { page: number, size: number, search: string } }) {
     const getPaginationParams= () => {
         return {
             page: searchParams.page? searchParams.page : 1,
@@ -19,7 +19,7 @@ export default async function RolesPage({ searchParams }: { searchParams: { page
         }
     }
     const paginationParams = getPaginationParams();
-    const data = await fetchRolesData(paginationParams.page, paginationParams.size, searchParams.search);
+    const data = await fetchCollectionsData(paginationParams.page, paginationParams.size, searchParams.search);
     const columns: GridColDef[] = [
         {
             field: 'id',
@@ -28,16 +28,16 @@ export default async function RolesPage({ searchParams }: { searchParams: { page
         },
         {
             field: 'name',
-            headerName: 'Role name',
+            headerName: 'Nombre',
             flex: 1
         }
     ];
 
     return (<>
-        <PageHeader title="Roles" />
+        <PageHeader title="Colecciones" />
         <MuiBox className="p-10">
-            <EntityTableToolbar newButtonLabel="Crear nuevo Rol" newEntityPath="/management/roles/new"/>
-            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/roles/edit" deletePath="/api/management/role/"/>
+            <EntityTableToolbar newButtonLabel="Crear nueva colección" newEntityPath="/management/collections/new"/>
+            <MuiDataGrid columns={columns} rows={data.rows} rowCount={data.totalItems} editPath="/management/collections/edit" deletePath="/api/management/collection/"/>
         </MuiBox>
     </>)
 }
