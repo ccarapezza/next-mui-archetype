@@ -7,7 +7,7 @@ export default function OrderThankYou() {
     return (
         <main>
             <div className="mx-auto px-4 flex items-center justify-center h-[50vh] md:px-8">
-                <div className="flex flex items-center justify-center flex-col gap-2 max-w-lg mx-auto space-y-3 text-center">
+                <div className="flex items-center justify-center flex-col gap-2 max-w-lg mx-auto space-y-3 text-center">
                     <Image src={"/logos/NEXT-Store-logo.png"} alt='Float UI logo' width={200} height={200} className="text-center"/>
                     <h3 className="text-primary font-semibold text-2xl">
                         GRACIAS POR TU COMPRA

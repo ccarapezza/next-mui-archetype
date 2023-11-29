@@ -1,11 +1,11 @@
 'use client';
 
-import { locales, usePathname, useRouter } from "@/navigation";
-import { faGlobeAmericas, faLanguage } from "@fortawesome/free-solid-svg-icons";
+import { usePathname, useRouter } from "@/navigation";
+import { locales } from "@/i18n";
+import { faLanguage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Badge } from "@mui/material";
 import { useLocale, useTranslations } from "next-intl";
-import Image from "next/image";
 import { useState } from "react";
 
 export default function LanguageSwitcher() {

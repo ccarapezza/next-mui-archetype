@@ -52,6 +52,7 @@ export default function Navbar(props: { categoryTree: any }) {
                     </Link>
                     <div className="flex items-center gap-2.5 md:hidden">
                         {/* <AuthSection /> */}
+                        <LanguageSwitcher/>
                         <NavBarAuth />
                         <MiniCart />
                         <button className="menu-btn text-tertiary-600 hover:text-primary-800"

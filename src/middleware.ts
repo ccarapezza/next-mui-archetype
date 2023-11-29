@@ -2,7 +2,7 @@
 import { withAuth } from "next-auth/middleware"
 import createIntlMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from "next/server";
-import { locales } from "@/navigation";
+import { locales } from "@/i18n";
 
 /*
 { id: 1, name: 'admin' },

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useLocalStorageMiniCart(key: string, initialValue: Array<any>) {
+export default function useClientLocalStorage(key: string, initialValue: any) {
   const isBrowser = typeof window !== "undefined";
 
   const [storedValue, setStoredValue] = useState(() => {
@@ -16,7 +16,7 @@ export default function useLocalStorageMiniCart(key: string, initialValue: Array
     }
   });
 
-  const setValue = (value: Array<any>) => {
+  const setValue = (value: any) => {
     try {
       setStoredValue(value);
       if (isBrowser) {

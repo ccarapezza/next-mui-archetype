@@ -10,13 +10,17 @@ import { notFound } from 'next/navigation';
 config.autoAddCss = false;
 
 // Can be imported from a shared config
-import { getMessages, locales } from "@/navigation";
-import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, locales } from "@/i18n";
+import NextIntlClientCustomerProvider from '@/components/auth/providers/NextIntlClientCustomerProvider';
 
 export const metadata = {
     title: 'Next Store',
     description: 'Sitio Oficial de Next Store',
 };
+
+const defaultTranslationValues = {
+    important: (chunks: React.ReactNode) => <b>{chunks}</b>,
+}
 
 export default async function RootLayout({ children, params: {locale} }: { children: React.ReactNode, params: {locale: string} }) {
     let messages;
@@ -29,9 +33,9 @@ export default async function RootLayout({ children, params: {locale} }: { child
     return (
         <html lang={locale}>           
             <body className='dark:bg-gray-900'>           
-                <NextIntlClientProvider messages={messages}>
+                <NextIntlClientCustomerProvider locale={locale} messages={messages}>
                     {children}
-                </NextIntlClientProvider>
+                </NextIntlClientCustomerProvider>
             </body>
         </html>
     );
