@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, createContext, useEffect } from 'react'
-import useLocalStorage from '@/hooks/useLocalStorage';
+import useClientLocalStorage from '@/hooks/useClientLocalStorage';
 import { ProductToCart } from '@/schemas/product';
 import { enqueueSnackbar } from 'notistack';
 interface Props {
@@ -22,7 +22,7 @@ export const CartContext = createContext({
 
 export default function MiniCartProvider({ children }: Props) {
 
-  const [storedValue, setStoredValue] = useLocalStorage('products', [] as ProductToCart[]);
+  const [storedValue, setStoredValue] = useClientLocalStorage('products', [] as ProductToCart[]);
   const [products, setProducts] = useState(storedValue);
   const [triggerOpenMiniCart, setTriggerOpenMiniCart] = useState<boolean>(false);
 

@@ -6,11 +6,13 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { notFound } from 'next/navigation';
-import { NextIntlClientProvider } from 'next-intl';
 config.autoAddCss = false;
 
 // Can be imported from a shared config
-import { getMessages, locales } from "@/navigation";
+import { getMessages, locales } from "@/i18n";
+import CookieBanner from '@/components/main-ui/CookieBanner';
+import GoogleAnalytics from '@/components/main-ui/GoogleAnalytics';
+import NextIntlClientCustomerProvider from '@/components/auth/providers/NextIntlClientCustomerProvider';
 
 export const metadata = {
     title: 'Next Store',
@@ -27,10 +29,12 @@ export default async function RootLayout({ children, params: {locale} }: { child
     if (!locales.includes(locale as any)) notFound();
     return (
         <html lang={locale}>
+            <GoogleAnalytics GA_MEASUREMENT_ID={`${process.env.GA_MEASUREMENT_ID}`}/>
             <body className="relative min-h-screen">
-                <NextIntlClientProvider messages={messages}>
+                <NextIntlClientCustomerProvider locale={locale} messages={messages}>
                     {children}
-                </NextIntlClientProvider>
+                    <CookieBanner/>
+                </NextIntlClientCustomerProvider>
             </body>
         </html>
     );

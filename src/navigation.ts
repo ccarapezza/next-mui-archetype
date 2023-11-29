@@ -1,5 +1,4 @@
 import {createSharedPathnamesNavigation} from 'next-intl/navigation';
+import {locales} from './i18n';
 
-export const locales = ['en', 'es'] as const;
-export const getMessages = async (locale: string) => (await import(`../messages/${locale}.json`))?.default;
 export const {Link, redirect, usePathname, useRouter} = createSharedPathnamesNavigation({locales});

@@ -36,7 +36,7 @@ function SearchField(props: any) {
     }, [searchParams])
     
 
-    return (<Box className="flex items-center items-stretch">
+    return (<Box className="flex items-stretch">
         <TextField  size='small' placeholder='Search...' InputProps={{ className: "rounded-none rounded-l border-red-500" }} inputRef={searchRef}
         onKeyDown={(e) => {
             if (e.key === 'Enter') {
