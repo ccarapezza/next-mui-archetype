@@ -8,7 +8,7 @@ import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import LanguageSwitcher from '@/components/main-ui/LanguageSwitcher';
-import SearchBar from '../search-bar/SearchBar';
+import SearchBar from '@/components/store/search-bar/SearchBar';
 
 export default function Navbar(props: { categoryTree: any }) {
 
