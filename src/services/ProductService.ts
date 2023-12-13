@@ -69,6 +69,59 @@ export class ProductService extends GenericService<Product> {
         }
         return productDto;
     };
+    getDtoByLink = async (link: string | string, imageDetail: boolean = false): Promise<ProductDto|null> => {
+        const product: Product | null = await Product.findOne({
+            where: { link },
+            attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
+            include: [
+                ProductCategory,
+                {
+                    attributes: ['id', 'sku', 'stock', 'image', 'price'],
+                    model: ProductItem,
+                    include: [
+                        {
+                            attributes: ['id', 'value'],
+                            model: VariationOption,
+                            include: [{
+                                model: Variation,
+                                attributes: ['id', 'name']
+                            }]
+                        }
+                    ]
+                }
+            ]
+        });
+
+        let productDto = null;
+    
+        if (product) {
+            productDto = product.toJSON();
+            for (let i = 0; i < productDto.items.length; i++) {
+                const item = productDto.items[i];
+                if (item.image) {
+                    const imagesKeys = item.image;
+                    const images = []
+                    const imagesDetail = []
+                    for (const image of imagesKeys) {
+                        const urlImage = await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES});
+                        images.push(urlImage)
+                        if(imageDetail){
+                            imagesDetail.push({
+                                key: image,
+                                url: urlImage
+                            });
+                        }
+                    }
+                    item.images = images;
+                    if(imageDetail){
+                        item.imagesDetail = imagesDetail;
+                    }
+                    delete item.image;
+                }
+            }
+        }
+        return productDto;
+    };
     search = async (searchTerm: string | null, page: number = 1, size: number = 10) => {
         let where: WhereOptions | undefined = undefined;
         const whereConditions = [];
