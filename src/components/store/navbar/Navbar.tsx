@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import LanguageSwitcher from '@/components/main-ui/LanguageSwitcher';
+import SearchBar from '@/components/store/search-bar/SearchBar';
 
 export default function Navbar(props: { categoryTree: any }) {
 
@@ -46,26 +47,31 @@ export default function Navbar(props: { categoryTree: any }) {
     return (
         <nav className={`md:text-sm fixed z-10 w-full top-0 bg-white shadow-lg ${state ? "shadow-lg md:shadow-none md:border-none md:mx-2 md:mt-0" : ""}`}>
             <div className="gap-x-14 items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
-                <div className="flex items-center justify-between py-1 md:block">
-                    <Link href="/">
-                        <Image src="/logos/NEXT-Store-logo.png" alt='Float UI logo' className='min-h-64' width={200} height={200} />
-                    </Link>
-                    <div className="flex items-center gap-2.5 md:hidden">
-                        {/* <AuthSection /> */}
-                        <LanguageSwitcher/>
-                        <NavBarAuth />
-                        <MiniCart />
-                        <button className="menu-btn text-tertiary-600 hover:text-primary-800"
-                            onClick={() => setState(!state)}
-                        >
-                            {
-                                state ? (
-                                    <FontAwesomeIcon icon={faTimes} size='xl' fixedWidth />
-                                ) : (
-                                    <FontAwesomeIcon icon={faBars} size='xl' fixedWidth />
-                                )
-                            }
-                        </button>
+                <div className='md:block'>
+                    <div className="flex items-center justify-between py-1">
+                        <Link href="/">
+                            <Image src="/logos/NEXT-Store-logo.png" alt='Float UI logo' className='min-h-64' width={200} height={200} />
+                        </Link>
+                        <div className="flex items-center gap-2.5 md:hidden">
+                            {/* <AuthSection /> */}
+                            <LanguageSwitcher />
+                            <NavBarAuth />
+                            <MiniCart />
+                            <button className="menu-btn text-tertiary-600 hover:text-primary-800"
+                                onClick={() => setState(!state)}
+                            >
+                                {
+                                    state ? (
+                                        <FontAwesomeIcon icon={faTimes} size='xl' fixedWidth />
+                                    ) : (
+                                        <FontAwesomeIcon icon={faBars} size='xl' fixedWidth />
+                                    )
+                                }
+                            </button>
+                        </div>
+                    </div>
+                    <div className='md:hidden'>
+                    <SearchBar />
                     </div>
                 </div>
                 <div className={`flex-1 items-center md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
@@ -108,6 +114,7 @@ export default function Navbar(props: { categoryTree: any }) {
                     </div>
                     <div className="flex-1 gap-x-6 items-center justify-end hidden space-y-6 md:space-y-0 md:flex">
                         {/* <AuthSection /> */}
+                        <SearchBar />
                         <LanguageSwitcher/>
                         <NavBarAuth />
                         <MiniCart />
