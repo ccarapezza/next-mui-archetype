@@ -26,5 +26,11 @@
       "accept": "Accept Cookies"
     },
     "disclaimer": "We use <important>cookies</important> of our own and third parties to obtain statistical data on our users' navigation and improve our services."
+  },
+  "SearchBar": {
+    "searching": "Searching...",
+    "noresults": "No results found.",
+    "resultsTitle": "Results:",
+    "searchPlaceholder": "Search"
   }
 }
