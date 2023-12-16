@@ -25,6 +25,7 @@ export type ProductInput = InferType<typeof productInputSchema>;
 export type ProductDto = {
     id: number;
     name: string;
+    link: string;
     category: {
         name: string;
         id: number;

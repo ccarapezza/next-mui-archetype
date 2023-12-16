@@ -3,6 +3,7 @@ import { FilterProduct } from '@/schemas/filterProduct';
 import { productCategoryService } from '@/services/ProductCategoryService';
 import { productService } from '@/services/ProductService';
 import { variationService } from '@/services/VariationService';
+import StringUtils from '@/utils/StringUtils';
 
 // Categorias
 const fetchCategoryData = async () => {
@@ -66,11 +67,12 @@ const addKeyToCategories = (categories: any, categoryTree: any) => {
         let currentCategory = category;
         while (currentCategory.parentId) {
             const parentCategory = findCategoryById(currentCategory.parentId, categoryTree);
-            let name = parentCategory.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '').replace(/[^\w]/g, '');
+            let name = StringUtils.sanitizeTextAndReplaceSpaces(parentCategory.name, '');
             key = name + "/" + key;
             currentCategory = parentCategory;
         }
-        key = key + category.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '').replace(/[^\w]/g, '')
+        
+        key = key + StringUtils.sanitizeTextAndReplaceSpaces(category.name, '')
         category.key = key;
         
         if (category.childrens && category.childrens.length) {
