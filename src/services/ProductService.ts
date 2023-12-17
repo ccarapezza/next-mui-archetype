@@ -7,9 +7,7 @@ import { GenericService } from "./GenericService";
 import { ProductDto } from "@/schemas/product";
 import { VariationDto } from "@/schemas/variation";
 import { VariationOptionDto } from "@/schemas/variationOption";
-
 import { FilterProduct } from "@/schemas/filterProduct";
-import { ProductItemDto } from "@/schemas/productItem";
 
 //ProductService extends GenericService
 export class ProductService extends GenericService<Product> {
@@ -19,7 +17,60 @@ export class ProductService extends GenericService<Product> {
     getDtoById = async (id: number | string, imageDetail: boolean = false): Promise<ProductDto|null> => {
         const product: Product | null = await Product.findOne({
             where: { id },
-            attributes: ['id', 'name', 'description', 'createdAt', 'updatedAt'],
+            attributes: ['id', 'name', 'link', 'description', 'createdAt', 'updatedAt'],
+            include: [
+                ProductCategory,
+                {
+                    attributes: ['id', 'sku', 'stock', 'image', 'price'],
+                    model: ProductItem,
+                    include: [
+                        {
+                            attributes: ['id', 'value'],
+                            model: VariationOption,
+                            include: [{
+                                model: Variation,
+                                attributes: ['id', 'name']
+                            }]
+                        }
+                    ]
+                }
+            ]
+        });
+
+        let productDto = null;
+    
+        if (product) {
+            productDto = product.toJSON();
+            for (let i = 0; i < productDto.items.length; i++) {
+                const item = productDto.items[i];
+                if (item.image) {
+                    const imagesKeys = item.image;
+                    const images = []
+                    const imagesDetail = []
+                    for (const image of imagesKeys) {
+                        const urlImage = await S3BucketUtil.getSignedUrlByKey({key: image, folder: S3BucketUtil.FOLDERS.PRODUCT_IMAGES});
+                        images.push(urlImage)
+                        if(imageDetail){
+                            imagesDetail.push({
+                                key: image,
+                                url: urlImage
+                            });
+                        }
+                    }
+                    item.images = images;
+                    if(imageDetail){
+                        item.imagesDetail = imagesDetail;
+                    }
+                    delete item.image;
+                }
+            }
+        }
+        return productDto;
+    };
+    getDtoByLink = async (link: string | string, imageDetail: boolean = false): Promise<ProductDto|null> => {
+        const product: Product | null = await Product.findOne({
+            where: { link },
+            attributes: ['id', 'name', 'link', 'description', 'createdAt', 'updatedAt'],
             include: [
                 ProductCategory,
                 {
@@ -211,7 +262,7 @@ export class ProductService extends GenericService<Product> {
         }
 
         //Build query
-        const querySearch = `SELECT distinct p.id, p.name, p.description, p.createdAt, p.updatedAt, pc.id as 'category.id', pc.name as 'category.name', pi.sku as 'items.sku', pi.stock as 'items.stock', pi.image as 'items.image', pi.price as 'items.price' FROM product as p
+        const querySearch = `SELECT distinct p.id, p.name, p.link, p.description, p.createdAt, p.updatedAt, pc.id as 'category.id', pc.name as 'category.name', pi.sku as 'items.sku', pi.stock as 'items.stock', pi.image as 'items.image', pi.price as 'items.price' FROM product as p
         LEFT JOIN product_category as pc on p.categoryId = pc.id
         LEFT JOIN product_item as pi on p.id = pi.masterProductId
         LEFT JOIN product_configuration as pconf on pi.id = pconf.productItemId
@@ -275,6 +326,7 @@ export class ProductService extends GenericService<Product> {
                 acc.push({
                     id: item.id,
                     name: item.name,
+                    link: item.link,
                     description: item.description,
                     createdAt: item.createdAt,
                     updatedAt: item.updatedAt,

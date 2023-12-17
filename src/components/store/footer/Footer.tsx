@@ -5,6 +5,7 @@ import SubscriptionForm from '../../main-ui/SubscriptionForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faFacebookF, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
+import StringUtils from '@/utils/StringUtils';
 
 export default function Footer(props: { categoryTree: any }) {
 
@@ -12,20 +13,11 @@ export default function Footer(props: { categoryTree: any }) {
 
   const date = new Date();
   const currentYear = date.getFullYear();
-
-  function clearNameForUrl(urlCategory: string) {
-    // Convertir a minúsculas y eliminar acentos
-    urlCategory = urlCategory.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
-    // Reemplazar caracteres especiales y espacios por guiones
-    urlCategory = urlCategory.replace(/[^\w]/g, '');
-
-    return urlCategory;
-  }
-
+  
   const categoryNav = categoryTree.map((category: any) => {
     return {
       name: category.name,
-      href: `/shop/${clearNameForUrl(category.name)}`,
+      href: `/shop/${StringUtils.sanitizeTextAndReplaceSpaces(category.name, '')}`,
       icon: null
     }
   })

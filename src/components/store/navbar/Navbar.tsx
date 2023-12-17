@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import LanguageSwitcher from '@/components/main-ui/LanguageSwitcher';
+import StringUtils from '@/utils/StringUtils';
 import SearchBar from '@/components/store/search-bar/SearchBar';
 
 export default function Navbar(props: { categoryTree: any }) {
@@ -15,23 +16,14 @@ export default function Navbar(props: { categoryTree: any }) {
     const { categoryTree } = props;
     const [state, setState] = useState(false);
 
-    function clearNameForUrl(urlCategory: string) {
-        // Convertir a minúsculas y eliminar acentos
-        urlCategory = urlCategory.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, '');
-        // Reemplazar caracteres especiales y espacios por guiones
-        urlCategory = urlCategory.replace(/[^\w]/g, '');
-
-        return urlCategory;
-    }
-
     const staticMenu = categoryTree.map((category: any) => {
         return {
             title: category.name,
-            path: `/shop/${clearNameForUrl(category.name)}`,
+            path: `/shop/${StringUtils.sanitizeTextAndReplaceSpaces(category.name)}`,
             children: category?.childrens?.map((subcategory: any) => {
                 return {
                     title: subcategory.name,
-                    path: `/shop/${clearNameForUrl(category.name)}/${clearNameForUrl(subcategory.name)}`,
+                    path: `/shop/${StringUtils.sanitizeTextAndReplaceSpaces(category.name)}/${StringUtils.sanitizeTextAndReplaceSpaces(subcategory.name)}`,
                 }
             })
         }

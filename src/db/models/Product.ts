@@ -29,6 +29,9 @@ export default class Product extends Model {
   @BelongsTo(() => ProductCategory)
   public category!: ProductCategory;
 
+  @Column({ type: DataType.STRING, allowNull: false })
+  public link!: string;
+
   @HasMany(() => ProductItem)
   public items!: ProductItem[];
 }

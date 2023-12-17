@@ -2,13 +2,24 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Product, ProductItem, VariationOption } from '../../../../db';
 import { Op } from 'sequelize';
 import S3BucketUtil from '@/utils/S3BucketUtil';
+import StringUtils from '@/utils/StringUtils';
 
 export async function POST(request: NextRequest) {
     const requestJSON = await request.json();
     console.log("Request JSON", requestJSON);
 
+    //check if product link already exists and add a number to the end
+    const linkBase = StringUtils.sanitizeTextAndReplaceSpaces(requestJSON.name);
+
+    let link = linkBase;
+    let count = 0;
+    while (await Product.findOne({ where: { link } })) {
+        link = `${linkBase}-${++count}`;
+    }
+
     const productCreated = await Product.create({
         name: requestJSON.name,
+        link: link,
         description: requestJSON.description,
         categoryId: requestJSON.categoryId,
     });

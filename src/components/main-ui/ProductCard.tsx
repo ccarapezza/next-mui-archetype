@@ -28,7 +28,7 @@ const ProductCard = (props: { product: ProductDto }) => {
     return (
         <Link
             className="group block overflow-hidden cursor-pointer"
-            href={`/product/${product?.id}`}
+            href={`/product/${product?.link}`}
         >
             <div className="relative h-[500px] sm:h-[450px]">
                 <Image
